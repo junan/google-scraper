@@ -1,12 +1,13 @@
 package test
 
 import (
-	_ "google-scraper/routers"
 	"net/http"
 	"net/http/httptest"
 	"path/filepath"
 	"runtime"
 	"testing"
+
+	_ "google-scraper/routers"
 
 	log "github.com/beego/beego/v2/core/logs"
 	beego "github.com/beego/beego/v2/server/web"
