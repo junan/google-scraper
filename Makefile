@@ -1,7 +1,7 @@
 .PHONY: test dev
 
 build-dependencies:
-	go get github.com/beego/bee
+	go get github.com/beego/bee/v2
 
 dev:
 	bee run
