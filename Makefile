@@ -8,3 +8,6 @@ dev:
 
 test:
 	go test -v -p 1 ./...
+
+production:
+	BEEGO_ENV=${BEEGO_ENV} bee run
