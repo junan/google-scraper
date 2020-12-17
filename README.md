@@ -10,7 +10,7 @@ A web application to google search with multiple keywords
 
 Clone the repository
 
-`git clone ggit@github.com:junan/google-scraper.git`
+`git clone git@github.com:junan/google-scraper.git`
 
 
 #### Build development dependencies
@@ -19,7 +19,7 @@ Clone the repository
   make build-dependencies
   ```
 
-#### Run the application
+#### Run the application in your local machine
 
   ```sh
   make dev
