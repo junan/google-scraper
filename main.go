@@ -1,7 +1,8 @@
 package main
 
 import (
-	_ "google-scraper/routers"
+	_ "google-scraper/routers
+
 	beego "github.com/beego/beego/v2/server/web"
 )
 

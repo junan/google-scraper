@@ -1,4 +1,4 @@
-.PHONY: test dev production
+.PHONY: build-dependencies test dev production
 
 build-dependencies:
 	go get github.com/beego/bee/v2
