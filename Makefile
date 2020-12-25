@@ -1,4 +1,4 @@
-.PHONY: build-dependencies test dev production
+.PHONY: build-dependencies test dev
 
 build-dependencies:
 	go get github.com/beego/bee/v2
@@ -9,5 +9,3 @@ dev:
 test:
 	go test -v -p 1 ./...
 
-production:
-	BEEGO_ENV=${BEEGO_ENV} bee run
