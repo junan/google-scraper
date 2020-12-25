@@ -11,7 +11,7 @@ WORKDIR $APP_HOME
 
 COPY go.mod go.sum ./
 
-# Down all the dependencies
+# Download all the dependencies
 RUN go mod download
 
 # Verify go.sum file matches what it downloaded
