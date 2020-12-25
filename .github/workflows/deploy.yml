@@ -22,6 +22,7 @@ jobs:
           then
             echo "HEROKU_APP_NAME=${{ secrets.HEROKU_APP_NAME }}" >> $GITHUB_ENV
           else
+            echo "HEROKU_APP_NAME=${{ secrets.HEROKU_APP_NAME }}" >> $GITHUB_ENV
             echo "HEROKU_APP_NAME=${{ secrets.HEROKU_APP_NAME }}-staging" >> $GITHUB_ENV
           fi
 
