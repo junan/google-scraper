@@ -1,6 +1,6 @@
 FROM golang:1.15-buster
 
-# Set necessary environmet variables needed for our image
+# Set necessary environmet variables needed for the image
 ENV GO111MODULE=on \
     CGO_ENABLED=0 \
     GOOS=linux \
