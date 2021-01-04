@@ -1,28 +1,34 @@
-# Git Repository Template
+# google-scraper
+A web application to google search with multiple keywords 
 
-Project repository template to set up all public projects at [Nimble](https://nimblehq.co/)
+## Prerequisite
+* [Go - 1.15](https://golang.org/doc/go1.15)
+* [Docker](https://docs.docker.com/get-docker/)
+
 
 ## Usage
 
 Clone the repository
 
-`git clone git@github.com:nimblehq/git-template.git`
+`git clone git@github.com:junan/google-scraper.git`
 
-## License
 
-This project is Copyright (c) 2014-2020 Nimble. It is free software,
-and may be redistributed under the terms specified in the [LICENSE] file.
+#### Build development dependencies
 
-[LICENSE]: /LICENSE
+  ```sh
+  make build-dependencies
+  ```
 
-## About
+#### Run the application in your local machine
 
-![Nimble](https://assets.nimblehq.co/logo/dark/logo-dark-text-160.png)
+  ```sh
+  make dev
+  ```
 
-This project is maintained and funded by Nimble.
+It will be accessible at: `http://localhost:8080`
 
-We love open source and do our part in sharing our work with the community!
-See [our other projects][community] or [hire our team][hire] to help build your product.
+### Run tests
 
-[community]: https://github.com/nimblehq
-[hire]: https://nimblehq.co/
+```sh
+make test
+```
