@@ -2,15 +2,18 @@ package db
 
 import (
 	"fmt"
-	_ "google-scraper/models"
 
+	"google-scraper/models"
+
+	"github.com/beego/beego/v2/client/orm"
+	"github.com/beego/beego/v2/core/logs"
 	beego "github.com/beego/beego/v2/server/web"
-
-	"github.com/beego/beego/logs"
-	"github.com/beego/beego/orm"
+	_ "github.com/lib/pq"
 )
 
 func init() {
+	dbUrl, _ := beego.AppConfig.String("dbUrl")
+
 	// Register postgres driver
 	err := orm.RegisterDriver("postgres", orm.DRPostgres)
 	if err != nil {
@@ -18,7 +21,7 @@ func init() {
 	}
 
 	// Register the database
-	err = orm.RegisterDataBase("default", "postgres", beego.AppConfig.DefaultString("dbUrl"))
+	err = orm.RegisterDataBase("default", "postgres", dbUrl)
 	if err != nil {
 		fmt.Println("Postgres connection failed: ", err)
 	}
@@ -34,5 +37,5 @@ func init() {
 }
 
 func RegisterModels() {
-	orm.RegisterModel(new(User))
+	orm.RegisterModel(new(models.User))
 }

@@ -2,8 +2,6 @@ package models
 
 import (
 	"time"
-
-	"github.com/beego/beego/v2/client/orm"
 )
 
 type User struct {
@@ -12,9 +10,10 @@ type User struct {
 	Email             string `orm:"unique"`
 	EncryptedPassword string
 	CreatedAt         time.Time `orm:"auto_now_add;type(datetime)"`
-	UpdatedAt         time.Time `orm:"auto_now;type(datetime); null"`
+	UpdatedAt         time.Time `orm:"auto_now;type(datetime)"`
 }
 
-func init() {
-	orm.RegisterModel(new(User))
+// Beego by default creates the table name as singular, it will make it plural
+func (u *User) TableName() string {
+	return "users"
 }
