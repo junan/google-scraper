@@ -6,6 +6,7 @@ build-dependencies:
 
 dev:
 	bee run
+	docker-compose -f docker-compose.dev.yml up -d
 
 test:
 	go test -v -p 1 ./...
