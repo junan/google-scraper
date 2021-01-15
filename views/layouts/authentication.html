@@ -8,11 +8,13 @@
     <meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no'/>
 </head>
 
-<body">
+<body>
+{{ template "shared/header.html" }}
 
 <main class="app-main">
+    {{ .Content }}
 </main>
 
-<script src="/static/js/reload.min.js"></script>
+{{ template "shared/js" }}
 </body>
 </html>

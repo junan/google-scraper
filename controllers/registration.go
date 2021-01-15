@@ -9,10 +9,11 @@ type RegistrationController struct {
 }
 
 func (c *RegistrationController) Get() {
-	c.TplName = "registration.html"
+	c.Layout = "layouts/authentication.html"
+	c.TplName = "registrations/new.html"
 
-	//c.Layout = "layouts/authentication.html"
-	//c.TplName = "registration/new.html"
+	c.Data["Title"] = "Create your account"
 
-	c.Data["Title"] = "Create a new account"
+	c.LayoutSections = make(map[string]string)
+	c.LayoutSections["FlashMessage"] = "shared/flash.html"
 }
