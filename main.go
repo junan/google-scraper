@@ -2,10 +2,8 @@ package main
 
 import (
 	"fmt"
-	"google-scraper/models"
-
 	_ "google-scraper/db"
-	_ "google-scraper/models"
+	"google-scraper/models"
 	_ "google-scraper/routers"
 
 	"github.com/beego/beego/v2/client/orm"
@@ -25,7 +23,6 @@ func main() {
 	user.Name = "astaxie"
 	num, err := o.Update(&user)
 	fmt.Printf("NUM: %d, ERR: %v\n", num, err)
-
 
 	beego.Run()
 }
