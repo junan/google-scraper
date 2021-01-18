@@ -34,6 +34,11 @@ func init() {
 	if err != nil {
 		logs.Critical(fmt.Sprintf("Failed to sync models with the database %v", err))
 	}
+
+	mode, _ := beego.AppConfig.String("runmode")
+	if mode == "dev" {
+		orm.Debug = true
+	}
 }
 
 func RegisterModels() {
