@@ -4,9 +4,9 @@ import (
 	_ "google-scraper/db"
 	_ "google-scraper/routers"
 
-	beego "github.com/beego/beego/v2/server/web"
+	"github.com/beego/beego/v2/server/web"
 )
 
 func main() {
-	beego.Run()
+	web.Run()
 }
