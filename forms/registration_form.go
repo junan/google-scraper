@@ -1,12 +1,10 @@
 package forms
 
-
 import (
 	"github.com/beego/beego/v2/client/orm"
-    "google-scraper/models"
-   "google-scraper/helpers"
+	"google-scraper/helpers"
+	"google-scraper/models"
 )
-
 
 type RegistrationForm struct {
 	Name     string `form:"name" valid:"Required;"`

@@ -2,9 +2,10 @@ package controllers
 
 import (
 	"fmt"
+	"net/http"
+
 	"github.com/beego/beego/v2/server/web"
 	"google-scraper/forms"
-	"net/http"
 )
 
 type RegistrationController struct {
