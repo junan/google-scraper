@@ -1,9 +1,9 @@
 package forms
 
 import (
-	"github.com/beego/beego/v2/client/orm"
 	"google-scraper/helpers"
 	"google-scraper/models"
+	"github.com/beego/beego/v2/client/orm"
 )
 
 type RegistrationForm struct {

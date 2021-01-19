@@ -14,6 +14,7 @@ type RegistrationController struct {
 
 func (c *RegistrationController) Get() {
 	web.ReadFromRequest(&c.Controller)
+	
 	c.Layout = "layouts/authentication.html"
 	c.TplName = "registrations/new.html"
 

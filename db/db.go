@@ -7,12 +7,12 @@ import (
 
 	"github.com/beego/beego/v2/client/orm"
 	"github.com/beego/beego/v2/core/logs"
-	beego "github.com/beego/beego/v2/server/web"
+	"github.com/beego/beego/v2/server/web"
 	_ "github.com/lib/pq"
 )
 
 func init() {
-	dbUrl, _ := beego.AppConfig.String("dbUrl")
+	dbUrl, _ := web.AppConfig.String("dbUrl")
 
 	// Register postgres driver
 	err := orm.RegisterDriver("postgres", orm.DRPostgres)
@@ -35,7 +35,7 @@ func init() {
 		logs.Critical(fmt.Sprintf("Failed to sync models with the database %v", err))
 	}
 
-	mode, _ := beego.AppConfig.String("runmode")
+	mode, _ := web.AppConfig.String("runmode")
 	if mode == "dev" {
 		orm.Debug = true
 	}
