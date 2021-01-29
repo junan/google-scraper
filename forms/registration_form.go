@@ -1,9 +1,12 @@
 package forms
 
 import (
+	"fmt"
+	"github.com/beego/beego/v2/client/orm"
+	"github.com/beego/beego/v2/core/logs"
+	"github.com/beego/beego/v2/core/validation"
 	"google-scraper/helpers"
 	"google-scraper/models"
-	"github.com/beego/beego/v2/client/orm"
 )
 
 type RegistrationForm struct {
@@ -12,15 +15,45 @@ type RegistrationForm struct {
 	Password string `form:"password" valid:"Required; MinSize(6)"`
 }
 
-func (form RegistrationForm) Save() error {
-	var err error
-	user := models.User{}
-	user.Email = form.Email
-	user.Name = form.Name
-	user.HashedPassword = helpers.HashPassword(form.Password)
+func (registrationForm *RegistrationForm) Valid(v *validation.Validation) {
+
+	fmt.Println("Junan")
+
+	user := models.User{
+		Email: registrationForm.Email,
+	}
 
 	o := orm.NewOrm()
-	_, err = o.Insert(&user)
+	_ = o.Read(&user, "Email")
 
-	return err
+	if user.Id != 0 {
+		_ = v.SetError("Email", "Email already exists")
+	}
+}
+
+func (registrationForm *RegistrationForm) Save() (*models.User, error) {
+	fmt.Println("validation scope")
+	validation := validation.Validation{}
+
+	success, err := validation.Valid(registrationForm)
+	if err != nil {
+		logs.Error("Validate err:", err)
+	}
+
+	if !success {
+		for _, err := range validation.Errors {
+			return nil, err
+		}
+	}
+
+	user := &models.User{
+		Email: registrationForm.Email,
+	}
+
+	user.HashedPassword = helpers.HashPassword(registrationForm.Password)
+
+	o := orm.NewOrm()
+	_, err = o.Insert(user)
+
+	return user, err
 }

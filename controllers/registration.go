@@ -31,20 +31,20 @@ func (c *RegistrationController) Get() {
 }
 
 func (c *RegistrationController) Post() {
-	form := forms.RegistrationForm{}
+	registrationForm := forms.RegistrationForm{}
 	flash := web.NewFlash()
 
-	err := c.ParseForm(&form)
+	err := c.ParseForm(&registrationForm)
 	if err != nil {
 		flash.Error(err.Error())
 	}
 
-	err = form.Save()
+	_, err = registrationForm.Save()
 	if err != nil {
 		flash.Error(fmt.Sprint(err))
 		flash.Store(&c.Controller)
 
-		c.Data["Form"] = form
+		c.Data["Form"] = registrationForm
 	} else {
 		flash.Success("Account created successfully")
 		flash.Store(&c.Controller)
