@@ -2,6 +2,7 @@ package forms
 
 import (
 	"github.com/beego/beego/v2/client/orm"
+	"github.com/beego/beego/v2/core/logs"
 	"github.com/beego/beego/v2/core/validation"
 	"google-scraper/helpers"
 	"google-scraper/models"
@@ -30,6 +31,11 @@ func (registrationForm *RegistrationForm) Save() (*models.User, error) {
 	validation := validation.Validation{}
 
 	success, err := validation.Valid(registrationForm)
+
+	if err != nil {
+		logs.Error("Validation error:", err)
+	}
+
 	if !success {
 		for _, err := range validation.Errors {
 			return nil, err
@@ -37,7 +43,7 @@ func (registrationForm *RegistrationForm) Save() (*models.User, error) {
 	}
 
 	user := &models.User{
-		Name: registrationForm.Name,
+		Name:  registrationForm.Name,
 		Email: registrationForm.Email,
 	}
 

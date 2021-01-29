@@ -46,7 +46,7 @@ func (c *RegistrationController) Post() {
 
 		c.Data["Form"] = registrationForm
 	} else {
-		flash.Success("Account created successfully")
+		flash.Success("Account has been created successfully")
 		flash.Store(&c.Controller)
 
 		c.Ctx.Redirect(http.StatusFound, "/register")
