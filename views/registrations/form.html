@@ -1,23 +1,23 @@
-<form class="form registration-form " action="/register" method="post">
-    <input
-            type="text"
-            value="{{ .Form.Name }}"
-            class="form__input"
-            name="name"
-            placeholder="Name"
-    />
-    <input
-            type="email"
-            value="{{ .Form.Email }}"
-            class="form__input"
-            name="email"
-            placeholder="Email"
-    />
-    <input
-            type="password"
-            class="form__input"
-            name="password"
-            placeholder="Password"
-    />
-    <button type="submit">Create Account</button>
+<form class="form registration-form" action="/register" method="post">
+  <input
+    type="text"
+    value="{{ .Form.Name }}"
+    class="form__input"
+    name="name"
+    placeholder="Name"
+  />
+  <input
+    type="email"
+    value="{{ .Form.Email }}"
+    class="form__input"
+    name="email"
+    placeholder="Email"
+  />
+  <input
+    type="password"
+    class="form__input"
+    name="password"
+    placeholder="Password"
+  />
+  <button type="submit">Create Account</button>
 </form>
