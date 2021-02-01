@@ -2,8 +2,7 @@ version: '3.8'
 
 services:
   database:
-    image: postgres:12
-    container_name: google-scraper_db
+    image: postgres:13
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
