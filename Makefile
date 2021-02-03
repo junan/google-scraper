@@ -10,6 +10,6 @@ dev:
 
 test:
 	docker-compose -f docker-compose.test.yml up -d
-	BEEGO_ENV=test go test -v -p 1 -count=1 ./...
+	BEEGO_ENV=test go test -v -p 1 ./...
 	docker-compose -f docker-compose.test.yml down
 

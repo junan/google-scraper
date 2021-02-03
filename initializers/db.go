@@ -12,6 +12,7 @@ import (
 
 func init() {
 	LoadAppConfig()
+
 	dbUrl, err := web.AppConfig.String("dbUrl")
 	if err != nil {
 		fmt.Println("Postgres database source is not found: ", err)

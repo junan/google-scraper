@@ -1,12 +1,13 @@
 package controllers_test
 
 import (
-	. "github.com/onsi/ginkgo"
-	. "github.com/onsi/gomega"
-	. "google-scraper/tests/testing_helpers"
 	"net/http"
 	"net/url"
 	"strings"
+	
+	. "github.com/onsi/ginkgo"
+	. "github.com/onsi/gomega"
+	. "google-scraper/tests/testing_helpers"
 )
 
 var _ = Describe("RegistrationController", func() {
