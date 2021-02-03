@@ -5,7 +5,7 @@ type User struct {
 
 	Name              string
 	Email             string `orm:"unique"`
-	HashedPassword string
+	HashedPassword    string
 }
 
 // Beego by default creates the table name as singular, it will make it plural
