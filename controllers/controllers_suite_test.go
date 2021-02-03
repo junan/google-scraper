@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	_ "google-scraper/initializers"
+	_ "google-scraper/routers"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
