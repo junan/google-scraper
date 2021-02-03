@@ -37,7 +37,7 @@ var _ = Describe("RegistrationForm", func() {
 					registrationForm := forms.RegistrationForm{
 						Name:     "John",
 						Email:    "",
-						Password: "123456",
+						Password: "secret",
 					}
 					user, err := registrationForm.Save()
 
@@ -96,7 +96,7 @@ var _ = Describe("RegistrationForm", func() {
 				It("returns an error message and does NOT create a new user", func() {
 					registrationForm := forms.RegistrationForm{
 						Name:     "John",
-						Email:    "john@example.co",
+						Email:    "john@example.com",
 						Password: "abc",
 					}
 					user, err := registrationForm.Save()
