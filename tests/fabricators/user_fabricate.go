@@ -1,10 +1,11 @@
 package fabricators
 
 import (
-	"github.com/beego/beego/v2/client/orm"
-	"github.com/beego/beego/v2/core/logs"
 	. "google-scraper/helpers"
 	. "google-scraper/models"
+
+	"github.com/beego/beego/v2/client/orm"
+	"github.com/beego/beego/v2/core/logs"
 )
 
 func FabricateUser(name string, email string, password string) {
