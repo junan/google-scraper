@@ -10,6 +10,6 @@ dev:
 
 test:
 	docker-compose -f docker-compose.test.yml up -d
-	APP_RUN_MODE=test go test -v -p 1 ./...
+	BEEGO_ENV=test go test -v -p 1 ./...
 	docker-compose -f docker-compose.test.yml down
 
