@@ -5,6 +5,8 @@ import (
 	. "github.com/onsi/gomega"
 	. "google-scraper/tests/testing_helpers"
 	"net/http"
+	"net/url"
+	"strings"
 )
 
 var _ = Describe("RegistrationController", func() {
@@ -20,48 +22,35 @@ var _ = Describe("RegistrationController", func() {
 		})
 	})
 
-	//Describe("POST", func() {
-	//	Context("given valid params", func() {
-	//		It("returns status FOUND", func() {
-	//			form := url.Values{
-	//				"email":                 {"hoang.mirs@gmail.com"},
-	//				"password":              {"123456"},
-	//				"password_confirmation": {"123456"},
-	//			}
-	//			body := strings.NewReader(form.Encode())
-	//			response := MakeRequest("POST", "/register", body)
-	//
-	//			Expect(response.Code).To(Equal(http.StatusFound))
-	//		})
-	//	})
-	//
-	//	Context("given invalid params", func() {
-	//		It("returns status OK", func() {
-	//			form := url.Values{
-	//				"email":                 {""},
-	//				"password":              {""},
-	//				"password_confirmation": {""},
-	//			}
-	//			body := strings.NewReader(form.Encode())
-	//			response := MakeRequest("POST", "/register", body)
-	//
-	//			Expect(response.Code).To(Equal(http.StatusOK))
-	//			This conversation was marked as resolved by olivierobert
-	//		})
-	//
-	//		It("returns error flash message", func() {
-	//			form := url.Values{
-	//				"email":                 {""},
-	//				"password":              {""},
-	//				"password_confirmation": {""},
-	//			}
-	//			body := strings.NewReader(form.Encode())
-	//			response := MakeRequest("POST", "/register", body)
-	//
-	//			flashMessage := GetFlash(response.Result().Cookies())
-	//
-	//			Expect(flashMessage.Data["error"]).To(Equal("Email can not be empty"))
-	//		})
-	//	})
-	//})
+	Describe("POST", func() {
+		Context("given valid params", func() {
+			It("sets flash success message", func() {
+				registrationForm := url.Values{
+					"name":     {"John"},
+					"email":    {"john@example.com"},
+					"password": {"secret"},
+				}
+				body := strings.NewReader(registrationForm.Encode())
+				response := MakeRequest("POST", "/register", body)
+				flash := GetFlash(response.Result().Cookies())
+
+				Expect(flash.Data["success"]).To(Equal("Account has been created successfully"))
+			})
+		})
+
+		Context("given invalid params", func() {
+			It("sets flash error message", func() {
+				form := url.Values{
+					"name":     {""},
+					"email":    {"john@example.com"},
+					"password": {"secret"},
+				}
+				body := strings.NewReader(form.Encode())
+				response := MakeRequest("POST", "/register", body)
+				flash := GetFlash(response.Result().Cookies())
+
+				Expect(flash.Data["error"]).To(Equal("Name Can not be empty"))
+			})
+		})
+	})
 })
