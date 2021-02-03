@@ -8,29 +8,17 @@ import (
 	"google-scraper/forms"
 )
 
-type CommonTemplate struct {
-	web.Controller
+type Registration struct {
+	baseController
 }
 
-func (c *CommonTemplate) Prepare() {
-	c.Layout = "layouts/authentication.html"
-	c.TplName = "registrations/new.html"
-
-	c.Data["Title"] = "Create your account"
-
-	c.LayoutSections = make(map[string]string)
-	c.LayoutSections["FlashMessage"] = "shared/flash.html"
-}
-
-type RegistrationController struct {
-	CommonTemplate
-}
-
-func (c *RegistrationController) Get() {
+func (c *Registration) Get() {
 	web.ReadFromRequest(&c.Controller)
+
+	c.setAttributes()
 }
 
-func (c *RegistrationController) Post() {
+func (c *Registration) Post() {
 	registrationForm := forms.RegistrationForm{}
 	flash := web.NewFlash()
 
@@ -45,10 +33,17 @@ func (c *RegistrationController) Post() {
 		flash.Store(&c.Controller)
 
 		c.Data["Form"] = registrationForm
+		c.setAttributes()
 	} else {
 		flash.Success("Account has been created successfully")
 		flash.Store(&c.Controller)
 
 		c.Ctx.Redirect(http.StatusFound, "/register")
 	}
+}
+
+func (c *Registration) setAttributes() {
+	c.Layout = "layouts/authentication.html"
+	c.TplName = "registrations/new.html"
+	c.Data["Title"] = "Create your account"
 }
