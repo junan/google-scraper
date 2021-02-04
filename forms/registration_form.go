@@ -47,11 +47,9 @@ func (registrationForm *RegistrationForm) Save() (*models.User, error) {
 		Name:  registrationForm.Name,
 		Email: registrationForm.Email,
 	}
-
 	user.HashedPassword = helpers.HashPassword(registrationForm.Password)
 
-	o := orm.NewOrm()
-	_, err = o.Insert(user)
+	_, err = models.CreateUser(user)
 
 	return user, err
 }
