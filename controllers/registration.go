@@ -4,8 +4,9 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/beego/beego/v2/server/web"
 	"google-scraper/forms"
+
+	"github.com/beego/beego/v2/server/web"
 )
 
 type Registration struct {
