@@ -44,7 +44,6 @@ func (registrationForm *RegistrationForm) Save() (*models.User, error) {
 	}
 
 	hashedPassword, err := helpers.HashPassword(registrationForm.Password)
-
 	if err != nil {
 		return nil, err
 	}
@@ -56,7 +55,6 @@ func (registrationForm *RegistrationForm) Save() (*models.User, error) {
 	}
 
 	_, err = models.CreateUser(user)
-
 	if err != nil {
 		return nil, err
 	}
