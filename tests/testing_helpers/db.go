@@ -9,8 +9,8 @@ import (
 
 func TruncateTable(tableName string) {
 	o := orm.NewOrm()
-	rqwSql := fmt.Sprintf("TRUNCATE TABLE \"%s\";", tableName)
-	_, err := o.Raw(rqwSql).Exec()
+	rawSql := fmt.Sprintf("TRUNCATE TABLE \"%s\";", tableName)
+	_, err := o.Raw(rawSql).Exec()
 	if err != nil {
 		err := orm.RunSyncdb("default", false, false)
 		logs.Error("Failed to truncate table", err)
