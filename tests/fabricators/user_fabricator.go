@@ -10,10 +10,13 @@ import (
 
 func FabricateUser(name string, email string, password string) {
 	o := orm.NewOrm()
-	hashedPassword := HashPassword(password)
+	hashedPassword, err := HashPassword(password)
+	if err != nil {
+		logs.Error("Password hashing failed: ", err)
+	}
 	user := User{Name: name, Email: email, HashedPassword: hashedPassword}
 
-	_, err := o.Insert(&user)
+	_, err = o.Insert(&user)
 	if err != nil {
 		logs.Error("User creation  failed: ", err)
 	}

@@ -4,10 +4,11 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
-	
+
+	. "google-scraper/tests/testing_helpers"
+
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
-	. "google-scraper/tests/testing_helpers"
 )
 
 var _ = Describe("RegistrationController", func() {
@@ -51,6 +52,18 @@ var _ = Describe("RegistrationController", func() {
 				flash := GetFlash(response.Result().Cookies())
 
 				Expect(flash.Data["error"]).To(Equal("Name Can not be empty"))
+			})
+
+			It("does NOT redirect to any new page", func() {
+				form := url.Values{
+					"name":     {""},
+					"email":    {"john@example.com"},
+					"password": {"secret"},
+				}
+				body := strings.NewReader(form.Encode())
+				response := MakeRequest("POST", "/register", body)
+
+				Expect(response.Header().Get("Location")).To(Equal(""))
 			})
 		})
 	})
