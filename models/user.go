@@ -7,14 +7,24 @@ import (
 type User struct {
 	Base
 
-	Name              string
-	Email             string `orm:"unique"`
-	HashedPassword    string
+	Name           string
+	Email          string `orm:"unique"`
+	HashedPassword string
 }
 
-func CreateUser(u *User)(id int64, err error) {
+func CreateUser(u *User) (id int64, err error) {
 	orm := orm.NewOrm()
 	return orm.Insert(u)
+}
+
+func (u *User) IsExist() bool {
+	o := orm.NewOrm()
+	err := o.Read(u, "Email")
+	if err != nil {
+		return false
+	}
+
+	return true
 }
 
 // Beego by default creates the table name as singular, it will make it plural

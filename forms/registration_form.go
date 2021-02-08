@@ -4,7 +4,6 @@ import (
 	"google-scraper/helpers"
 	"google-scraper/models"
 
-	"github.com/beego/beego/v2/client/orm"
 	"github.com/beego/beego/v2/core/logs"
 	"github.com/beego/beego/v2/core/validation"
 )
@@ -20,11 +19,8 @@ func (registrationForm *RegistrationForm) Valid(v *validation.Validation) {
 		Email: registrationForm.Email,
 	}
 
-	o := orm.NewOrm()
-	_ = o.Read(&user, "Email")
-
-	if user.Id != 0 {
-		_ = v.SetError("Email", "Email already exists")
+	if user.IsExist(){
+		v.SetError("Email", "Email already exists")
 	}
 }
 

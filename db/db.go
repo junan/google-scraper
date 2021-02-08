@@ -6,18 +6,20 @@ import (
 	"google-scraper/models"
 
 	"github.com/beego/beego/v2/client/orm"
-	"github.com/beego/beego/v2/core/logs"
 	"github.com/beego/beego/v2/server/web"
 	_ "github.com/lib/pq"
 )
 
 func init() {
-	dbUrl, _ := web.AppConfig.String("dbUrl")
+	dbUrl, err := web.AppConfig.String("dbUrl")
+	if err != nil {
+		fmt.Println("Postgres database source is not found: ", err)
+	}
 
 	// Register postgres driver
-	err := orm.RegisterDriver("postgres", orm.DRPostgres)
+	err = orm.RegisterDriver("postgres", orm.DRPostgres)
 	if err != nil {
-		fmt.Println("Postgres Driver registration failed: ", err)
+		fmt.Println("Postgres driver registration failed: ", err)
 	}
 
 	// Register the database
@@ -27,12 +29,12 @@ func init() {
 	}
 
 	// Register models
-	RegisterModels()
+	registerModels()
 
 	// Keeping the models and database in sync
 	err = orm.RunSyncdb("default", false, true)
 	if err != nil {
-		logs.Critical(fmt.Sprintf("Failed to sync models with the database %v", err))
+		fmt.Println("Failed to sync models with the database:", err)
 	}
 
 	mode, _ := web.AppConfig.String("runmode")
@@ -41,6 +43,6 @@ func init() {
 	}
 }
 
-func RegisterModels() {
+func registerModels() {
 	orm.RegisterModel(new(models.User))
 }
