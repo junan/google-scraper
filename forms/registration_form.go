@@ -20,7 +20,7 @@ func (registrationForm *RegistrationForm) Valid(v *validation.Validation) {
 	}
 
 	if user.IsExist(){
-		v.SetError("Email", "Email already exists")
+		_ = v.SetError("Email", "Email already exists")
 	}
 }
 
