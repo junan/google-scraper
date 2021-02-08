@@ -20,11 +20,7 @@ func CreateUser(u *User) (id int64, err error) {
 func (u *User) IsExist() bool {
 	o := orm.NewOrm()
 	err := o.Read(u, "Email")
-	if err != nil {
-		return false
-	}
-
-	return true
+	return err == nil
 }
 
 // Beego by default creates the table name as singular, it will make it plural
