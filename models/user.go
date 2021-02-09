@@ -17,7 +17,7 @@ func CreateUser(u *User) (id int64, err error) {
 	return orm.Insert(u)
 }
 
-func (u *User) IsExist() bool {
+func (u *User) IsExistingUser() bool {
 	o := orm.NewOrm()
 	err := o.Read(u, "Email")
 	return err == nil
