@@ -1,14 +1,13 @@
 package forms_test
 
 import (
-	. "github.com/onsi/ginkgo"
-	. "github.com/onsi/gomega"
-
+	"google-scraper/forms"
 	_ "google-scraper/initializers"
 	. "google-scraper/tests/fabricators"
 	. "google-scraper/tests/testing_helpers"
 
-	"google-scraper/forms"
+	. "github.com/onsi/ginkgo"
+	. "github.com/onsi/gomega"
 )
 
 var _ = Describe("RegistrationForm", func() {
