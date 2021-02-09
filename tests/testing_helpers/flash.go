@@ -1,4 +1,4 @@
-package test_helpers
+package testing_helpers
 
 import (
 	"net/http"

@@ -41,7 +41,7 @@ var _ = Describe("RegistrationForm", func() {
 					user, err := registrationForm.Save()
 
 					Expect(user).To(BeNil())
-					Expect(err.Error()).To(Equal("Email Can not be empty"))
+					Expect(err.Error()).To(Equal("Email can not be empty"))
 				})
 			})
 
@@ -73,7 +73,21 @@ var _ = Describe("RegistrationForm", func() {
 					user, err := registrationForm.Save()
 
 					Expect(user).To(BeNil())
-					Expect(err.Error()).To(Equal("Email Must be a valid email address"))
+					Expect(err.Error()).To(Equal("Email must be a valid email address"))
+				})
+			})
+
+			Context("given a blank name", func() {
+				It("returns the correct error message and does NOT create new user", func() {
+					registrationForm := forms.RegistrationForm{
+						Name:     "",
+						Email:    "john@example.com",
+						Password: "secret",
+					}
+					user, err := registrationForm.Save()
+
+					Expect(user).To(BeNil())
+					Expect(err.Error()).To(Equal("Name can not be empty"))
 				})
 			})
 
@@ -87,7 +101,7 @@ var _ = Describe("RegistrationForm", func() {
 					user, err := registrationForm.Save()
 
 					Expect(user).To(BeNil())
-					Expect(err.Error()).To(Equal("Password Can not be empty"))
+					Expect(err.Error()).To(Equal("Password can not be empty"))
 				})
 			})
 
@@ -101,7 +115,7 @@ var _ = Describe("RegistrationForm", func() {
 					user, err := registrationForm.Save()
 
 					Expect(user).To(BeNil())
-					Expect(err.Error()).To(Equal("Password Minimum size is 6"))
+					Expect(err.Error()).To(Equal("Password minimum size is 6"))
 				})
 			})
 		})

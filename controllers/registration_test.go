@@ -51,7 +51,7 @@ var _ = Describe("RegistrationController", func() {
 				response := MakeRequest("POST", "/register", body)
 				flash := GetFlash(response.Result().Cookies())
 
-				Expect(flash.Data["error"]).To(Equal("Name Can not be empty"))
+				Expect(flash.Data["error"]).To(Equal("Name can not be empty"))
 			})
 
 			It("does NOT redirect to any new page", func() {
