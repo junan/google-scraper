@@ -25,6 +25,7 @@ var _ = Describe("RegistrationController", func() {
 	})
 
 	Describe("POST", func() {
+		// TODO: Will add a test case for redirecting to a success page once I add it
 		Context("given valid params", func() {
 			It("sets flash success message", func() {
 				registrationForm := url.Values{
