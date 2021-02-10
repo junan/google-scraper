@@ -2,6 +2,8 @@ FROM drewwells/wellington
 
 WORKDIR /app
 
+COPY assets/. ./assets/
+
 # Convert scss to css
 RUN wt compile assets/stylesheets/application.scss -s compressed -b static/css
 
