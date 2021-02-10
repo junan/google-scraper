@@ -1,3 +1,10 @@
+FROM drewwells/wellington
+
+WORKDIR /app
+
+# Convert scss to css
+RUN wt compile assets/stylesheets/application.scss -s compressed -b static/css
+
 FROM golang:1.14-buster
 
 # Set necessary environmet variables needed for the image
@@ -8,12 +15,6 @@ ENV GO111MODULE=on \
     APP_HOME=/app
 
 WORKDIR $APP_HOME
-
-
-COPY Makefile ./Makefile
-
-RUN make build-dependencies
-RUN make build-assets
 
 COPY go.mod go.sum ./
 
