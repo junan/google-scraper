@@ -1,7 +1,6 @@
-FROM drewwells/wellington
+FROM drewwells/wellington as assets-builder
 
 WORKDIR /app
-
 COPY assets/. ./assets/
 
 # Convert scss to css
@@ -28,6 +27,9 @@ RUN go mod verify
 
 
 COPY . .
+
+# Copy assets from assets builder
+COPY --from=assets-builder /app/static/. ./static/
 
 RUN go build -o main .
 
