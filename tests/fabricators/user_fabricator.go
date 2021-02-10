@@ -8,7 +8,7 @@ import (
 	"github.com/beego/beego/v2/core/logs"
 )
 
-func FabricateUser(name string, email string, password string) (User, error) {
+func FabricateUser(name string, email string, password string) (User) {
 	o := orm.NewOrm()
 	hashedPassword, err := HashPassword(password)
 	if err != nil {
@@ -21,5 +21,5 @@ func FabricateUser(name string, email string, password string) (User, error) {
 		logs.Error("User creation  failed: ", err)
 	}
 
-	return user, err
+	return user
 }
