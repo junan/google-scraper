@@ -1,6 +1,8 @@
 FROM drewwells/wellington as assets-builder
 
 WORKDIR /app
+
+# Copy assets folder
 COPY assets/. ./assets/
 
 # Convert scss to css
@@ -24,7 +26,6 @@ RUN go mod download
 
 # Verify go.sum file matches what it downloaded
 RUN go mod verify
-
 
 COPY . .
 
