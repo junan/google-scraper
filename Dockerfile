@@ -1,4 +1,4 @@
-FROM golang:1.15-buster
+FROM golang:1.14-buster
 
 # Set necessary environmet variables needed for the image
 ENV GO111MODULE=on \
@@ -9,6 +9,12 @@ ENV GO111MODULE=on \
 
 WORKDIR $APP_HOME
 
+
+COPY Makefile ./Makefile
+
+RUN make build-dependencies
+RUN make build-assets
+
 COPY go.mod go.sum ./
 
 # Download all the dependencies
@@ -16,6 +22,7 @@ RUN go mod download
 
 # Verify go.sum file matches what it downloaded
 RUN go mod verify
+
 
 COPY . .
 
