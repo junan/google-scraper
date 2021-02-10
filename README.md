@@ -19,6 +19,12 @@ Clone the repository
   make build-dependencies
   ```
 
+#### Build assets
+
+  ```sh
+  make build-assets
+  ```
+
 #### Run the application in your local machine
 
   ```sh
