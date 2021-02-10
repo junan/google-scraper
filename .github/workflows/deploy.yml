@@ -1,15 +1,14 @@
-name: Deploy
+name: Deploy to Heroku
 
 on:
-  workflow_run:
-    workflows:
-      - Test
+  push:
     branches:
-      - main
-      - develop
-    types:
-      - completed
-  workflow_dispatch:
+      - development
+      - feature/registration-frontend
+  pull_request:
+    branches:
+      - development
+      - feature/registration-frontend
 
 jobs:
   deploy:
