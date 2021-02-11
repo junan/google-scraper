@@ -16,9 +16,6 @@ type baseController struct {
 func (c *baseController) Prepare() {
 	helpers.SetDataAttributes(&c.Controller)
 
-	c.LayoutSections = make(map[string]string)
-	c.LayoutSections["FlashMessage"] = "shared/alert.html"
-
 	app, ok := c.AppController.(NestPreparer)
 	if ok {
 		app.NestPrepare()

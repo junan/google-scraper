@@ -1,4 +1,6 @@
 <div class="registration">
     <h3 class="registration__title"> {{ .Title }}</h3>
+
+    {{ template "shared/alert.html" . }}
     {{ template "registrations/form.html" . }}
 </div>
