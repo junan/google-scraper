@@ -8,5 +8,10 @@
   }
 
   .app-main {
+    width: 320px;
+
+    @media (min-width: 992px) {
+      width: 420px;
+    }
   }
 }
