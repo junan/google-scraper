@@ -5,7 +5,7 @@ WORKDIR /app
 # Copy assets folder
 COPY assets/. ./assets/
 
-# Convert scss to css
+# Convert scss to css and minify it
 RUN wt compile assets/stylesheets/application.scss -s compressed -b static/css
 
 FROM golang:1.14-buster

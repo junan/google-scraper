@@ -1,8 +1,12 @@
-$font-stack:    Helvetica, sans-serif;
-$primary-color: #333;
+// Base
+//@import 'base/';
+
+// Components
+//@import 'components/*';
+
+// Screens
+//@import 'screens/*';
 
 body {
-  font: 100% $font-stack;
-  color: $primary-color;
-  font-size: 40px;
+  background: red;
 }
