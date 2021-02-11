@@ -12,7 +12,7 @@
     {{ assets_css "/static/css/application.css" }}
   </head>
 
-  <body class="{{.ControllerName}} {{.ActionName}}">
+  <body class="{{.ControllerName}} {{.ActionName}} container">
     <header class="app-header">{{ template "shared/header.html" . }}</header>
 
     <main class="app-main">{{ .LayoutContent }}</main>
