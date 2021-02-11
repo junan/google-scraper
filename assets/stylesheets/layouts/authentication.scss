@@ -10,7 +10,7 @@
   .app-main {
     width: 320px;
 
-    @media (min-width: 992px) {
+    @include media-breakpoint-up(md) {
       width: 420px;
     }
   }

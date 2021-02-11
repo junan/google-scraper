@@ -10,4 +10,8 @@ func SetDataAttributes(c *web.Controller) {
 
 	c.Data["ControllerName"] = strcase.ToSnake(controllerName)
 	c.Data["ActionName"] =  strcase.ToSnake(actionName)
+	c.Data["AlertMap"] = map[string] string {
+		"success": "success",
+		"error": "danger",
+	}
 }
