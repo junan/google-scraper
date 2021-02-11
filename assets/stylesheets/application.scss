@@ -1,12 +1,11 @@
 // Base
 //@import 'base/';
 
+// Layouts
+@import 'layouts/authentication';
+
 // Components
 //@import 'components/*';
 
 // Screens
 //@import 'screens/*';
-
-body {
-  background: red;
-}
