@@ -1,5 +1,5 @@
 {{ range $type, $message := .flash }}
-    <div class="flash__{{$type}}">
+    <div class="alert alert-{{$type}}" role="alert">
         {{ $message }}
     </div>
 {{ end }}
