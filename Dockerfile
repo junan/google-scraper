@@ -8,7 +8,7 @@ COPY assets/. ./assets/
 # Convert scss to css and minify it
 RUN wt compile assets/stylesheets/application.scss -s compressed -b static/css
 
-FROM golang:1.14-buster
+FROM golang:1.15-buster
 
 # Set necessary environmet variables needed for the image
 ENV GO111MODULE=on \
