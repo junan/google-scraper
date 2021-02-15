@@ -7,6 +7,8 @@ import (
 )
 
 func init() {
+	// TODO: replace it with real controller
+	web.Router("/", &controllers.Test{})
 	web.Router("/register", &controllers.Registration{})
 	web.Router("/login", &controllers.Session{})
 }
