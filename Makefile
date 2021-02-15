@@ -6,7 +6,7 @@ build-dependencies:
 	go mod tidy
 
 build-assets:
-	wt compile assets/stylesheets/application.scss -s compressed -b static/css
+	wt watch assets/stylesheets/application.scss -s compressed -b static/css
 
 dev:
 	docker-compose -f docker-compose.dev.yml up -d
