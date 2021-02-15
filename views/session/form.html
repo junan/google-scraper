@@ -1,25 +1,23 @@
 <form class="form form-login" action="/login" method="post">
-    <div class="form-group">
-        <input
-                type="email"
-                value="{{ .Form.Email }}"
-                class="form-control form__input"
-                name="email"
-                placeholder="Email"
-                required
-        />
-    </div>
-    <div class="form-group">
-        <input
-                type="password"
-                class="form-control form__input"
-                name="password"
-                placeholder="Password"
-                required
-        />
-    </div>
+  <div class="form-group">
+    <input
+      type="email"
+      value="{{ .Form.Email }}"
+      class="form-control form__input"
+      name="email"
+      placeholder="Email"
+      required
+    />
+  </div>
+  <div class="form-group">
+    <input
+      type="password"
+      class="form-control form__input"
+      name="password"
+      placeholder="Password"
+      required
+    />
+  </div>
 
-    <button type="submit" class="btn btn-primary btn-block">
-        Login
-    </button>
+  <button type="submit" class="btn btn-primary btn-block">Login</button>
 </form>

@@ -1,5 +1,5 @@
 {{ range $type, $message := .flash }}
-    <div class="alert alert-{{ map_get $.AlertMap $type }}" role="alert">
-        {{ $message }}
-    </div>
+<div class="alert alert-{{ map_get $.AlertMap $type }}" role="alert">
+  {{ $message }}
+</div>
 {{ end }}
