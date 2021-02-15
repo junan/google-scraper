@@ -20,20 +20,20 @@ func (c *Session) Get() {
 }
 
 func (c *Session) Post() {
-	loginForm := forms.SessionForm{}
+	sessionForm := forms.SessionForm{}
 	flash := web.NewFlash()
 
-	err := c.ParseForm(&loginForm)
+	err := c.ParseForm(&sessionForm)
 	if err != nil {
 		flash.Error(err.Error())
 	}
 
-	_, err = loginForm.Authenticate()
+	_, err = sessionForm.Authenticate()
 	if err != nil {
 		flash.Error(fmt.Sprint(err))
 		flash.Store(&c.Controller)
 
-		c.Data["Form"] = loginForm
+		c.Data["Form"] = sessionForm
 		c.setAttributes()
 	} else {
 		flash.Success("Signed in successfully.")

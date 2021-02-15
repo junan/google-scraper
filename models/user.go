@@ -23,6 +23,19 @@ func (u *User) IsExistingUser() bool {
 	return err == nil
 }
 
+func FindUserByEmail(email string) (user *User, err error) {
+	orm := orm.NewOrm()
+	user = &User{Email: email}
+
+	err = orm.Read(user, "Email")
+	if err != nil {
+		return nil, err
+	}
+
+	return user, nil
+}
+
+
 // Beego by default creates the table name as singular, it will make it plural
 func (u *User) TableName() string {
 	return "users"
