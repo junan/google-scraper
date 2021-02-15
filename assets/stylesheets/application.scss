@@ -1,5 +1,5 @@
 //Dependencies
-@import "vendor/bootstarp/scss/bootstrap";
+@import "vendor/bootstrap/scss/bootstrap";
 
 // Base
 @import "base/form";
@@ -8,4 +8,4 @@
 @import 'layouts/authentication';
 
 // Components
-@import 'components/registration';
+@import 'components/user-registration';
