@@ -55,7 +55,7 @@ var _ = Describe("RegistrationController", func() {
 				Expect(flash.Data["error"]).To(Equal("Name can not be empty"))
 			})
 
-			It("does NOT redirect to any new page", func() {
+			It("renders the same register page", func() {
 				form := url.Values{
 					"name":     {""},
 					"email":    {"john@example.com"},
@@ -64,7 +64,7 @@ var _ = Describe("RegistrationController", func() {
 				body := strings.NewReader(form.Encode())
 				response := MakeRequest("POST", "/register", body)
 
-				Expect(response.Header().Get("Location")).To(Equal(""))
+				Expect(response.Header().Get("Location")).To(Equal("/register"))
 			})
 		})
 	})
