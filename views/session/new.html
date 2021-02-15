@@ -1,10 +1,14 @@
 <div class="user-login">
-    <h3 class="login__title"> {{ .Title }}</h3>
+    <div class="user-login__header">
+        <h3 class="user-login__title"> {{ .Title }}</h3>
+    </div>
 
-    {{ template "shared/alert.html" . }}
-    {{ template "session/form.html" . }}
+    <div class="user-login__body">
+        {{ template "shared/alert.html" . }}
+        {{ template "session/form.html" . }}
+    </div>
 
-    <div class="user-login__new-account">
+    <div class="user-login__footer">
         Don’t have an account?
         <a class="custom-link" href="/register">Create a new account</a>.
     </div>

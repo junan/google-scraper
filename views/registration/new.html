@@ -1,10 +1,14 @@
 <div class="user-registration">
-    <h3 class="user-registration__title"> {{ .Title }}</h3>
+    <div class="user-login__header">
+        <h3 class="user-registration__title"> {{ .Title }}</h3>
+    </div>
 
-    {{ template "shared/alert.html" . }}
-    {{ template "registration/form.html" . }}
+    <div class="user-registration__body">
+        {{ template "shared/alert.html" . }}
+        {{ template "registration/form.html" . }}
+    </div>
 
-    <div class="user-registration__login">
+    <div class="user-registration__footer">
         Already have an account?
         <a class="custom-link" href="/login">Login to your account</a>.
     </div>
