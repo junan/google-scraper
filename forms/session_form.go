@@ -8,8 +8,8 @@ import (
 )
 
 type SessionForm struct {
-	Email    string `form:"email" valid:"Required; MaxSize(100)"`
-	Password string `form:"password" valid:"Required; MinSize(6)"`
+	Email    string `form:"email"`
+	Password string `form:"password"`
 }
 
 var currentUser *models.User
@@ -17,6 +17,7 @@ var currentUser *models.User
 func (sessionForm *SessionForm) Valid(v *validation.Validation) {
 	errMessage := "Incorrect email or password"
 	LogMessage := "Failed to set error on validation: "
+
 	user, err := models.FindUserByEmail(sessionForm.Email)
 	if err != nil {
 		err := v.SetError("Email", errMessage)
@@ -49,7 +50,6 @@ func (sessionForm *SessionForm) Authenticate() (*models.User, error) {
 			return nil, err
 		}
 	}
-
 
 	return currentUser, err
 }

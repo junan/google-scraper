@@ -22,6 +22,7 @@ func (c *Session) Get() {
 func (c *Session) Post() {
 	sessionForm := forms.SessionForm{}
 	flash := web.NewFlash()
+	redirectPath := "/"
 
 	err := c.ParseForm(&sessionForm)
 	if err != nil {
@@ -34,13 +35,13 @@ func (c *Session) Post() {
 		flash.Store(&c.Controller)
 
 		c.Data["Form"] = sessionForm
-		c.setAttributes()
+		redirectPath = "/login"
 	} else {
 		flash.Success("Signed in successfully.")
 		flash.Store(&c.Controller)
-
-		c.Ctx.Redirect(http.StatusFound, "/")
 	}
+
+	c.Ctx.Redirect(http.StatusFound, redirectPath)
 }
 
 func (c *Session) setAttributes() {

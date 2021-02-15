@@ -22,6 +22,7 @@ func (c *Registration) Get() {
 func (c *Registration) Post() {
 	registrationForm := forms.RegistrationForm{}
 	flash := web.NewFlash()
+	redirectPath := "/"
 
 	err := c.ParseForm(&registrationForm)
 	if err != nil {
@@ -34,13 +35,13 @@ func (c *Registration) Post() {
 		flash.Store(&c.Controller)
 
 		c.Data["Form"] = registrationForm
-		c.setAttributes()
+		redirectPath = "/register"
 	} else {
 		flash.Success("Account has been created successfully")
 		flash.Store(&c.Controller)
-
-		c.Ctx.Redirect(http.StatusFound, "/register")
 	}
+
+	c.Ctx.Redirect(http.StatusFound, redirectPath)
 }
 
 func (c *Registration) setAttributes() {
