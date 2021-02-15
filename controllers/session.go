@@ -9,18 +9,18 @@ import (
 	"github.com/beego/beego/v2/server/web"
 )
 
-type Login struct {
+type Session struct {
 	baseController
 }
 
-func (c *Login) Get() {
+func (c *Session) Get() {
 	web.ReadFromRequest(&c.Controller)
 
 	c.setAttributes()
 }
 
-func (c *Login) Post() {
-	loginForm := forms.LoginForm{}
+func (c *Session) Post() {
+	loginForm := forms.SessionForm{}
 	flash := web.NewFlash()
 
 	err := c.ParseForm(&loginForm)
@@ -43,8 +43,8 @@ func (c *Login) Post() {
 	}
 }
 
-func (c *Login) setAttributes() {
+func (c *Session) setAttributes() {
 	c.Layout = "layouts/authentication.html"
-	c.TplName = "login/new.html"
+	c.TplName = "session/new.html"
 	c.Data["Title"] = "Login to your account"
 }

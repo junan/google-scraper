@@ -45,6 +45,6 @@ func (c *Registration) Post() {
 
 func (c *Registration) setAttributes() {
 	c.Layout = "layouts/authentication.html"
-	c.TplName = "registrations/new.html"
+	c.TplName = "registration/new.html"
 	c.Data["Title"] = "Create your account"
 }

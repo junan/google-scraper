@@ -8,14 +8,14 @@ import (
 	"google-scraper/models"
 )
 
-type LoginForm struct {
-	Email    string `form:"email" valid:"Required; Email; MaxSize(100)"`
+type SessionForm struct {
+	Email    string `form:"email" valid:"Required; MaxSize(100)"`
 	Password string `form:"password" valid:"Required; MinSize(6)"`
 }
 
-func (loginForm *LoginForm) Authenticate() (*models.User, error) {
+func (sessionForm *SessionForm) Authenticate() (*models.User, error) {
 	validation := validation.Validation{}
-	success, err := validation.Valid(loginForm)
+	success, err := validation.Valid(sessionForm)
 
 	if err != nil {
 		logs.Error("Validation error:", err)
@@ -28,13 +28,13 @@ func (loginForm *LoginForm) Authenticate() (*models.User, error) {
 	}
 
 	user := models.User{
-		Email: loginForm.Email,
+		Email: sessionForm.Email,
 	}
 
 	o := orm.NewOrm()
 	err = o.Read(&user, "Email")
 
-	_, err = helpers.CheckPasswordHash(loginForm.Password, user.HashedPassword)
+	_, err = helpers.CheckPasswordHash(sessionForm.Password, user.HashedPassword)
 	if err != nil {
 		return &user, err
 	}
