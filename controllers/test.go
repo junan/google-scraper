@@ -8,6 +8,10 @@ type Test struct {
 	baseController
 }
 
+func (c *Test) NestPrepare() {
+	c.requireAuthenticatedUser = true
+}
+
 func (c *Test) Get() {
 	web.ReadFromRequest(&c.Controller)
 

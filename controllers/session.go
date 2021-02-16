@@ -13,6 +13,10 @@ type Session struct {
 	baseController
 }
 
+func (c *Session) NestPrepare() {
+	c.requireGuestUser = true
+}
+
 func (c *Session) Get() {
 	web.ReadFromRequest(&c.Controller)
 
@@ -29,7 +33,7 @@ func (c *Session) Post() {
 		flash.Error(err.Error())
 	}
 
-	_, err = sessionForm.Authenticate()
+	user, err := sessionForm.Authenticate()
 	if err != nil {
 		flash.Error(fmt.Sprint(err))
 		flash.Store(&c.Controller)
@@ -37,6 +41,7 @@ func (c *Session) Post() {
 		c.Data["Form"] = sessionForm
 		redirectPath = "/login"
 	} else {
+		c.SetCurrentUser(user)
 		flash.Success("Signed in successfully.")
 		flash.Store(&c.Controller)
 	}
