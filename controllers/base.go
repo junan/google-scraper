@@ -1,11 +1,13 @@
 package controllers
 
 import (
-	"github.com/beego/beego/v2/core/logs"
-	"github.com/beego/beego/v2/server/web"
+	"net/http"
+
 	"google-scraper/helpers"
 	"google-scraper/models"
-	"net/http"
+
+	"github.com/beego/beego/v2/core/logs"
+	"github.com/beego/beego/v2/server/web"
 )
 
 const CurrentUserSession = "currentUserSession"
@@ -25,7 +27,7 @@ type baseController struct {
 func (c *baseController) SetCurrentUser(user *models.User) {
 	err := c.SetSession(CurrentUserSession, user.Id)
 	if err != nil {
-		logs.Error("Setting current user failed: ", err.Error())
+		logs.Error("Setting current user failed: ", err)
 	}
 
 	c.CurrentUser = user
