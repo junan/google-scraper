@@ -1,3 +1,5 @@
+// TODO: remove this temporary controller later
+
 package controllers
 
 import (

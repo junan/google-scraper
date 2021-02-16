@@ -43,6 +43,7 @@ func (c *baseController) GetCurrentUser() (user *models.User) {
 	if err != nil {
 		return nil
 	}
+
 	return user
 }
 

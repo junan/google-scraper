@@ -110,8 +110,8 @@ var _ = Describe("SessionForm", func() {
 			Context("given the user email is INVALID", func() {
 				It("returns an email invalid error", func() {
 					form := forms.SessionForm{
-						Email:    "not an email",
-						Password: "password",
+						Email:    "invalid-email",
+						Password: "secret",
 					}
 
 					user, err := form.Authenticate()
