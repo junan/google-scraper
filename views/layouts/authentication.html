@@ -9,9 +9,10 @@
       name="viewport"
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
+    {{ assets_css "/static/css/application.css" }}
   </head>
 
-  <body>
+  <body class="{{.ControllerName}} {{.ActionName}}">
     <header class="app-header">{{ template "shared/header.html" . }}</header>
 
     <main class="app-main">{{ .LayoutContent }}</main>

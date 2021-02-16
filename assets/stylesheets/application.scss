@@ -1,0 +1,11 @@
+//Dependencies
+@import 'vendor/bootstrap/scss/bootstrap';
+
+// Base
+@import 'base/form';
+
+// Layouts
+@import 'layouts/authentication';
+
+// Components
+@import 'components/user-registration';

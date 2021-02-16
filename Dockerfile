@@ -1,3 +1,13 @@
+FROM drewwells/wellington as assets-builder
+
+WORKDIR /app
+
+# Copy assets folder
+COPY assets/. ./assets/
+
+# Convert scss to css and minify it
+RUN wt compile assets/stylesheets/application.scss -s compressed -b static/css
+
 FROM golang:1.15-buster
 
 # Set necessary environmet variables needed for the image
@@ -18,6 +28,9 @@ RUN go mod download
 RUN go mod verify
 
 COPY . .
+
+# Copy assets from assets builder
+COPY --from=assets-builder /app/static/. ./static/
 
 RUN go build -o main .
 
