@@ -38,7 +38,6 @@ func (c *Session) Post() {
 		flash.Error(fmt.Sprint(err))
 		flash.Store(&c.Controller)
 
-		c.Data["Form"] = sessionForm
 		redirectPath = "/login"
 	} else {
 		c.SetCurrentUser(user)

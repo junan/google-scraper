@@ -8,7 +8,7 @@ import (
 	"net/http"
 )
 
-const CurrentUserSession = "current_user_session"
+const CurrentUserSession = "currentUserSession"
 
 type NestPreparer interface {
 	NestPrepare()
@@ -51,7 +51,6 @@ func (c *baseController) isGuestUser() bool {
 func (c *baseController) isAuthenticatedUser() bool {
 	return c.GetCurrentUser() != nil
 }
-
 
 func (c *baseController) Prepare() {
 	helpers.SetDataAttributes(&c.Controller)

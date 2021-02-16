@@ -1,10 +1,11 @@
 package forms
 
 import (
-	"github.com/beego/beego/v2/adapter/logs"
-	"github.com/beego/beego/v2/core/validation"
 	"google-scraper/helpers"
 	"google-scraper/models"
+
+	"github.com/beego/beego/v2/adapter/logs"
+	"github.com/beego/beego/v2/core/validation"
 )
 
 type SessionForm struct {
@@ -16,20 +17,20 @@ var currentUser *models.User
 
 func (sessionForm *SessionForm) Valid(v *validation.Validation) {
 	errMessage := "Incorrect email or password"
-	LogMessage := "Failed to set error on validation: "
+	logMessage := "Failed to set error on validation: "
 
 	user, err := models.FindUserByEmail(sessionForm.Email)
 	if err != nil {
 		err := v.SetError("Email", errMessage)
 		if err == nil {
-			logs.Error(LogMessage, err)
+			logs.Error(logMessage, err)
 		}
 	} else {
 		err = helpers.CheckPasswordHash(sessionForm.Password, user.HashedPassword)
 		if err != nil {
 			err := v.SetError("Password", errMessage)
 			if err == nil {
-				logs.Error(LogMessage, err)
+				logs.Error(logMessage, err)
 			}
 		} else {
 			currentUser = user

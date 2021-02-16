@@ -38,7 +38,6 @@ func (c *Registration) Post() {
 		flash.Error(fmt.Sprint(err))
 		flash.Store(&c.Controller)
 
-		c.Data["Form"] = registrationForm
 		redirectPath = "/register"
 	} else {
 		flash.Success("Account has been created successfully")
