@@ -13,7 +13,7 @@ import (
 
 var _ = Describe("SessionForm", func() {
 	Describe("#Valid", func() {
-		Context("Given the session params are valid", func() {
+		Context("given the session params are valid", func() {
 			It("does NOT generate any errors", func() {
 				email := "john@example.com"
 				password := "secret"
@@ -30,8 +30,8 @@ var _ = Describe("SessionForm", func() {
 			})
 		})
 
-		Context("Given the session params are INVALID", func() {
-			Context("Given the user email is INVALID", func() {
+		Context("given the session params are INVALID", func() {
+			Context("given the user email is INVALID", func() {
 				It("adds an error to the email field", func() {
 					email := "john@example.com"
 					password := "secret"
@@ -50,7 +50,7 @@ var _ = Describe("SessionForm", func() {
 				})
 			})
 
-			Context("Given the user email does NOT exist", func() {
+			Context("given the user email does NOT exist", func() {
 				It("adds an error to the email field", func() {
 					form := forms.SessionForm{
 						Email:    "non_existing_email@example.com",
@@ -66,7 +66,7 @@ var _ = Describe("SessionForm", func() {
 				})
 			})
 
-			Context("Given the user password is INVALID", func() {
+			Context("given the user password is INVALID", func() {
 				It("adds an error to the password field", func() {
 					email := "john@example.com"
 					password := "secret"
@@ -89,7 +89,7 @@ var _ = Describe("SessionForm", func() {
 	})
 
 	Describe("#Authenticate", func() {
-		Context("Given the session params are valid", func() {
+		Context("given the session params are valid", func() {
 			It("returns the user with no error", func() {
 				email := "john@example.com"
 				password := "secret"
@@ -106,8 +106,8 @@ var _ = Describe("SessionForm", func() {
 			})
 		})
 
-		Context("Given the session params are INVALID", func() {
-			Context("Given the user email is INVALID", func() {
+		Context("given the session params are INVALID", func() {
+			Context("given the user email is INVALID", func() {
 				It("returns an email invalid error", func() {
 					form := forms.SessionForm{
 						Email:    "not an email",
@@ -122,7 +122,7 @@ var _ = Describe("SessionForm", func() {
 			})
 
 
-			Context("Given the user password is wrong", func() {
+			Context("given the user password is wrong", func() {
 				It("returns an invalid email or password error", func() {
 					email := "john@example.com"
 					password := "secret"
