@@ -9,7 +9,7 @@ import (
 	"github.com/onsi/ginkgo"
 )
 
-func MakeRequest(method string, url string, body io.Reader) *httptest.ResponseRecorder {
+func MakeRequest(method string, url string, body io.Reader)  *http.Response {
 	request, err := http.NewRequest(method, url, body)
 
 	if err != nil {
@@ -20,5 +20,5 @@ func MakeRequest(method string, url string, body io.Reader) *httptest.ResponseRe
 	response := httptest.NewRecorder()
 	web.BeeApp.Handlers.ServeHTTP(response, request)
 
-	return response
+	return response.Result()
 }

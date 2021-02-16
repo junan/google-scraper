@@ -20,7 +20,7 @@ var _ = Describe("RegistrationController", func() {
 		It("returns 200 status code", func() {
 			response := MakeRequest("GET", "/register", nil)
 
-			Expect(response.Code).To(Equal(http.StatusOK))
+			Expect(response.StatusCode).To(Equal(http.StatusOK))
 		})
 	})
 
@@ -35,7 +35,7 @@ var _ = Describe("RegistrationController", func() {
 				}
 				body := strings.NewReader(registrationForm.Encode())
 				response := MakeRequest("POST", "/register", body)
-				flash := GetFlash(response.Result().Cookies())
+				flash := GetFlash(response.Cookies())
 
 				Expect(flash.Data["success"]).To(Equal("Account has been created successfully"))
 			})
@@ -50,7 +50,7 @@ var _ = Describe("RegistrationController", func() {
 				}
 				body := strings.NewReader(form.Encode())
 				response := MakeRequest("POST", "/register", body)
-				flash := GetFlash(response.Result().Cookies())
+				flash := GetFlash(response.Cookies())
 
 				Expect(flash.Data["error"]).To(Equal("Name can not be empty"))
 			})
@@ -63,8 +63,9 @@ var _ = Describe("RegistrationController", func() {
 				}
 				body := strings.NewReader(form.Encode())
 				response := MakeRequest("POST", "/register", body)
+				path := GetUrlPath(response)
 
-				Expect(response.Header().Get("Location")).To(Equal("/register"))
+				Expect(path).To(Equal("/register"))
 			})
 		})
 	})
