@@ -1,0 +1,147 @@
+package forms_test
+
+import (
+	"google-scraper/forms"
+	_ "google-scraper/initializers"
+	. "google-scraper/tests/fabricators"
+	. "google-scraper/tests/testing_helpers"
+
+	"github.com/beego/beego/v2/core/validation"
+	. "github.com/onsi/ginkgo"
+	. "github.com/onsi/gomega"
+)
+
+var _ = Describe("SessionForm", func() {
+	Describe("#Valid", func() {
+		Context("Given the session params are valid", func() {
+			It("does NOT generate any errors", func() {
+				email := "john@example.com"
+				password := "secret"
+				FabricateUser("John", email, password)
+				form := forms.SessionForm{
+					Email:    email,
+					Password: password,
+				}
+
+				formValidation := validation.Validation{}
+				form.Valid(&formValidation)
+
+				Expect(len(formValidation.Errors)).To(BeZero())
+			})
+		})
+
+		Context("Given the session params are INVALID", func() {
+			Context("Given the user email is INVALID", func() {
+				It("adds an error to the email field", func() {
+					email := "john@example.com"
+					password := "secret"
+					FabricateUser("John", email, password)
+					form := forms.SessionForm{
+						Email:    "invalid_email",
+						Password: password,
+					}
+
+					formValidation := validation.Validation{}
+					form.Valid(&formValidation)
+
+					Expect(len(formValidation.Errors)).To(Equal(1))
+					Expect(formValidation.Errors[0].Key).To(Equal("Email"))
+					Expect(formValidation.Errors[0].Message).To(Equal("Incorrect email or password"))
+				})
+			})
+
+			Context("Given the user email does NOT exist", func() {
+				It("adds an error to the email field", func() {
+					form := forms.SessionForm{
+						Email:    "non_existing_email@example.com",
+						Password: "secret",
+					}
+
+					formValidation := validation.Validation{}
+					form.Valid(&formValidation)
+
+					Expect(len(formValidation.Errors)).To(Equal(1))
+					Expect(formValidation.Errors[0].Key).To(Equal("Email"))
+					Expect(formValidation.Errors[0].Message).To(Equal("Incorrect email or password"))
+				})
+			})
+
+			Context("Given the user password is INVALID", func() {
+				It("adds an error to the password field", func() {
+					email := "john@example.com"
+					password := "secret"
+					FabricateUser("John", email, password)
+
+					form := forms.SessionForm{
+						Email:    email,
+						Password: "wrong-password",
+					}
+
+					formValidation := validation.Validation{}
+					form.Valid(&formValidation)
+
+					Expect(len(formValidation.Errors)).To(Equal(1))
+					Expect(formValidation.Errors[0].Key).To(Equal("Password"))
+					Expect(formValidation.Errors[0].Message).To(Equal("Incorrect email or password"))
+				})
+			})
+		})
+	})
+
+	Describe("#Authenticate", func() {
+		Context("Given the session params are valid", func() {
+			It("returns the user with no error", func() {
+				email := "john@example.com"
+				password := "secret"
+				user := FabricateUser("John", email, password)
+				form := forms.SessionForm{
+					Email:    email,
+					Password: password,
+				}
+
+				currentUser, err := form.Authenticate()
+
+				Expect(err).To(BeNil())
+				Expect(currentUser.Id).To(Equal(user.Id))
+			})
+		})
+
+		Context("Given the session params are INVALID", func() {
+			Context("Given the user email is INVALID", func() {
+				It("returns an email invalid error", func() {
+					form := forms.SessionForm{
+						Email:    "not an email",
+						Password: "password",
+					}
+
+					user, err := form.Authenticate()
+
+					Expect(err.Error()).To(Equal("Email must be a valid email address"))
+					Expect(user).To(BeNil())
+				})
+			})
+
+
+			Context("Given the user password is wrong", func() {
+				It("returns an invalid email or password error", func() {
+					email := "john@example.com"
+					password := "secret"
+					FabricateUser("John", email, password)
+
+					form := forms.SessionForm{
+						Email:    email,
+						Password: "wrong-password",
+					}
+					user, err := form.Authenticate()
+
+					Expect(err.Error()).To(Equal("Incorrect email or password"))
+					Expect(user).To(BeNil())
+				})
+			})
+		})
+	})
+
+	AfterEach(func() {
+		TruncateTable("users")
+	})
+})

@@ -9,8 +9,8 @@ import (
 )
 
 type SessionForm struct {
-	Email    string `form:"email"`
-	Password string `form:"password"`
+	Email    string `form:"email" valid:"Email; Required"`
+	Password string `form:"password" valid:"Required;"`
 }
 
 var currentUser *models.User
