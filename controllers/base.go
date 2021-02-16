@@ -62,11 +62,11 @@ func (c *baseController) Prepare() {
 		app.NestPrepare()
 	}
 
-	if c.requireGuestUser && !c.isGuestUser() {
+	if c.requireGuestUser && c.isAuthenticatedUser() {
 		c.Ctx.Redirect(http.StatusFound, "/")
 	}
 
-	if c.requireAuthenticatedUser && !c.isAuthenticatedUser() {
+	if c.requireAuthenticatedUser && c.isGuestUser() {
 		c.Ctx.Redirect(http.StatusFound, "/login")
 	}
 }

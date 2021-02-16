@@ -17,7 +17,7 @@ var currentUser *models.User
 
 func (sessionForm *SessionForm) Valid(v *validation.Validation) {
 	errMessage := "Incorrect email or password"
-	logMessage := "Failed to set error on validation: "
+	logMessage := "Setting error on validation failed: "
 
 	user, err := models.FindUserByEmail(sessionForm.Email)
 	if err != nil {
