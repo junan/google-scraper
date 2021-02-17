@@ -2,9 +2,9 @@ package models_test
 
 import (
 	_ "google-scraper/initializers"
+	"google-scraper/models"
 	. "google-scraper/tests/fabricators"
 	. "google-scraper/tests/testing_helpers"
-	"google-scraper/models"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
@@ -68,13 +68,13 @@ var _ = Describe("User", func() {
 
 			Expect(user.Id).To(Equal(existingUser.Id))
 		})
-	})
 
-	Context("given the user does NOT exist", func() {
-		It("returns false", func() {
-			_, err := models.FindUserById(-10)
+		Context("given the user does NOT exist", func() {
+			It("returns the error", func() {
+				_, err := models.FindUserById(-10)
 
-			Expect(err.Error()).To(ContainSubstring("no row found"))
+				Expect(err.Error()).To(ContainSubstring("no row found"))
+			})
 		})
 	})
 
@@ -94,7 +94,7 @@ var _ = Describe("User", func() {
 		})
 
 		Context("given the user does NOT exist", func() {
-			It("returns false", func() {
+			It("returns the error", func() {
 				_, err := models.FindUserByEmail("non_existing_email@example.com")
 
 				Expect(err.Error()).To(ContainSubstring("no row found"))
@@ -108,7 +108,7 @@ var _ = Describe("User", func() {
 				email := "john@example.com"
 				FabricateUser("John", email, "secret")
 				user := &models.User{
-					Email:          email,
+					Email: email,
 				}
 
 				Expect(user.IsExistingUser()).To(BeTrue())
@@ -119,7 +119,7 @@ var _ = Describe("User", func() {
 			It("returns false", func() {
 				email := "non_existing_email@example.com"
 				user := &models.User{
-					Email:          email,
+					Email: email,
 				}
 
 				Expect(user.IsExistingUser()).To(BeFalse())
