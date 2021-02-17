@@ -1,6 +1,7 @@
 package forms
 
 import (
+	"google-scraper/constants"
 	"google-scraper/helpers"
 	"google-scraper/models"
 
@@ -16,21 +17,18 @@ type SessionForm struct {
 var currentUser *models.User
 
 func (sessionForm *SessionForm) Valid(v *validation.Validation) {
-	errMessage := "Incorrect email or password"
-	logMessage := "Setting error on validation failed: "
-
 	user, err := models.FindUserByEmail(sessionForm.Email)
 	if err != nil {
-		err := v.SetError("Email", errMessage)
+		err := v.SetError("Email", constants.SessionValidationErrorMessage)
 		if err == nil {
-			logs.Error(logMessage, err)
+			logs.Error(constants.SessionFormValidationFailedLogMessage, err)
 		}
 	} else {
 		err = helpers.CheckPasswordHash(sessionForm.Password, user.HashedPassword)
 		if err != nil {
-			err := v.SetError("Password", errMessage)
+			err := v.SetError("Password", constants.SessionValidationErrorMessage)
 			if err == nil {
-				logs.Error(logMessage, err)
+				logs.Error(constants.SessionFormValidationFailedLogMessage, err)
 			}
 		} else {
 			currentUser = user
@@ -43,7 +41,7 @@ func (sessionForm *SessionForm) Authenticate() (*models.User, error) {
 	success, err := validation.Valid(sessionForm)
 
 	if err != nil {
-		logs.Error("Validation error:", err)
+		logs.Error(constants.GeneralValidationFailedLogMessage, err)
 	}
 
 	if !success {
