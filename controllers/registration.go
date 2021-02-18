@@ -33,17 +33,16 @@ func (c *Registration) Post() {
 		flash.Error(err.Error())
 	}
 
-	_, err = registrationForm.Save()
+	user, err := registrationForm.Save()
 	if err != nil {
 		flash.Error(fmt.Sprint(err))
-		flash.Store(&c.Controller)
-
 		redirectPath = "/register"
 	} else {
+		c.SetCurrentUser(user)
 		flash.Success("Account has been created successfully")
-		flash.Store(&c.Controller)
 	}
 
+	flash.Store(&c.Controller)
 	c.Ctx.Redirect(http.StatusFound, redirectPath)
 }
 

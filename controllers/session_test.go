@@ -108,7 +108,22 @@ var _ = Describe("SessionController", func() {
 		})
 
 		Context("given the user is an authenticated user", func() {
-			It("returns an error", func() {
+			It("does NOT set any flash messages", func() {
+				email := "john@example.com"
+				password := "secret"
+				user := FabricateUser("John", email, password)
+				params := url.Values{
+					"email":    {email},
+					"password": {password},
+				}
+				body := strings.NewReader(params.Encode())
+				response := MakeAuthenticatedRequest("POST", "/login", body, &user)
+				flash := GetFlash(response.Cookies())
+
+				Expect(flash).To(BeNil())
+			})
+
+			It("redirects to the root path", func() {
 				email := "john@example.com"
 				password := "secret"
 				user := FabricateUser("John", email, password)
