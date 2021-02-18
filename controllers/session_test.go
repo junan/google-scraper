@@ -102,7 +102,7 @@ var _ = Describe("SessionController", func() {
 					response := MakeRequest("POST", "/login", body)
 					flash := GetFlash(response.Cookies())
 
-					Expect(flash.Data["error"]).To(Equal("Email must be a valid email address"))
+					Expect(flash.Data["error"]).To(Equal("Incorrect email or password"))
 				})
 			})
 		})

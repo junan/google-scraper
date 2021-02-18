@@ -1,6 +1,8 @@
 package forms
 
 import (
+	"fmt"
+
 	"google-scraper/constants"
 	"google-scraper/helpers"
 	"google-scraper/models"
@@ -29,7 +31,7 @@ func (sessionForm *SessionForm) Valid(v *validation.Validation) {
 			logs.Error(sessionFormLogMessage, err)
 		}
 	} else {
-		err = helpers.CheckPasswordHash(sessionForm.Password, user.HashedPassword)
+		err = helpers.VerifyPasswordHash(sessionForm.Password, user.HashedPassword)
 		if err != nil {
 			err := v.SetError("Password", sessionFormErrorMessage)
 			if err == nil {
@@ -50,9 +52,7 @@ func (sessionForm *SessionForm) Authenticate() (*models.User, error) {
 	}
 
 	if !success {
-		for _, err := range validation.Errors {
-			return nil, err
-		}
+		return nil, fmt.Errorf(sessionFormErrorMessage)
 	}
 
 	return currentUser, err

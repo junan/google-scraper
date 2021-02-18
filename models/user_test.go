@@ -94,7 +94,7 @@ var _ = Describe("User", func() {
 		})
 
 		Context("given the user does NOT exist", func() {
-			It("returns the error", func() {
+			It("returns an error", func() {
 				_, err := models.FindUserByEmail("non_existing_email@example.com")
 
 				Expect(err.Error()).To(ContainSubstring("no row found"))

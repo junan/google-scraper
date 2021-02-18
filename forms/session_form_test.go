@@ -108,7 +108,7 @@ var _ = Describe("SessionForm", func() {
 
 		Context("given the session params are INVALID", func() {
 			Context("given the user email is INVALID", func() {
-				It("returns an email invalid error", func() {
+				It("returns a generic error message", func() {
 					form := forms.SessionForm{
 						Email:    "invalid-email",
 						Password: "secret",
@@ -116,14 +116,14 @@ var _ = Describe("SessionForm", func() {
 
 					user, err := form.Authenticate()
 
-					Expect(err.Error()).To(Equal("Email must be a valid email address"))
+					Expect(err.Error()).To(Equal("Incorrect email or password"))
 					Expect(user).To(BeNil())
 				})
 			})
 
 
 			Context("given the user password is wrong", func() {
-				It("returns an invalid email or password error", func() {
+				It("returns a generic error message", func() {
 					email := "john@example.com"
 					password := "secret"
 					FabricateUser("John", email, password)

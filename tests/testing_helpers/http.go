@@ -1,10 +1,10 @@
 package testing_helpers
 
 import (
+	"context"
 	"io"
 	"net/http"
 	"net/http/httptest"
-	"context"
 
 	"google-scraper/controllers"
 	"google-scraper/models"
@@ -29,6 +29,10 @@ func MakeRequest(method string, url string, body io.Reader) *http.Response {
 
 func MakeAuthenticatedRequest(method string, url string, body io.Reader, user *models.User) *http.Response {
 	request, err := http.NewRequest(method, url, body)
+	if err != nil {
+		ginkgo.Fail("Failed to create request: " + err.Error())
+	}
+
 	request.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 
 	responseRecorder := httptest.NewRecorder()
