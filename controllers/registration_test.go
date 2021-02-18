@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	. "google-scraper/tests/testing_helpers"
+	. "google-scraper/tests/fabricators"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
@@ -17,10 +18,22 @@ var _ = Describe("RegistrationController", func() {
 	})
 
 	Describe("GET", func() {
-		It("returns 200 status code", func() {
-			response := MakeRequest("GET", "/register", nil)
+		Context("given the user is a guest user", func() {
+			It("returns 200 status code", func() {
+				response := MakeRequest("GET", "/register", nil)
 
-			Expect(response.StatusCode).To(Equal(http.StatusOK))
+				Expect(response.StatusCode).To(Equal(http.StatusOK))
+			})
+		})
+
+		Context("given the user is an authenticated user", func() {
+			It("redirects to the root path", func() {
+				user := FabricateUser("John", "john@example.com", "secret")
+				response := MakeAuthenticatedRequest("GET", "/register", nil, &user)
+				currentPath := GetUrlPath(response)
+
+				Expect(currentPath).To(Equal("/"))
+			})
 		})
 	})
 
