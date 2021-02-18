@@ -55,7 +55,7 @@ var _ = Describe("RegistrationController", func() {
 				Expect(flash.Data["error"]).To(Equal("Name can not be empty"))
 			})
 
-			It("renders the same register page", func() {
+			It("re-renders the registration page", func() {
 				form := url.Values{
 					"name":     {""},
 					"email":    {"john@example.com"},

@@ -6,21 +6,21 @@ import (
 	"github.com/beego/beego/v2/server/web"
 )
 
-type Test struct {
+type Home struct {
 	baseController
 }
 
-func (c *Test) NestPrepare() {
+func (c *Home) NestPrepare() {
 	c.requireAuthenticatedUser = true
 }
 
-func (c *Test) Get() {
+func (c *Home) Get() {
 	web.ReadFromRequest(&c.Controller)
 
 	c.setAttributes()
 }
 
-func (c *Test) setAttributes() {
+func (c *Home) setAttributes() {
 	c.Layout = "layouts/authentication.html"
-	c.TplName = "test/new.html"
+	c.TplName = "home/new.html"
 }
