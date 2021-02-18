@@ -60,13 +60,15 @@ var _ = Describe("User", func() {
 
 	Describe("#FindUserById", func() {
 		Context("given the user already exist", func() {
-			existingUser := FabricateUser("John", "john@example.co", "secret")
-			user, err := models.FindUserById(existingUser.Id)
-			if err != nil {
-				Fail("Finding user failed: " + err.Error())
-			}
+			It("returns the user object", func() {
+				existingUser := FabricateUser("John", "john@example.co", "secret")
+				user, err := models.FindUserById(existingUser.Id)
+				if err != nil {
+					Fail("Finding user failed: " + err.Error())
+				}
 
-			Expect(user.Id).To(Equal(existingUser.Id))
+				Expect(user.Id).To(Equal(existingUser.Id))
+			})
 		})
 
 		Context("given the user does NOT exist", func() {

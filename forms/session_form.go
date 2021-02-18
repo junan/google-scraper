@@ -26,14 +26,14 @@ var currentUser *models.User
 func (sessionForm *SessionForm) Valid(v *validation.Validation) {
 	user, err := models.FindUserByEmail(sessionForm.Email)
 	if err != nil {
-		err := v.SetError("Email", sessionFormErrorMessage)
+		err = v.SetError("Email", sessionFormErrorMessage)
 		if err == nil {
 			logs.Error(sessionFormLogMessage, err)
 		}
 	} else {
 		err = helpers.VerifyPasswordHash(sessionForm.Password, user.HashedPassword)
 		if err != nil {
-			err := v.SetError("Password", sessionFormErrorMessage)
+			err = v.SetError("Password", sessionFormErrorMessage)
 			if err == nil {
 				logs.Error(sessionFormLogMessage, err)
 			}

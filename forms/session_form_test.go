@@ -121,6 +121,19 @@ var _ = Describe("SessionForm", func() {
 				})
 			})
 
+			Context("given the user email is empty", func() {
+				It("returns a generic error message", func() {
+					form := forms.SessionForm{
+						Email:    "",
+						Password: "secret",
+					}
+
+					user, err := form.Authenticate()
+
+					Expect(err.Error()).To(Equal("Incorrect email or password"))
+					Expect(user).To(BeNil())
+				})
+			})
 
 			Context("given the user password is wrong", func() {
 				It("returns a generic error message", func() {
@@ -131,6 +144,23 @@ var _ = Describe("SessionForm", func() {
 					form := forms.SessionForm{
 						Email:    email,
 						Password: "wrong-password",
+					}
+					user, err := form.Authenticate()
+
+					Expect(err.Error()).To(Equal("Incorrect email or password"))
+					Expect(user).To(BeNil())
+				})
+			})
+
+			Context("given the user password is blank", func() {
+				It("returns a generic error message", func() {
+					email := "john@example.com"
+					password := "secret"
+					FabricateUser("John", email, password)
+
+					form := forms.SessionForm{
+						Email:    email,
+						Password: "",
 					}
 					user, err := form.Authenticate()
 
