@@ -50,6 +50,24 @@ var _ = Describe("SessionForm", func() {
 				})
 			})
 
+			Context("given the user email is blank", func() {
+				It("adds an error to the email field", func() {
+					password := "secret"
+					FabricateUser("John", "john@example.com", password)
+					form := forms.SessionForm{
+						Email:    "",
+						Password: password,
+					}
+
+					formValidation := validation.Validation{}
+					form.Valid(&formValidation)
+
+					Expect(len(formValidation.Errors)).To(Equal(1))
+					Expect(formValidation.Errors[0].Key).To(Equal("Email"))
+					Expect(formValidation.Errors[0].Message).To(Equal("Incorrect email or password"))
+				})
+			})
+
 			Context("given the user email does NOT exist", func() {
 				It("adds an error to the email field", func() {
 					form := forms.SessionForm{
@@ -75,6 +93,25 @@ var _ = Describe("SessionForm", func() {
 					form := forms.SessionForm{
 						Email:    email,
 						Password: "wrong-password",
+					}
+
+					formValidation := validation.Validation{}
+					form.Valid(&formValidation)
+
+					Expect(len(formValidation.Errors)).To(Equal(1))
+					Expect(formValidation.Errors[0].Key).To(Equal("Password"))
+					Expect(formValidation.Errors[0].Message).To(Equal("Incorrect email or password"))
+				})
+			})
+
+			Context("given the user password is blank", func() {
+				It("adds an error to the password field", func() {
+					email := "john@example.com"
+					FabricateUser("John", email, "secret")
+
+					form := forms.SessionForm{
+						Email:    email,
+						Password: "",
 					}
 
 					formValidation := validation.Validation{}

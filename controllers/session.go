@@ -36,15 +36,14 @@ func (c *Session) Post() {
 	user, err := sessionForm.Authenticate()
 	if err != nil {
 		flash.Error(fmt.Sprint(err))
-		flash.Store(&c.Controller)
 
 		redirectPath = "/login"
 	} else {
 		c.SetCurrentUser(user)
 		flash.Success("Signed in successfully.")
-		flash.Store(&c.Controller)
 	}
 
+	flash.Store(&c.Controller)
 	c.Ctx.Redirect(http.StatusFound, redirectPath)
 }
 
