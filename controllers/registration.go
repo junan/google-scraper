@@ -14,15 +14,16 @@ type Registration struct {
 }
 
 func (c *Registration) NestPrepare() {
+	c.setRegistrationPolicy()
 }
 
-func (c *Registration) Get() {
+func (c *Registration) New() {
 	web.ReadFromRequest(&c.Controller)
 
 	c.setAttributes()
 }
 
-func (c *Registration) Post() {
+func (c *Registration) Create() {
 	registrationForm := forms.RegistrationForm{}
 	flash := web.NewFlash()
 	redirectPath := "/"
@@ -43,6 +44,20 @@ func (c *Registration) Post() {
 
 	flash.Store(&c.Controller)
 	c.Ctx.Redirect(http.StatusFound, redirectPath)
+}
+
+func (c *Registration) setRegistrationPolicy() {
+	_, actionName := c.GetControllerAndAction()
+	p := Policy{redirectPath: "/login"}
+
+	if actionName == "New" || actionName == "Create" {
+		p.requireAuthorization = c.isAuthenticatedUser()
+		p.redirectPath = "/"
+	} else {
+		p.requireAuthorization = true
+	}
+
+	c.requestPolicy[actionName] = p
 }
 
 func (c *Registration) setAttributes() {
