@@ -4,21 +4,21 @@ import (
 	"github.com/beego/beego/v2/server/web"
 )
 
-type Home struct {
+type Dashboard struct {
 	baseController
 }
 
-func (c *Home) NestPrepare() {
+func (c *Dashboard) NestPrepare() {
 	c.requireAuthenticatedUser = true
 }
 
-func (c *Home) Get() {
+func (c *Dashboard) Get() {
 	web.ReadFromRequest(&c.Controller)
 
 	c.setAttributes()
 }
 
-func (c *Home) setAttributes() {
+func (c *Dashboard) setAttributes() {
 	c.Layout = "layouts/authentication.html"
-	c.TplName = "home/new.html"
+	c.TplName = "dashboard/new.html"
 }
