@@ -27,7 +27,7 @@ var _ = Describe("User", func() {
 				Expect(userId).ToNot(BeNil())
 			})
 
-			It("returns empty error", func() {
+			It("returns an empty error", func() {
 				user := &models.User{
 					Name:           "John",
 					Email:          "john@example.com",
@@ -72,7 +72,7 @@ var _ = Describe("User", func() {
 		})
 
 		Context("given the user does NOT exist", func() {
-			It("returns the error", func() {
+			It("returns an error", func() {
 				_, err := models.FindUserById(-10)
 
 				Expect(err.Error()).To(ContainSubstring("no row found"))
