@@ -14,7 +14,6 @@ type Registration struct {
 }
 
 func (c *Registration) NestPrepare() {
-	c.requireGuestUser = true
 }
 
 func (c *Registration) Get() {

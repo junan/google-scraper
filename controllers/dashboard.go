@@ -9,13 +9,26 @@ type Dashboard struct {
 }
 
 func (c *Dashboard) NestPrepare() {
-	c.requireAuthenticatedUser = true
+	c.setDashboardPolicy()
 }
 
-func (c *Dashboard) Get() {
+func (c *Dashboard) New() {
 	web.ReadFromRequest(&c.Controller)
 
 	c.setAttributes()
+}
+
+func (c *Dashboard) setDashboardPolicy() {
+	_, actionName := c.GetControllerAndAction()
+	p := Policy{redirectPath: "/login"}
+
+	if actionName == "New"  {
+		p.requireAuthorization = c.isGuestUser()
+	} else {
+		p.requireAuthorization = true
+	}
+
+	c.requestPolicy[actionName] = p
 }
 
 func (c *Dashboard) setAttributes() {

@@ -20,8 +20,12 @@ type baseController struct {
 	web.Controller
 
 	CurrentUser *models.User
-	requireAuthenticatedUser bool
-	requireGuestUser         bool
+	requestPolicy map[string]Policy
+}
+
+type Policy struct {
+	requireAuthorization bool
+	redirectPath string
 }
 
 func (c *baseController) SetCurrentUser(user *models.User) {
@@ -56,20 +60,25 @@ func (c *baseController) isAuthenticatedUser() bool {
 }
 
 func (c *baseController) Prepare() {
+	c.requestPolicy =  make(map[string]Policy)
+
 	helpers.SetDataAttributes(&c.Controller)
+
+	c.CurrentUser = c.GetCurrentUser()
+	c.Data["CurrentUser"] = c.CurrentUser
 
 	app, ok := c.AppController.(NestPreparer)
 	if ok {
 		app.NestPrepare()
 	}
 
-	c.Data["CurrentUser"] = c.GetCurrentUser()
+	c.handleRequestAuthorization()
+}
 
-	if c.requireGuestUser && c.isAuthenticatedUser() {
-		c.Ctx.Redirect(http.StatusFound, "/")
-	}
-
-	if c.requireAuthenticatedUser && c.isGuestUser() {
-		c.Ctx.Redirect(http.StatusFound, "/login")
+func (c *baseController) handleRequestAuthorization()  {
+	_, actionName := c.GetControllerAndAction()
+	requestPolicy := c.requestPolicy[actionName]
+	if requestPolicy.requireAuthorization {
+		c.Ctx.Redirect(http.StatusFound, requestPolicy.redirectPath)
 	}
 }

@@ -14,18 +14,16 @@ type Session struct {
 }
 
 func (c *Session) NestPrepare() {
-	logout := c.Ctx.Request.RequestURI != "/logout"
-	c.requireGuestUser = logout
-	c.requireAuthenticatedUser = !logout
+	c.setSessionPolicy()
 }
 
-func (c *Session) Get() {
+func (c *Session) New() {
 	web.ReadFromRequest(&c.Controller)
 
 	c.setAttributes()
 }
 
-func (c *Session) Post() {
+func (c *Session) Create() {
 	sessionForm := forms.SessionForm{}
 	flash := web.NewFlash()
 	redirectPath := "/"
@@ -54,7 +52,7 @@ func (c *Session) Delete() {
 	flash := web.NewFlash()
 	redirectPath := "/"
 
-	err := c.DelSession(CurrentUserSession)
+	err := c.logout()
 	if err != nil {
 		flash.Error("Failed to sign out")
 	} else {
@@ -64,6 +62,31 @@ func (c *Session) Delete() {
 
 	flash.Store(&c.Controller)
 	c.Redirect(redirectPath, http.StatusFound)
+}
+
+func (c *Session) logout() error {
+	err := c.DelSession(CurrentUserSession)
+	if err != nil {
+		c.CurrentUser = nil
+	}
+
+	return err
+}
+
+func (c *Session) setSessionPolicy() {
+	_, actionName := c.GetControllerAndAction()
+	p := Policy{redirectPath: "/login"}
+
+	if actionName == "New" || actionName == "Create" {
+		p.requireAuthorization = c.isAuthenticatedUser()
+		p.redirectPath = "/"
+	} else if actionName == "Delete" {
+		p.requireAuthorization = c.isGuestUser()
+	} else {
+		p.requireAuthorization = true
+	}
+
+	c.requestPolicy[actionName] = p
 }
 
 func (c *Session) setAttributes() {
