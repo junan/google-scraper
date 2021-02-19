@@ -14,7 +14,9 @@ type Session struct {
 }
 
 func (c *Session) NestPrepare() {
-	c.requireGuestUser = true
+	logout := c.Ctx.Request.RequestURI != "/logout"
+	c.requireGuestUser = logout
+	c.requireAuthenticatedUser = !logout
 }
 
 func (c *Session) Get() {

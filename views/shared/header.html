@@ -1,8 +1,10 @@
 <div class="app-header">
-    <span class="app-header__profile">
-        Hi, {{ .CurrentUser.Email }}
+    {{if .CurrentUser }}
+        <span class="app-header__profile">
+        Hi, {{ .CurrentUser.Name }}
     </span>
-    <a href="{{ urlfor `Session.Delete` }}" data-method="delete" class="app-header__link">
-        Sign out
-    </a>
+        <a href="/logout" class="app-header__link">
+            Sign out
+        </a>
+    {{ end }}
 </div>
