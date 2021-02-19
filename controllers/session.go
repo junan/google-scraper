@@ -39,12 +39,29 @@ func (c *Session) Post() {
 
 		redirectPath = "/login"
 	} else {
+		c.Controller.Data["CurrentUser"] = user
 		c.SetCurrentUser(user)
 		flash.Success("Signed in successfully.")
 	}
 
 	flash.Store(&c.Controller)
 	c.Ctx.Redirect(http.StatusFound, redirectPath)
+}
+
+func (c *Session) Delete() {
+	flash := web.NewFlash()
+	redirectPath := "/"
+
+	err := c.DelSession(CurrentUserSession)
+	if err != nil {
+		flash.Error("Failed to sign out")
+	} else {
+		flash.Success("Signed out successfully.")
+		redirectPath = "/login"
+	}
+
+	flash.Store(&c.Controller)
+	c.Redirect(redirectPath, http.StatusFound)
 }
 
 func (c *Session) setAttributes() {

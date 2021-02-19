@@ -13,7 +13,9 @@
   </head>
 
   <body class="{{.ControllerName}} {{.ActionName}}">
-    <header class="app-header">{{ template "shared/header.html" . }}</header>
+    <header class="app-header">
+      {{ template "shared/header.html" . }}
+    </header>
 
     <main class="app-main">{{ .LayoutContent }}</main>
 

@@ -63,6 +63,8 @@ func (c *baseController) Prepare() {
 		app.NestPrepare()
 	}
 
+	c.Data["CurrentUser"] = c.GetCurrentUser()
+
 	if c.requireGuestUser && c.isAuthenticatedUser() {
 		c.Ctx.Redirect(http.StatusFound, "/")
 	}
