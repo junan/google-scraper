@@ -7,5 +7,7 @@ import (
 )
 
 func init() {
+	web.Router("/", &controllers.Dashboard{})
 	web.Router("/register", &controllers.Registration{})
+	web.Router("/login", &controllers.Session{})
 }

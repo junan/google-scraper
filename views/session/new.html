@@ -1,0 +1,14 @@
+<div class="user-auth">
+  <div class="user-auth__header">
+    <h3 class="user-auth__title">{{ .Title }}</h3>
+  </div>
+
+  <div class="user-auth__body">
+    {{ template "shared/alert.html" . }} {{ template "session/form.html" . }}
+  </div>
+
+  <div class="user-auth__footer">
+    Don’t have an account?
+    <a class="custom-link" href="/register">Create a new account</a>.
+  </div>
+</div>

@@ -11,10 +11,6 @@ import (
 )
 
 var _ = Describe("RegistrationForm", func() {
-	AfterEach(func() {
-		TruncateTable("users")
-	})
-
 	Describe("Save", func() {
 		Context("given valid attributes", func() {
 			It("creates a new user and returns nil error", func() {
@@ -119,5 +115,9 @@ var _ = Describe("RegistrationForm", func() {
 				})
 			})
 		})
+	})
+
+	AfterEach(func() {
+		TruncateTable("users")
 	})
 })

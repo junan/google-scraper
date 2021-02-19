@@ -3,6 +3,7 @@ package forms
 import (
 	"google-scraper/helpers"
 	"google-scraper/models"
+	"google-scraper/constants"
 
 	"github.com/beego/beego/v2/core/logs"
 	"github.com/beego/beego/v2/core/validation"
@@ -30,7 +31,7 @@ func (registrationForm *RegistrationForm) Save() (*models.User, error) {
 	success, err := validation.Valid(registrationForm)
 
 	if err != nil {
-		logs.Error("Validation error:", err)
+		logs.Error(constants.GeneralValidationFailedLogMessage, err)
 	}
 
 	if !success {

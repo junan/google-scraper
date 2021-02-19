@@ -9,45 +9,46 @@ import (
 	"github.com/beego/beego/v2/server/web"
 )
 
-type Registration struct {
+type Session struct {
 	baseController
 }
 
-func (c *Registration) NestPrepare() {
+func (c *Session) NestPrepare() {
 	c.requireGuestUser = true
 }
 
-func (c *Registration) Get() {
+func (c *Session) Get() {
 	web.ReadFromRequest(&c.Controller)
 
 	c.setAttributes()
 }
 
-func (c *Registration) Post() {
-	registrationForm := forms.RegistrationForm{}
+func (c *Session) Post() {
+	sessionForm := forms.SessionForm{}
 	flash := web.NewFlash()
 	redirectPath := "/"
 
-	err := c.ParseForm(&registrationForm)
+	err := c.ParseForm(&sessionForm)
 	if err != nil {
 		flash.Error(err.Error())
 	}
 
-	user, err := registrationForm.Save()
+	user, err := sessionForm.Authenticate()
 	if err != nil {
 		flash.Error(fmt.Sprint(err))
-		redirectPath = "/register"
+
+		redirectPath = "/login"
 	} else {
 		c.SetCurrentUser(user)
-		flash.Success("Account has been created successfully")
+		flash.Success("Signed in successfully.")
 	}
 
 	flash.Store(&c.Controller)
 	c.Ctx.Redirect(http.StatusFound, redirectPath)
 }
 
-func (c *Registration) setAttributes() {
+func (c *Session) setAttributes() {
 	c.Layout = "layouts/authentication.html"
-	c.TplName = "registration/new.html"
-	c.Data["Title"] = "Create your account"
+	c.TplName = "session/new.html"
+	c.Data["Title"] = "Login to your account"
 }
