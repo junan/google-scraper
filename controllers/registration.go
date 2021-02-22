@@ -47,9 +47,7 @@ func (c *Registration) Create() {
 }
 
 func (c *Registration) setRegistrationPolicy() {
-	if c.actionName == "New" || c.actionName == "Create" {
-		c.authPolicy.canAccess = c.isGuestUser()
-	}
+	c.authPolicy.canAccess = c.isGuestUser()
 }
 
 func (c *Registration) setAttributes() {
