@@ -82,7 +82,7 @@ func (c *baseController) handleRequestAuthorization() {
 
 func (c *baseController) setDefaultAuthPolicy() {
 	// By default user need to log in to access any routes.
-	// Override this default policy in the `NestPrepare()` functions when necessary(ex: login, registration page)
+	// Override this default policy in the `NestPrepare()` function when necessary(ex: login, registration page)
 	c.authPolicy = AuthPolicy{canAccess: c.isAuthenticatedUser()}
 }
 
