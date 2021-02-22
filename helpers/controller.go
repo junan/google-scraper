@@ -21,11 +21,11 @@ func SetDataAttributes(c *web.Controller, user *models.User) {
 }
 
 func navbarExpandModifierCssClass(user *models.User) string {
-	navbarExpandCssClass := ""
+	modifier := ""
 
 	if user != nil {
-		navbarExpandCssClass = "-lg"
+		modifier = "-lg"
 	}
 
-	return navbarExpandCssClass
+	return modifier
 }

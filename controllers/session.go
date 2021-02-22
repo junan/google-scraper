@@ -39,7 +39,6 @@ func (c *Session) Create() {
 
 		redirectPath = "/login"
 	} else {
-		c.Controller.Data["CurrentUser"] = user
 		c.SetCurrentUser(user)
 		flash.Success("Signed in successfully.")
 	}
