@@ -1,10 +1,1 @@
-<div class="app-header">
-    {{if .CurrentUser }}
-        <span class="app-header__profile">
-        Hi, {{ .CurrentUser.Name }}
-    </span>
-        <a href="/logout" class="app-header__link">
-            Sign out
-        </a>
-    {{ end }}
-</div>
+<header class="app-header">{{ template "shared/navbar.html" . }}</header>
