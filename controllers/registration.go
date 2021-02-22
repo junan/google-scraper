@@ -47,17 +47,9 @@ func (c *Registration) Create() {
 }
 
 func (c *Registration) setRegistrationPolicy() {
-	_, actionName := c.GetControllerAndAction()
-	p := Policy{redirectPath: "/login"}
-
-	if actionName == "New" || actionName == "Create" {
-		p.requireAuthorization = c.isAuthenticatedUser()
-		p.redirectPath = "/"
-	} else {
-		p.requireAuthorization = true
+	if c.actionName == "New" || c.actionName == "Create" {
+		c.authPolicy.canAccess = c.isGuestUser()
 	}
-
-	c.requestPolicy[actionName] = p
 }
 
 func (c *Registration) setAttributes() {
