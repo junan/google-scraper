@@ -1,5 +1,5 @@
 .app-header {
-  .navbar .navbar-text::after {
+  .navbar-text::after {
     @include media-breakpoint-up(lg) {
       content: '|';
       padding-left: 8px;
