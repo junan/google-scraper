@@ -8,9 +8,7 @@ import (
 
 func init() {
 	web.Router("/", &controllers.Dashboard{}, "get:New")
-	web.Router("/register", &controllers.Registration{}, "get:New")
-	web.Router("/register", &controllers.Registration{}, "post:Create")
-	web.Router("/login", &controllers.Session{}, "get:New")
-	web.Router("/login", &controllers.Session{}, "post:Create")
+	web.Router("/register", &controllers.Registration{}, "get:New;post:Create")
+	web.Router("/login", &controllers.Session{}, "get:New;post:Create")
 	web.Router("/logout", &controllers.Session{}, "get:Delete")
 }
