@@ -3,6 +3,7 @@ module google-scraper
 go 1.15
 
 require (
+	github.com/PuerkitoBio/goquery v1.6.1
 	github.com/beego/beego/v2 v2.0.1
 	github.com/iancoleman/strcase v0.1.3
 	github.com/lib/pq v1.7.0
