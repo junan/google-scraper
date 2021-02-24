@@ -8,6 +8,7 @@ import (
 	_ "google-scraper/initializers"
 	. "google-scraper/tests/fabricators"
 	. "google-scraper/tests/testing_helpers"
+	"google-scraper/controllers"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
@@ -137,6 +138,43 @@ var _ = Describe("SessionController", func() {
 
 				Expect(path).To(Equal("/"))
 
+			})
+		})
+	})
+
+	Describe("GET /logout", func() {
+		Context("given the user is an authenticated user", func() {
+			It("redirects to the login page", func() {
+				user := FabricateUser("John", "john@example.com", "secret")
+				response := MakeAuthenticatedRequest("GET", "/logout", nil, &user)
+				path := GetUrlPath(response)
+
+				Expect(path).To(Equal("/login"))
+			})
+
+			It("sets successful logout message", func() {
+				user := FabricateUser("John", "john@example.com", "secret")
+				response := MakeAuthenticatedRequest("GET", "/logout", nil, &user)
+				flash := GetFlash(response.Cookies())
+
+				Expect(flash.Data["success"]).To(Equal("Signed out successfully."))
+			})
+
+			It("destroys the user session", func() {
+				user := FabricateUser("John", "john@example.com", "secret")
+				response := MakeAuthenticatedRequest("GET", "/logout", nil, &user)
+				session := GetSession(response.Cookies(), controllers.CurrentUserSession)
+
+				Expect(session).To(BeNil())
+			})
+		})
+
+		Context("given the user is a guest user", func() {
+			It("redirects to the login page", func() {
+				response := MakeRequest("GET", "/logout", nil)
+				path := GetUrlPath(response)
+
+				Expect(path).To(Equal("/login"))
 			})
 		})
 	})

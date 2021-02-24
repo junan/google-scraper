@@ -8,11 +8,7 @@ type Dashboard struct {
 	baseController
 }
 
-func (c *Dashboard) NestPrepare() {
-	c.requireAuthenticatedUser = true
-}
-
-func (c *Dashboard) Get() {
+func (c *Dashboard) New() {
 	web.ReadFromRequest(&c.Controller)
 
 	c.setAttributes()

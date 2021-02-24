@@ -20,8 +20,12 @@ type baseController struct {
 	web.Controller
 
 	CurrentUser *models.User
-	requireAuthenticatedUser bool
-	requireGuestUser         bool
+	authPolicy  AuthPolicy
+	actionName  string
+}
+
+type AuthPolicy struct {
+	canAccess bool
 }
 
 func (c *baseController) SetCurrentUser(user *models.User) {
@@ -56,18 +60,45 @@ func (c *baseController) isAuthenticatedUser() bool {
 }
 
 func (c *baseController) Prepare() {
-	helpers.SetDataAttributes(&c.Controller)
+	c.setDefaultAuthPolicy()
+	c.setActionName()
+	c.setCurrentUser()
+
+	helpers.SetDataAttributes(&c.Controller, c.CurrentUser)
 
 	app, ok := c.AppController.(NestPreparer)
 	if ok {
 		app.NestPrepare()
 	}
 
-	if c.requireGuestUser && c.isAuthenticatedUser() {
-		c.Ctx.Redirect(http.StatusFound, "/")
-	}
+	c.handleRequestAuthorization()
+}
 
-	if c.requireAuthenticatedUser && c.isGuestUser() {
-		c.Ctx.Redirect(http.StatusFound, "/login")
+func (c *baseController) handleRequestAuthorization() {
+	if !c.authPolicy.canAccess {
+		c.Ctx.Redirect(http.StatusFound, c.getRedirectPath())
+	}
+}
+
+func (c *baseController) setDefaultAuthPolicy() {
+	// By default user need to log in to access any routes.
+	// Override this default policy in the `NestPrepare()` function when necessary(ex: login, registration page)
+	c.authPolicy = AuthPolicy{canAccess: c.isAuthenticatedUser()}
+}
+
+func (c *baseController) setActionName() {
+	_, actionName := c.GetControllerAndAction()
+	c.actionName = actionName
+}
+
+func (c *baseController) setCurrentUser() {
+	c.CurrentUser = c.GetCurrentUser()
+}
+
+func (c *baseController) getRedirectPath() string {
+	if c.isAuthenticatedUser() {
+		return "/"
+	} else {
+		return "login"
 	}
 }

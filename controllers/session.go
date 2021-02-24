@@ -14,16 +14,16 @@ type Session struct {
 }
 
 func (c *Session) NestPrepare() {
-	c.requireGuestUser = true
+	c.setSessionPolicy()
 }
 
-func (c *Session) Get() {
+func (c *Session) New() {
 	web.ReadFromRequest(&c.Controller)
 
 	c.setAttributes()
 }
 
-func (c *Session) Post() {
+func (c *Session) Create() {
 	sessionForm := forms.SessionForm{}
 	flash := web.NewFlash()
 	redirectPath := "/"
@@ -45,6 +45,37 @@ func (c *Session) Post() {
 
 	flash.Store(&c.Controller)
 	c.Ctx.Redirect(http.StatusFound, redirectPath)
+}
+
+func (c *Session) Delete() {
+	flash := web.NewFlash()
+	redirectPath := "/"
+
+	err := c.logout()
+	if err != nil {
+		flash.Error("Failed to sign out")
+	} else {
+		flash.Success("Signed out successfully.")
+		redirectPath = "/login"
+	}
+
+	flash.Store(&c.Controller)
+	c.Redirect(redirectPath, http.StatusFound)
+}
+
+func (c *Session) logout() error {
+	err := c.DelSession(CurrentUserSession)
+	if err == nil {
+		c.CurrentUser = nil
+	}
+
+	return err
+}
+
+func (c *Session) setSessionPolicy() {
+	if c.actionName == "New" || c.actionName == "Create" {
+		c.authPolicy.canAccess = c.isGuestUser()
+	}
 }
 
 func (c *Session) setAttributes() {
