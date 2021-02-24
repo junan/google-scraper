@@ -1,7 +1,6 @@
 package scraper
 
 import (
-	"fmt"
 	"net/url"
 	"strings"
 
@@ -9,7 +8,7 @@ import (
 	"github.com/beego/beego/v2/core/logs"
 )
 
-const googleSearchUrl = "https://www.google.com/search?q=rails&lr=lang_en&hl=en"
+const googleSearchBaseUrl = "https://www.google.com/search"
 
 type CrawlData struct {
 	TopAdWordAdvertisersCount   int
@@ -21,18 +20,15 @@ type CrawlData struct {
 	Html                        string
 }
 
-func Crawl(keyword string) (data *CrawlData) {
-	response, err := getRequest(googleSearchUrl)
+func Crawl(searchString string) (data *CrawlData) {
+	searchUrl := buildSearchUrl(searchString)
+	response, err := getRequest(searchUrl)
 	if err != nil {
 		logs.Error(err)
 	}
 
 	htmlResponse := string(response)
 	doc, err := goquery.NewDocumentFromReader(strings.NewReader(htmlResponse))
-
-	result := len(getLinks(doc, "a"))
-
-	fmt.Printf("", result)
 
 	if err != nil {
 		logs.Error(err)
@@ -49,10 +45,6 @@ func Crawl(keyword string) (data *CrawlData) {
 	}
 
 	return data
-}
-
-func generateTheQueryString(keyword string) string {
-	return fmt.Sprintf(googleSearchUrl, url.QueryEscape(keyword))
 }
 
 func getTopAdWordAdvertisersCount(doc *goquery.Document) int {
@@ -86,4 +78,18 @@ func getLinks(doc *goquery.Document, selector string) []string {
 	})
 
 	return links
+}
+
+func buildSearchUrl(searchString string) string {
+	baseUrl, err := url.Parse(googleSearchBaseUrl)
+	if err != nil {
+		logs.Error("Parsing base user failed: ", err)
+	}
+	
+	params := url.Values{}
+	params.Add("q", searchString)
+	params.Add("lr", "lang_en")
+	params.Add("hl", "en")
+	baseUrl.RawQuery = params.Encode()
+	return baseUrl.String()
 }
