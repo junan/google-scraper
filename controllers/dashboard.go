@@ -14,7 +14,7 @@ func (c *Dashboard) New() {
 
 	c.setAttributes()
 
-	Crawl("Ruby on Rails")
+	Crawl("domain")
 }
 
 func (c *Dashboard) setAttributes() {

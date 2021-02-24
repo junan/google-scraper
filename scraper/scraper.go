@@ -9,21 +9,20 @@ import (
 	"github.com/beego/beego/v2/core/logs"
 )
 
-const googleSearchUrl = "https://www.google.com/search?q=%s&lr=lang_en"
+const googleSearchUrl = "https://www.google.com/search?q=rails&lr=lang_en&hl=en"
 
 type CrawlData struct {
 	TopAdWordAdvertisersCount   int
 	TopAdWordAdvertisersUrls    []string
 	TotalAdWordAdvertisersCount int
-	NonAdWordResultsCount       int
-	NonAdWordResultsUrls        []string
+	ResultsCount                int
+	ResultsUrls                 []string
 	TotalLinksCount             int
 	Html                        string
 }
 
 func Crawl(keyword string) (data *CrawlData) {
-	url := generateTheQueryString(keyword)
-	response, err := getRequest(url)
+	response, err := getRequest(googleSearchUrl)
 	if err != nil {
 		logs.Error(err)
 	}
@@ -42,9 +41,9 @@ func Crawl(keyword string) (data *CrawlData) {
 	data = &CrawlData{
 		TopAdWordAdvertisersCount:   getTopAdWordAdvertisersCount(doc),
 		TopAdWordAdvertisersUrls:    getTopAdWordAdvertisersUrls(doc),
-		TotalAdWordAdvertisersCount: 200,
-		NonAdWordResultsCount:       300,
-		NonAdWordResultsUrls:        []string{},
+		TotalAdWordAdvertisersCount: GetTotalAdWordAdvertisersCount(doc),
+		ResultsCount:                getResultsCount(doc),
+		ResultsUrls:                 getResultsUrls(doc),
 		TotalLinksCount:             len(getLinks(doc, "a")),
 		Html:                        htmlResponse,
 	}
@@ -57,11 +56,23 @@ func generateTheQueryString(keyword string) string {
 }
 
 func getTopAdWordAdvertisersCount(doc *goquery.Document) int {
-	return doc.Find("#tads > div").Length()
+	return doc.Find("#tads .uEierd").Length()
+}
+
+func GetTotalAdWordAdvertisersCount(doc *goquery.Document) int {
+	return len(getLinks(doc, ".Krnil"))
 }
 
 func getTopAdWordAdvertisersUrls(doc *goquery.Document) []string {
-	return getLinks(doc, "#tads > div .Krnil")
+	return getLinks(doc, "#tads .Krnil")
+}
+
+func getResultsCount(doc *goquery.Document) int {
+	return doc.Find("#rso .yuRUbf").Length()
+}
+
+func getResultsUrls(doc *goquery.Document) []string {
+	return getLinks(doc, "#rso .yuRUbf > a")
 }
 
 func getLinks(doc *goquery.Document, selector string) []string {
