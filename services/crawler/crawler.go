@@ -109,5 +109,6 @@ func BuildSearchUrl(searchString string) string {
 	params.Add("lr", "lang_en")
 	params.Add("hl", "en")
 	baseUrl.RawQuery = params.Encode()
+
 	return baseUrl.String()
 }

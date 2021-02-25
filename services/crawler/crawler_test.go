@@ -26,10 +26,8 @@ var _ = Describe("Crawler", func() {
 				Fail("Reading file failed: " + err.Error())
 			}
 
-			response := string(content)
-
 			httpmock.RegisterResponder("GET", searchUrl,
-				httpmock.NewStringResponder(200, response))
+				httpmock.NewStringResponder(200, string(content)))
 
 			data, err := Crawl("Buy domain")
 			if err != nil {
