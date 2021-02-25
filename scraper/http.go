@@ -2,20 +2,45 @@ package scraper
 
 import (
 	"io/ioutil"
+	"math/rand"
 	"net/http"
+
+	"github.com/beego/beego/v2/core/logs"
+	"github.com/junan/fake-useragent"
 )
 
-func getRequest(url string) ([]byte, error) {
+func getRequest(url string) ([]byte, error, string) {
 	client := &http.Client{}
 
-	req, _ := http.NewRequest("GET", url, nil)
-	req.Header.Set("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36")
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		logs.Error("Building new request failed: ", err)
+	}
+
+	agent := userAgent()
+	req.Header.Set("User-Agent", agent)
 
 	res, err := client.Do(req)
 	if err != nil {
-		return nil, err
+		return nil, err, agent
 	}
 	defer res.Body.Close()
+	byte, err := ioutil.ReadAll(res.Body)
 
-	return ioutil.ReadAll(res.Body)
+	return byte, err, agent
+}
+
+func userAgent() string {
+	rangeLower := 0
+	rangeUpper := 1
+	randNum := rangeLower + rand.Intn(rangeUpper-rangeLower+1)
+
+	switch randNum {
+	case 0:
+		return browser.Chrome()
+	case 1:
+		return browser.Firefox()
+	default:
+		return browser.Chrome()
+	}
 }

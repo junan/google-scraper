@@ -1,6 +1,7 @@
 package scraper
 
 import (
+	"fmt"
 	"net/url"
 	"strings"
 
@@ -22,7 +23,8 @@ type CrawlData struct {
 
 func Crawl(searchString string) (data *CrawlData) {
 	searchUrl := buildSearchUrl(searchString)
-	response, err := getRequest(searchUrl)
+	response, err, agent := getRequest(searchUrl)
+	fmt.Print(agent)
 	if err != nil {
 		logs.Error(err)
 	}
@@ -85,7 +87,7 @@ func buildSearchUrl(searchString string) string {
 	if err != nil {
 		logs.Error("Parsing base user failed: ", err)
 	}
-	
+
 	params := url.Values{}
 	params.Add("q", searchString)
 	params.Add("lr", "lang_en")
