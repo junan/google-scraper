@@ -31,7 +31,7 @@ type CrawlData struct {
 	Html                        string
 }
 
-func Crawl(searchString string) (data *CrawlData) {
+func Crawl(searchString string) (data *CrawlData, err error) {
 	searchUrl := buildSearchUrl(searchString)
 	response, err := getRequest(searchUrl)
 	if err != nil {
@@ -46,7 +46,7 @@ func Crawl(searchString string) (data *CrawlData) {
 
 	data = parseCrawledData()
 
-	return data
+	return data, err
 }
 
 func getTopAdWordAdvertisersCount() int {
