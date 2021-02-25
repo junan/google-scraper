@@ -23,7 +23,7 @@ var _ = Describe("Crawler", func() {
 
 			Expect(data.TopAdWordAdvertisersCount).To(Equal(4))
 			Expect(len(data.TopAdWordAdvertisersUrls)).To(Equal(4))
-			Expect(data.TotalAdWordAdvertisersCount).To(Equal(4))
+			Expect(data.TotalAdWordAdvertisersCount).To(Equal(7))
 			Expect(data.ResultsCount).To(Equal(10))
 			Expect(len(data.ResultsUrls)).To(Equal(10))
 			Expect(data.TotalLinksCount).To(Equal(94))
