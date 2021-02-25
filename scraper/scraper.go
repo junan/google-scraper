@@ -10,6 +10,17 @@ import (
 
 const googleSearchBaseUrl = "https://www.google.com/search"
 
+var doc *goquery.Document
+var htmlResponse string
+var selectorMapping = map[string]string{
+	"topAdWordAdvertisersCount":   "#tads .uEierd",
+	"topAdWordAdvertisersUrls":    "#tads .Krnil",
+	"totalAdWordAdvertisersCount": ".Krnil",
+	"resultsCount":                "#rso .yuRUbf",
+	"resultsUrls":                 "#rso .yuRUbf > a",
+	"totalLinksCount":             "a",
+}
+
 type CrawlData struct {
 	TopAdWordAdvertisersCount   int
 	TopAdWordAdvertisersUrls    []string
@@ -23,52 +34,46 @@ type CrawlData struct {
 func Crawl(searchString string) (data *CrawlData) {
 	searchUrl := buildSearchUrl(searchString)
 	response, err := getRequest(searchUrl)
-
 	if err != nil {
-		logs.Error(err)
+		logs.Error("Searching request failed: ", err)
 	}
 
-	htmlResponse := string(response)
-	doc, err := goquery.NewDocumentFromReader(strings.NewReader(htmlResponse))
-
+	htmlResponse = string(response)
+	doc, err = goquery.NewDocumentFromReader(strings.NewReader(htmlResponse))
 	if err != nil {
-		logs.Error(err)
+		logs.Error("Initializing Goquery document failed: ", err)
 	}
 
-	data = &CrawlData{
-		TopAdWordAdvertisersCount:   getTopAdWordAdvertisersCount(doc),
-		TopAdWordAdvertisersUrls:    getTopAdWordAdvertisersUrls(doc),
-		TotalAdWordAdvertisersCount: GetTotalAdWordAdvertisersCount(doc),
-		ResultsCount:                getResultsCount(doc),
-		ResultsUrls:                 getResultsUrls(doc),
-		TotalLinksCount:             len(getLinks(doc, "a")),
-		Html:                        htmlResponse,
-	}
+	data = parseCrawledData()
 
 	return data
 }
 
-func getTopAdWordAdvertisersCount(doc *goquery.Document) int {
-	return doc.Find("#tads .uEierd").Length()
+func getTopAdWordAdvertisersCount() int {
+	return doc.Find(selectorMapping["topAdWordAdvertisersCount"]).Length()
 }
 
-func GetTotalAdWordAdvertisersCount(doc *goquery.Document) int {
-	return len(getLinks(doc, ".Krnil"))
+func GetTotalAdWordAdvertisersCount() int {
+	return len(getLinks(selectorMapping["totalAdWordAdvertisersCount"]))
 }
 
-func getTopAdWordAdvertisersUrls(doc *goquery.Document) []string {
-	return getLinks(doc, "#tads .Krnil")
+func getTopAdWordAdvertisersUrls() []string {
+	return getLinks(selectorMapping["topAdWordAdvertisersUrls"])
 }
 
-func getResultsCount(doc *goquery.Document) int {
-	return doc.Find("#rso .yuRUbf").Length()
+func getResultsCount() int {
+	return doc.Find(selectorMapping["resultsCount"]).Length()
 }
 
-func getResultsUrls(doc *goquery.Document) []string {
-	return getLinks(doc, "#rso .yuRUbf > a")
+func getResultsUrls() []string {
+	return getLinks(selectorMapping["resultsUrls"])
 }
 
-func getLinks(doc *goquery.Document, selector string) []string {
+func getTotalLinks() int {
+	return len(getLinks(selectorMapping["totalLinksCount"]))
+}
+
+func getLinks(selector string) []string {
 	var links []string
 
 	doc.Find(selector).Each(func(i int, s *goquery.Selection) {
@@ -79,6 +84,18 @@ func getLinks(doc *goquery.Document, selector string) []string {
 	})
 
 	return links
+}
+
+func parseCrawledData() *CrawlData {
+	return &CrawlData{
+		TopAdWordAdvertisersCount:   getTopAdWordAdvertisersCount(),
+		TopAdWordAdvertisersUrls:    getTopAdWordAdvertisersUrls(),
+		TotalAdWordAdvertisersCount: GetTotalAdWordAdvertisersCount(),
+		ResultsCount:                getResultsCount(),
+		ResultsUrls:                 getResultsUrls(),
+		TotalLinksCount:             getTotalLinks(),
+		Html:                        htmlResponse,
+	}
 }
 
 func buildSearchUrl(searchString string) string {
