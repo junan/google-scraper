@@ -10,7 +10,7 @@ import (
 )
 
 func RecordCassette(cassetteName string, searchString string) {
-	searchUrl := fmt.Sprintf("https://www.google.com/search/?q=%s&lr=lang_en&hl=en", url.QueryEscape(searchString))
+	searchUrl := fmt.Sprintf("https://www.google.com/search?q=%s&lr=lang_en&hl=en", url.QueryEscape(searchString))
 	recorder, err := recorder.New(fmt.Sprintf("%s/tests/fixtures/vcr/%s", AppRootDir(), cassetteName))
 	if err != nil {
 		Fail(err.Error())
