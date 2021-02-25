@@ -15,7 +15,13 @@ func RecordCassette(cassetteName string, searchString string) {
 	if err != nil {
 		Fail(err.Error())
 	}
-	defer recorder.Stop()
+
+	defer func() {
+		err = recorder.Stop()
+		if err != nil {
+			Fail(err.Error())
+		}
+	}()
 
 	client := &http.Client{Transport: recorder}
 	_, err = client.Get(searchUrl)
