@@ -31,6 +31,8 @@ type CrawlData struct {
 	Html                        string
 }
 
+// Call this function with your search key, it will return the necessary crawled data
+// Ex: Crawl("Buy laptop")
 func Crawl(searchString string) (data *CrawlData, err error) {
 	searchUrl := BuildSearchUrl(searchString)
 	response, err := getRequest(searchUrl)
