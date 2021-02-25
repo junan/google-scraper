@@ -18,5 +18,5 @@ func TestControllers(t *testing.T) {
 }
 
 var _ = BeforeSuite(func() {
-	web.TestBeegoInit(AppRootDir())
+	web.TestBeegoInit(AppRootDir(1))
 })

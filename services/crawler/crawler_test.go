@@ -1,34 +1,48 @@
 package crawler_test
 
 import (
-	. "github.com/onsi/ginkgo"
-	. "github.com/onsi/gomega"
-
-	. "google-scraper/tests/testing_helpers"
+	"io/ioutil"
+	"fmt"
 
 	. "google-scraper/services/crawler"
+	. "google-scraper/tests/testing_helpers"
+
+	. "github.com/onsi/ginkgo"
+	. "github.com/onsi/gomega"
+	"github.com/jarcoal/httpmock"
 )
 
 var _ = Describe("Crawler", func() {
 	Describe("#Crawl", func() {
-		BeforeEach(func() {
-			RecordCassette("success_crawling", "Buy domain")
-		})
-
 		It("returns the crawled data", func() {
-			data, err := Crawl("buy domain")
+			searchUrl := BuildSearchUrl("Buy domain")
+			htmlPath := fmt.Sprintf("%s/fixtures/buy_domain.html", AppRootDir(0))
+
+			httpmock.Activate()
+			defer httpmock.DeactivateAndReset()
+
+			content, err := ioutil.ReadFile(htmlPath)
+			if err != nil {
+				Fail("Reading file failed: " + err.Error())
+			}
+
+			response := string(content)
+
+			httpmock.RegisterResponder("GET", searchUrl,
+				httpmock.NewStringResponder(200, response))
+
+			data, err := Crawl("Buy domain")
 			if err != nil {
 				Fail("Crawling failed: " + err.Error())
 			}
 
-			Expect(data.TopAdWordAdvertisersCount).To(Equal(4))
-			Expect(len(data.TopAdWordAdvertisersUrls)).To(Equal(4))
-			Expect(data.TotalAdWordAdvertisersCount).To(Equal(7))
+			Expect(data.TopAdWordAdvertisersCount).To(Equal(3))
+			Expect(len(data.TopAdWordAdvertisersUrls)).To(Equal(3))
+			Expect(data.TotalAdWordAdvertisersCount).To(Equal(3))
 			Expect(data.ResultsCount).To(Equal(10))
 			Expect(len(data.ResultsUrls)).To(Equal(10))
-			Expect(data.TotalLinksCount).To(Equal(94))
+			Expect(data.TotalLinksCount).To(Equal(95))
 			Expect(data.Html).NotTo(BeNil())
 		})
-
 	})
 })

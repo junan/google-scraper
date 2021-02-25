@@ -6,8 +6,8 @@ require (
 	github.com/PuerkitoBio/goquery v1.6.1
 	github.com/andybalholm/cascadia v1.2.0 // indirect
 	github.com/beego/beego/v2 v2.0.1
-	github.com/dnaeon/go-vcr v1.1.0
 	github.com/iancoleman/strcase v0.1.3
+	github.com/jarcoal/httpmock v1.0.8
 	github.com/junan/fake-useragent v0.2.1-0.20210225033740-629d4a7a578a
 	github.com/lib/pq v1.7.0
 	github.com/nozzle/throttler v0.0.0-20180817012639-2ea982251481 // indirect

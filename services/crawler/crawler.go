@@ -32,7 +32,7 @@ type CrawlData struct {
 }
 
 func Crawl(searchString string) (data *CrawlData, err error) {
-	searchUrl := buildSearchUrl(searchString)
+	searchUrl := BuildSearchUrl(searchString)
 	response, err := getRequest(searchUrl)
 	if err != nil {
 		logs.Error("Searching request failed: ", err)
@@ -98,7 +98,7 @@ func parseCrawledData() *CrawlData {
 	}
 }
 
-func buildSearchUrl(searchString string) string {
+func BuildSearchUrl(searchString string) string {
 	baseUrl, err := url.Parse(googleSearchBaseUrl)
 	if err != nil {
 		logs.Error("Parsing base user failed: ", err)
