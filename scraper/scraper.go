@@ -1,7 +1,6 @@
 package scraper
 
 import (
-	"fmt"
 	"net/url"
 	"strings"
 
@@ -23,8 +22,8 @@ type CrawlData struct {
 
 func Crawl(searchString string) (data *CrawlData) {
 	searchUrl := buildSearchUrl(searchString)
-	response, err, agent := getRequest(searchUrl)
-	fmt.Print(agent)
+	response, err := getRequest(searchUrl)
+
 	if err != nil {
 		logs.Error(err)
 	}
