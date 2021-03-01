@@ -18,7 +18,6 @@ func getRequest(url string) ([]byte, error) {
 	}
 
 	req.Header.Set("User-Agent", randomUserAgent())
-
 	res, err := client.Do(req)
 	if err != nil {
 		return nil, err
@@ -30,14 +29,11 @@ func getRequest(url string) ([]byte, error) {
 	return byte, err
 }
 
-// Return random Chrome or Firefox user agent
-// Browser version, system-information, platform also random
+// Returns random Chrome or Firefox user agent.
+// Browser version, system-information, platform also random.
 func randomUserAgent() string {
-	rangeLower := 0
-	rangeUpper := 1
-	randNum := rangeLower + rand.Intn(rangeUpper-rangeLower+1)
-
-	switch randNum {
+	randomNumber := generateRandomNumber()
+	switch randomNumber {
 	case 0:
 		return browser.Chrome()
 	case 1:
@@ -45,4 +41,10 @@ func randomUserAgent() string {
 	default:
 		return browser.Chrome()
 	}
+}
+
+func generateRandomNumber() int {
+	rangeLower := 0
+	rangeUpper := 1
+	return rangeLower + rand.Intn(rangeUpper-rangeLower+1)
 }

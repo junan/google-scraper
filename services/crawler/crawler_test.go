@@ -1,7 +1,6 @@
 package crawler_test
 
 import (
-	"io/ioutil"
 	"fmt"
 
 	. "google-scraper/services/crawler"
@@ -9,27 +8,16 @@ import (
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
-	"github.com/jarcoal/httpmock"
 )
 
 var _ = Describe("Crawler", func() {
 	Describe("#Crawl", func() {
 		It("returns the crawled data", func() {
-			searchUrl := BuildSearchUrl("Buy domain")
+			searchString := "Buy domain"
 			htmlPath := fmt.Sprintf("%s/fixtures/buy_domain.html", AppRootDir(0))
+			MockCrawling(searchString, htmlPath)
 
-			httpmock.Activate()
-			defer httpmock.DeactivateAndReset()
-
-			content, err := ioutil.ReadFile(htmlPath)
-			if err != nil {
-				Fail("Reading file failed: " + err.Error())
-			}
-
-			httpmock.RegisterResponder("GET", searchUrl,
-				httpmock.NewStringResponder(200, string(content)))
-
-			data, err := Crawl("Buy domain")
+			data, err := Crawl(searchString)
 			if err != nil {
 				Fail("Crawling failed: " + err.Error())
 			}

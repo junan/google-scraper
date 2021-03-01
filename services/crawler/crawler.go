@@ -55,12 +55,12 @@ func getTopAdWordAdvertisersCount() int {
 	return doc.Find(selectorMapping["topAdWordAdvertisersCount"]).Length()
 }
 
-func GetTotalAdWordAdvertisersCount() int {
-	return len(getLinks(selectorMapping["totalAdWordAdvertisersCount"]))
-}
-
 func getTopAdWordAdvertisersUrls() []string {
 	return getLinks(selectorMapping["topAdWordAdvertisersUrls"])
+}
+
+func GetTotalAdWordAdvertisersCount() int {
+	return len(getLinks(selectorMapping["totalAdWordAdvertisersCount"]))
 }
 
 func getResultsCount() int {
@@ -103,7 +103,7 @@ func parseCrawledData() *CrawlData {
 func BuildSearchUrl(searchString string) string {
 	baseUrl, err := url.Parse(googleSearchBaseUrl)
 	if err != nil {
-		logs.Error("Parsing base user failed: ", err)
+		logs.Error("Parsing base url failed: ", err)
 	}
 
 	params := url.Values{}
