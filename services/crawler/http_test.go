@@ -48,6 +48,9 @@ var _ = Describe("Http", func() {
 
 				result := httpmock.NewStringResponse(200, responseString)
 				byte, err := ioutil.ReadAll(result.Body)
+				if err != nil {
+					Fail("Reading response failed: " + err.Error())
+				}
 
 				response, err := GetRequest(searchUrl)
 
