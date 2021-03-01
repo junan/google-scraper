@@ -9,7 +9,7 @@ import (
 	"github.com/junan/fake-useragent"
 )
 
-func getRequest(url string) ([]byte, error) {
+func GetRequest(url string) ([]byte, error) {
 	client := &http.Client{}
 
 	req, err := http.NewRequest("GET", url, nil)
@@ -17,7 +17,7 @@ func getRequest(url string) ([]byte, error) {
 		logs.Error("Building new request failed: ", err)
 	}
 
-	req.Header.Set("User-Agent", randomUserAgent())
+	req.Header.Set("User-Agent", RandomUserAgent())
 	res, err := client.Do(req)
 	if err != nil {
 		return nil, err
@@ -31,8 +31,8 @@ func getRequest(url string) ([]byte, error) {
 
 // Returns random Chrome or Firefox user agent.
 // Browser version, system-information, platform also random.
-func randomUserAgent() string {
-	randomNumber := generateRandomNumber()
+func RandomUserAgent() string {
+	randomNumber := GenerateRandomNumber()
 	switch randomNumber {
 	case 0:
 		return browser.Chrome()
@@ -43,7 +43,7 @@ func randomUserAgent() string {
 	}
 }
 
-func generateRandomNumber() int {
+func GenerateRandomNumber() int {
 	rangeLower := 0
 	rangeUpper := 1
 	return rangeLower + rand.Intn(rangeUpper-rangeLower+1)

@@ -35,7 +35,7 @@ type CrawlData struct {
 // Ex: Crawl("Buy laptop")
 func Crawl(searchString string) (data *CrawlData, err error) {
 	searchUrl := BuildSearchUrl(searchString)
-	response, err := getRequest(searchUrl)
+	response, err := GetRequest(searchUrl)
 	if err != nil {
 		logs.Error("Searching request failed: ", err)
 	}
