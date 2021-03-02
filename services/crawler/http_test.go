@@ -1,13 +1,12 @@
 package crawler_test
 
 import (
-	"io/ioutil"
-	"strconv"
 	"errors"
+	"io/ioutil"
 
-	. "google-scraper/services/crawler"
-	. "google-scraper/helpers"
 	. "google-scraper/constants"
+	. "google-scraper/helpers"
+	. "google-scraper/services/crawler"
 
 	"github.com/jarcoal/httpmock"
 	. "github.com/onsi/ginkgo"
@@ -15,28 +14,6 @@ import (
 )
 
 var _ = Describe("Http", func() {
-	Describe("#randomUserAgent", func() {
-		It("returns with random user agent platform", func() {
-			userAgent := RandomUserAgent()
-
-			Expect(userAgent).To(MatchRegexp(`(Macintosh|Windows NT|Linux)`))
-		})
-
-		It("returns with random user agent browser", func() {
-			userAgent := RandomUserAgent()
-
-			Expect(userAgent).To(MatchRegexp(`(Firefox|Chrome)`))
-		})
-	})
-
-	Describe("#GenerateRandomNumber", func() {
-		It("returns the random number between 0 and 1", func() {
-			randomNumber := strconv.Itoa(GenerateRandomNumber())
-
-			Expect(randomNumber).To(MatchRegexp(`(1|0)`))
-		})
-	})
-
 	Describe("#GetRequest", func() {
 		Context("given Google search returns success response", func() {
 			It("returns no error", func() {

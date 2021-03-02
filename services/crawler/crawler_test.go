@@ -13,7 +13,7 @@ import (
 
 var _ = Describe("Crawler", func() {
 	Describe("#Crawl", func() {
-		Context("given the search string is Buy domain", func() {
+		Context("given a valid search string", func() {
 			It("returns the expected crawled data", func() {
 				searchString := "Buy domain"
 				htmlPath := fmt.Sprintf("%s/fixtures/services/crawler/valid_get_request.html", AppRootDir(0))
@@ -34,7 +34,7 @@ var _ = Describe("Crawler", func() {
 			})
 		})
 
-		Context("given the search string is empty", func() {
+		Context("given an INVALID search string", func() {
 			It("returns the expected crawled data", func() {
 				searchString := ""
 				htmlPath := fmt.Sprintf("%s/fixtures/services/crawler/invalid_get_request.html", AppRootDir(0))

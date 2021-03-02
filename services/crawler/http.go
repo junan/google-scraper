@@ -17,7 +17,7 @@ func GetRequest(url string) ([]byte, error) {
 		logs.Error("Building new request failed: ", err)
 	}
 
-	req.Header.Set("User-Agent", RandomUserAgent())
+	req.Header.Set("User-Agent", randomUserAgent())
 	res, err := client.Do(req)
 	if err != nil {
 		return nil, err
@@ -31,20 +31,23 @@ func GetRequest(url string) ([]byte, error) {
 
 // Returns random Chrome or Firefox user agent.
 // Browser version, system-information, platform also random.
-func RandomUserAgent() string {
-	randomNumber := GenerateRandomNumber()
-	switch randomNumber {
-	case 0:
+func randomUserAgent() string {
+	browserName := randomBrowser()
+	switch browserName {
+	case "chrome":
 		return browser.Chrome()
-	case 1:
+	case "firefox":
 		return browser.Firefox()
 	default:
 		return browser.Chrome()
 	}
 }
 
-func GenerateRandomNumber() int {
-	rangeLower := 0
-	rangeUpper := 1
-	return rangeLower + rand.Intn(rangeUpper-rangeLower+1)
+func randomBrowser() string {
+	browsers := []string{
+		"chrome",
+		"firefox",
+	}
+
+	return browsers[rand.Intn(len(browsers))]
 }
