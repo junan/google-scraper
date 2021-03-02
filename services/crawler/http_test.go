@@ -6,6 +6,8 @@ import (
 	"errors"
 
 	. "google-scraper/services/crawler"
+	. "google-scraper/helpers"
+	. "google-scraper/constants"
 
 	"github.com/jarcoal/httpmock"
 	. "github.com/onsi/ginkgo"
@@ -40,8 +42,11 @@ var _ = Describe("Http", func() {
 		Context("given Google search returns success response", func() {
 			It("returns no error", func() {
 				searchString := "Buy domain"
-				searchUrl := BuildSearchUrl(searchString)
 				responseString := "success response"
+				searchUrl, err := BuildSearchUrl(searchString, GoogleSearchBaseUrl)
+				if err != nil {
+					Fail("Building search url failed: " + err.Error())
+				}
 
 				httpmock.RegisterResponder("GET", searchUrl,
 					httpmock.NewStringResponder(200, responseString))
@@ -61,7 +66,10 @@ var _ = Describe("Http", func() {
 
 		Context("given Google search returns error response", func() {
 			It("returns an error", func() {
-				searchUrl := BuildSearchUrl("Buy domain")
+				searchUrl, err := BuildSearchUrl("Buy domain", GoogleSearchBaseUrl)
+				if err != nil {
+					Fail("Building search url failed: " + err.Error())
+				}
 
 				httpmock.RegisterResponder("GET", searchUrl,
 					httpmock.NewErrorResponder(errors.New("some-error")))

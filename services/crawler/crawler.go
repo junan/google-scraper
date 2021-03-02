@@ -1,14 +1,13 @@
 package crawler
 
 import (
-	"net/url"
 	"strings"
+
+	. "google-scraper/helpers"
 
 	"github.com/PuerkitoBio/goquery"
 	"github.com/beego/beego/v2/core/logs"
 )
-
-const googleSearchBaseUrl = "https://www.google.com/search"
 
 var doc *goquery.Document
 var htmlResponse string
@@ -31,13 +30,17 @@ type CrawlData struct {
 	Html                        string
 }
 
-// Call this function with your search key, it will return the necessary crawled data
-// Ex: Crawl("Buy laptop")
-func Crawl(searchString string) (data *CrawlData, err error) {
-	searchUrl := BuildSearchUrl(searchString)
+// Call this function with your search key and base url, it will return the necessary crawled data
+// Ex: Crawl("Buy laptop", "baseUrl")
+func Crawl(searchString string, baseUrl string) (data *CrawlData, err error) {
+	searchUrl, err := BuildSearchUrl(searchString, baseUrl)
+	if err != nil {
+		return &CrawlData{}, err
+	}
+
 	response, err := GetRequest(searchUrl)
 	if err != nil {
-		logs.Error("Searching request failed: ", err)
+		return &CrawlData{}, err
 	}
 
 	htmlResponse = string(response)
@@ -98,19 +101,4 @@ func parseCrawledData() *CrawlData {
 		TotalLinksCount:             getTotalLinks(),
 		Html:                        htmlResponse,
 	}
-}
-
-func BuildSearchUrl(searchString string) string {
-	baseUrl, err := url.Parse(googleSearchBaseUrl)
-	if err != nil {
-		logs.Error("Parsing base url failed: ", err)
-	}
-
-	params := url.Values{}
-	params.Add("q", searchString)
-	params.Add("lr", "lang_en")
-	params.Add("hl", "en")
-	baseUrl.RawQuery = params.Encode()
-
-	return baseUrl.String()
 }
