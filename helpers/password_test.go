@@ -3,6 +3,7 @@ package helpers_test
 import (
 	"google-scraper/helpers"
 	. "google-scraper/tests/fabricators"
+	. "google-scraper/tests/testing_helpers"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
@@ -37,5 +38,9 @@ var _ = Describe("Password", func() {
 				Expect(err).NotTo(BeNil())
 			})
 		})
+	})
+
+	AfterEach(func() {
+		TruncateTable("users")
 	})
 })
