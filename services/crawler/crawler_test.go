@@ -55,7 +55,7 @@ var _ = Describe("Crawler", func() {
 			})
 		})
 
-		Context("given the search string is empty", func() {
+		Context("given the base URL is invalid", func() {
 			It("returns an error", func() {
 				data, err := Crawl("Buy domain", "http://google:com")
 
