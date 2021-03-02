@@ -5,7 +5,6 @@ import (
 	"io/ioutil"
 
 	. "google-scraper/constants"
-	. "google-scraper/helpers"
 	. "google-scraper/services/crawler"
 
 	"github.com/jarcoal/httpmock"

@@ -1,7 +1,7 @@
-package helpers_test
+package crawler_test
 
 import (
-	. "google-scraper/helpers"
+	. "google-scraper/services/crawler"
 	. "google-scraper/constants"
 
 	. "github.com/onsi/ginkgo"

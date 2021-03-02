@@ -9,7 +9,7 @@ import (
 
 	"google-scraper/controllers"
 	"google-scraper/models"
-	. "google-scraper/helpers"
+	. "google-scraper/services/crawler"
 	. "google-scraper/constants"
 
 	"github.com/beego/beego/v2/server/web"

@@ -3,8 +3,6 @@ package crawler
 import (
 	"strings"
 
-	. "google-scraper/helpers"
-
 	"github.com/PuerkitoBio/goquery"
 	"github.com/beego/beego/v2/core/logs"
 )
