@@ -16,7 +16,7 @@ var _ = Describe("Crawler", func() {
 		Context("given the search string is Buy domain", func() {
 			It("returns the expected crawled data", func() {
 				searchString := "Buy domain"
-				htmlPath := fmt.Sprintf("%s/fixtures/buy_domain.html", AppRootDir(0))
+				htmlPath := fmt.Sprintf("%s/fixtures/services/crawler/valid_get_request.html", AppRootDir(0))
 				MockCrawling(searchString, htmlPath)
 
 				data, err := Crawl(searchString, GoogleSearchBaseUrl)
@@ -37,7 +37,7 @@ var _ = Describe("Crawler", func() {
 		Context("given the search string is empty", func() {
 			It("returns the expected crawled data", func() {
 				searchString := ""
-				htmlPath := fmt.Sprintf("%s/fixtures/empty_search.html", AppRootDir(0))
+				htmlPath := fmt.Sprintf("%s/fixtures/services/crawler/invalid_get_request.html", AppRootDir(0))
 				MockCrawling(searchString, htmlPath)
 
 				data, err := Crawl(searchString, GoogleSearchBaseUrl)
@@ -57,10 +57,10 @@ var _ = Describe("Crawler", func() {
 
 		Context("given the search string is empty", func() {
 			It("returns an error", func() {
-				data, err := Crawl("Buy domain", "invalid url")
+				data, err := Crawl("Buy domain", "http://google:com")
 
 				Expect(data).To(Equal(&CrawlData{}))
-				Expect(err).NotTo(BeNil())
+				Expect(err.Error()).To(Equal("parse \"http://google:com\": invalid port \":com\" after host"))
 			})
 		})
 	})

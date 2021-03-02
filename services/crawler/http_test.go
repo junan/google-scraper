@@ -37,7 +37,6 @@ var _ = Describe("Http", func() {
 		})
 	})
 
-
 	Describe("#GetRequest", func() {
 		Context("given Google search returns success response", func() {
 			It("returns no error", func() {
@@ -52,14 +51,14 @@ var _ = Describe("Http", func() {
 					httpmock.NewStringResponder(200, responseString))
 
 				result := httpmock.NewStringResponse(200, responseString)
-				byte, err := ioutil.ReadAll(result.Body)
+				body, err := ioutil.ReadAll(result.Body)
 				if err != nil {
 					Fail("Reading response failed: " + err.Error())
 				}
 
 				response, err := GetRequest(searchUrl)
 
-				Expect(byte).To(Equal(response))
+				Expect(body).To(Equal(response))
 				Expect(err).To(BeNil())
 			})
 		})
@@ -76,7 +75,7 @@ var _ = Describe("Http", func() {
 
 				response, err := GetRequest(searchUrl)
 
-				Expect(err).NotTo(BeNil())
+				Expect(err.Error()).To(Equal( "Get \"https://www.google.com/search?hl=en&lr=lang_en&q=Buy+domain\": some-error"))
 				Expect(response).To(BeNil())
 			})
 		})

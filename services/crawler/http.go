@@ -24,9 +24,9 @@ func GetRequest(url string) ([]byte, error) {
 	}
 	// Closing response body
 	defer res.Body.Close()
-	byte, err := ioutil.ReadAll(res.Body)
+	body, err := ioutil.ReadAll(res.Body)
 
-	return byte, err
+	return body, err
 }
 
 // Returns random Chrome or Firefox user agent.
