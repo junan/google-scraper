@@ -7,13 +7,14 @@ import (
 	"net/http"
 	"net/http/httptest"
 
+	. "google-scraper/constants"
 	"google-scraper/controllers"
 	"google-scraper/models"
 	. "google-scraper/services/crawler"
 
 	"github.com/beego/beego/v2/server/web"
-	. "github.com/onsi/ginkgo"
 	"github.com/jarcoal/httpmock"
+	. "github.com/onsi/ginkgo"
 )
 
 func MakeRequest(method string, url string, body io.Reader) *http.Response {

@@ -1,5 +1,9 @@
 package models
 
+import (
+	"github.com/beego/beego/v2/adapter/orm"
+)
+
 type SearchResult struct {
 	Base
 
@@ -12,10 +16,10 @@ type SearchResult struct {
 	Html                        string
 }
 
-//func CreateUser(u *User) (id int64, err error) {
-//	orm := orm.NewOrm()
-//	return orm.Insert(u)
-//}
+func CreateSearchResult(s *SearchResult) (id int64, err error) {
+	orm := orm.NewOrm()
+	return orm.Insert(s)
+}
 //
 //func (u *User) IsExistingUser() bool {
 //	o := orm.NewOrm()
