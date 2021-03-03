@@ -1,6 +1,8 @@
 package controllers
 
 import (
+	. "google-scraper/services/crawler"
+	. "google-scraper/constants"
 	"github.com/beego/beego/v2/server/web"
 )
 
@@ -12,6 +14,8 @@ func (c *Dashboard) New() {
 	web.ReadFromRequest(&c.Controller)
 
 	c.setAttributes()
+
+	Crawl("Buy Domain", GoogleSearchBaseUrl)
 }
 
 func (c *Dashboard) setAttributes() {
