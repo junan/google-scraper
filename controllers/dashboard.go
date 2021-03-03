@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"google-scraper/models"
 	. "google-scraper/services/crawler"
 	. "google-scraper/constants"
 	"github.com/beego/beego/v2/server/web"
@@ -15,7 +16,16 @@ func (c *Dashboard) New() {
 
 	c.setAttributes()
 
-	Crawl("Buy Domain", GoogleSearchBaseUrl, c.CurrentUser)
+	searchString := "Buy Domain"
+
+	search := &models.Search{
+		Keyword: searchString,
+		User: c.CurrentUser,
+	}
+
+	_, _ = models.CreateResult(search)
+
+	Crawl(searchString, GoogleSearchBaseUrl, search)
 }
 
 func (c *Dashboard) setAttributes() {
