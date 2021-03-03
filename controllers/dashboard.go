@@ -15,7 +15,7 @@ func (c *Dashboard) New() {
 
 	c.setAttributes()
 
-	Crawl("Buy Domain", GoogleSearchBaseUrl)
+	Crawl("Buy Domain", GoogleSearchBaseUrl, c.CurrentUser)
 }
 
 func (c *Dashboard) setAttributes() {
