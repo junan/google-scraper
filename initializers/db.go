@@ -46,5 +46,5 @@ func init() {
 }
 
 func registerModels() {
-	orm.RegisterModel(new(models.User), new(models.SearchResult))
+	orm.RegisterModel(new(models.User), new(models.Search), new(models.SearchResult))
 }
