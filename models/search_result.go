@@ -14,7 +14,7 @@ type SearchResult struct {
 	ResultsUrls                 string `orm:"type(json);null"`
 	TotalLinksCount             int    `default:"0"`
 	Html                        string `orm:"type(text);"`
-	Search *Search `orm:"rel(fk)"`
+	Keyword *Keyword `orm:"rel(fk)"`
 }
 
 func CreateSearchResult(s *SearchResult) (id int64, err error) {

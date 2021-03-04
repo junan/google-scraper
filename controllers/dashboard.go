@@ -18,12 +18,12 @@ func (c *Dashboard) New() {
 
 	searchString := "Buy Domain"
 
-	search := &models.Search{
-		Keyword: searchString,
+	search := &models.Keyword{
+		Name: searchString,
 		User: c.CurrentUser,
 	}
 
-	_, _ = models.CreateResult(search)
+	_, _ = models.CreateKeyword(search)
 
 	Crawl(searchString, GoogleSearchBaseUrl, search)
 }

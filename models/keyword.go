@@ -4,19 +4,19 @@ import (
 	"github.com/beego/beego/v2/adapter/orm"
 )
 
-type Search struct {
+type Keyword struct {
 	Base
 
-	Keyword string
+	Name string
 	User *User `orm:"rel(fk)"`
 }
 
-func CreateResult(s *Search) (id int64, err error) {
+func CreateKeyword(s *Keyword) (id int64, err error) {
 	orm := orm.NewOrm()
 	return orm.Insert(s)
 }
 
 // Beego by default creates the table name as singular, it will make it plural
-func (u *Search) TableName() string {
-	return "searches"
+func (u *Keyword) TableName() string {
+	return "keywords"
 }
