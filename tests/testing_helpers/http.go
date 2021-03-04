@@ -7,7 +7,6 @@ import (
 	"net/http"
 	"net/http/httptest"
 
-	. "google-scraper/constants"
 	"google-scraper/controllers"
 	"google-scraper/models"
 	. "google-scraper/services/crawler"

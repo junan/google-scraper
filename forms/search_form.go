@@ -22,13 +22,15 @@ func (csv *CSV) Valid(v *validation.Validation) {
 	// Verifying file is not empty
 	if csv.File == nil {
 		_ = v.SetError("File", "Uploaded file can't be blank")
+		return
 	}
 
 	// Verifying uploaded file is in CSV format
 	extension := path.Ext(csv.Header.Filename)
 	_, ok := allowedExtensionMap[extension]
-	if !ok {
-		_ = v.SetError("File", "Uploaded file can't be blank")
+	if !ok  {
+		_ = v.SetError("File", "Uploaded file should be in CSV format")
+		return
 	}
 
 	// Verifying csv format
@@ -41,7 +43,7 @@ func (csv *CSV) Valid(v *validation.Validation) {
 func SearchProcess(file multipart.File, header *multipart.FileHeader) (errs []error) {
 	csvFile := CSV{File: file, Header: header}
 	validation := validation.Validation{}
-	success, err := validation.Valid(csvFile)
+	success, err := validation.Valid(&csvFile)
 
 	if err != nil {
 		return errs
