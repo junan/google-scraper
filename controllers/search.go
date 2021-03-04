@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"encoding/csv"
 	"fmt"
 	"net/http"
 
@@ -21,10 +22,12 @@ func (c *Search) Create() {
 	//	this.TplName = "add.html"
 	//	return
 	//}
-	file,head,err := c.GetFile("file")
-	fmt.Println(file)
-	fmt.Println(head)
-	fmt.Println(err)
+
+	records, err := c.readData()
+
+	fmt.Println(records)
+
+	//fmt.Println(content)
 	searchForm := forms.SearchForm{}
 	flash := web.NewFlash()
 	redirectPath := "/"
@@ -45,3 +48,21 @@ func (c *Search) Create() {
 	c.Ctx.Redirect(http.StatusFound, redirectPath)
 }
 
+func (c *Search) readData() ([][]string, error) {
+	file, _, err := c.GetFile("file")
+
+	r := csv.NewReader(file)
+
+	// skip first line
+	if _, err := r.Read(); err != nil {
+		return [][]string{}, err
+	}
+
+	records, err := r.ReadAll()
+
+	if err != nil {
+		return [][]string{}, err
+	}
+
+	return records, nil
+}
