@@ -11,42 +11,46 @@ var AllowExtensionMap = map[string]bool{
 	".csv": true,
 }
 
-func SearchProcess(file multipart.File, header *multipart.FileHeader) ([]error) {
+func SearchProcess(file multipart.File, header *multipart.FileHeader) []error {
 	errs := validateCSVFile(file, header)
-	if len(errs) >= 0 {
+	if len(errs) > 0 {
 		return errs
 	}
-	_, err := readData(file)
-	// Do the cron jobs
+	_, err := readKeywords(file)
 	if err != nil {
 		return []error{err}
 	}
 
+	// Do the cron jobs
+
 	return []error{}
 }
 
-func readData(file multipart.File) ([][]string, error) {
+func readKeywords(file multipart.File) ([][]string, error) {
 	r := csv.NewReader(file)
 
-	// skip first line
+	// skip csv header
 	_, err := r.Read()
 	if err != nil {
 		return [][]string{}, err
 	}
 
-	records, err := r.ReadAll()
+	keywords, err := r.ReadAll()
 	if err != nil {
 		return [][]string{}, err
 	}
 
-	return records, nil
+	return keywords, nil
 }
 
 func validateCSVFile(file multipart.File, header *multipart.FileHeader) []error {
+	// Verifying file is not empty
 	if file == nil {
-		err := errors.New("You need to upload some file")
+		err := errors.New("Uploaded file cant be empty")
 		return []error{err}
 	}
+
+	// Verifying uploaded file is in CSV format
 	extension := path.Ext(header.Filename)
 	_, ok := AllowExtensionMap[extension]
 	if !ok {

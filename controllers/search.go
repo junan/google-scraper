@@ -15,13 +15,11 @@ type Search struct {
 
 func (c *Search) Create() {
 	file, header, _ := c.GetFile("file")
-
 	redirectPath := "/"
 	flash := web.NewFlash()
 
-	//c.Ctx.Request.ParseForm()
-
 	errs := forms.SearchProcess(file, header)
+
 	if len(errs) > 0 {
 		flash.Error(fmt.Sprint(errs))
 	} else {
