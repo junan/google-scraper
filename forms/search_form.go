@@ -2,28 +2,60 @@ package forms
 
 import (
 	"encoding/csv"
-	"errors"
 	"mime/multipart"
 	"path"
+
+	"github.com/beego/beego/v2/core/validation"
 )
 
-var AllowExtensionMap = map[string]bool{
+var keywords [][]string
+var allowedExtensionMap = map[string]bool{
 	".csv": true,
 }
 
-func SearchProcess(file multipart.File, header *multipart.FileHeader) []error {
-	errs := validateCSVFile(file, header)
-	if len(errs) > 0 {
+type CSV struct {
+	File   multipart.File
+	Header *multipart.FileHeader
+}
+
+func (csv *CSV) Valid(v *validation.Validation) {
+	// Verifying file is not empty
+	if csv.File == nil {
+		_ = v.SetError("File", "Uploaded file can't be blank")
+	}
+
+	// Verifying uploaded file is in CSV format
+	extension := path.Ext(csv.Header.Filename)
+	_, ok := allowedExtensionMap[extension]
+	if !ok {
+		_ = v.SetError("File", "Uploaded file can't be blank")
+	}
+
+	// Verifying csv format
+	_, err := readKeywords(csv.File)
+	if err != nil {
+		_ = v.SetError("File", err.Error())
+	}
+}
+
+func SearchProcess(file multipart.File, header *multipart.FileHeader) (errs []error) {
+	csvFile := CSV{File: file, Header: header}
+	validation := validation.Validation{}
+	success, err := validation.Valid(csvFile)
+
+	if err != nil {
 		return errs
 	}
-	_, err := readKeywords(file)
-	if err != nil {
-		return []error{err}
+
+	if !success {
+		for _, err := range validation.Errors {
+			errs = append(errs, err)
+		}
 	}
 
 	// Do the cron jobs
 
-	return []error{}
+	return errs
 }
 
 func readKeywords(file multipart.File) ([][]string, error) {
@@ -41,22 +73,4 @@ func readKeywords(file multipart.File) ([][]string, error) {
 	}
 
 	return keywords, nil
-}
-
-func validateCSVFile(file multipart.File, header *multipart.FileHeader) []error {
-	// Verifying file is not empty
-	if file == nil {
-		err := errors.New("Uploaded file cant be empty")
-		return []error{err}
-	}
-
-	// Verifying uploaded file is in CSV format
-	extension := path.Ext(header.Filename)
-	_, ok := AllowExtensionMap[extension]
-	if !ok {
-		err := errors.New("The uploaded file needs to be in CSV format")
-		return []error{err}
-	}
-
-	return []error{}
 }
