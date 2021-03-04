@@ -1,9 +1,6 @@
 package controllers
 
 import (
-	"google-scraper/models"
-	. "google-scraper/services/crawler"
-	. "google-scraper/constants"
 	"github.com/beego/beego/v2/server/web"
 )
 
@@ -15,17 +12,6 @@ func (c *Dashboard) New() {
 	web.ReadFromRequest(&c.Controller)
 
 	c.setAttributes()
-
-	searchString := "Buy Domain"
-
-	search := &models.Keyword{
-		Name: searchString,
-		User: c.CurrentUser,
-	}
-
-	_, _ = models.CreateKeyword(search)
-
-	Crawl(searchString, GoogleSearchBaseUrl, search)
 }
 
 func (c *Dashboard) setAttributes() {

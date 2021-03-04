@@ -1,8 +1,8 @@
 package forms
 
 import (
-	"errors"
-	"google-scraper/models"
+	"encoding/csv"
+	"mime/multipart"
 
 	"github.com/beego/beego/v2/core/validation"
 )
@@ -21,28 +21,34 @@ func (searchForm *SearchForm) Valid(v *validation.Validation) {
 	//}
 }
 
-func (searchForm *SearchForm) Save(user *models.User) (*models.Keyword, error) {
-	//validation := validation.Validation{}
+func SearchProcess(file multipart.File) ([][]string, error) {
+	records, err := readData(file)
 
-	//success, err := validation.Valid(searchForm)
+	return records, err
+}
 
-	//if err != nil {
-	//	logs.Error(constants.GeneralValidationFailedLogMessage, err)
+
+func readData(file multipart.File) ([][]string, error) {
+	//fileExt := path.Ext(head.Filename)
+	//if fileExt != ".jpg" && fileExt != ".png" && fileExt != ".jpeg"{
+	//	beego.Info ("The uploaded image format is incorrect, please add it again!")
+	//	this.TplName = "add.html"
+	//	return
 	//}
-	//
-	//if !success {
-	//	for _, err := range validation.Errors {
-	//		return nil, err
-	//	}
-	//}
 
-	//
-	search := &models.Keyword{
-		Name: "Junan",
-		User: user,
+
+	r := csv.NewReader(file)
+
+	// skip first line
+	if _, err := r.Read(); err != nil {
+		return [][]string{}, err
 	}
 
-	err := errors.New("math: square root of negative number")
+	records, err := r.ReadAll()
 
-	return search, err
+	if err != nil {
+		return [][]string{}, err
+	}
+
+	return records, nil
 }
