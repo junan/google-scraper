@@ -1,18 +1,17 @@
 package crawler_test
 
 import (
-	. "google-scraper/services/crawler"
-	. "google-scraper/constants"
-
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
+
+	. "google-scraper/services/crawler"
 )
 
 var _ = Describe("Crawler", func() {
 	Describe("#BuildSearchUrl", func() {
-		Context("given the root URL is valid", func() {
+		Context("given the search string is valid", func() {
 			It("returns the correct URL", func() {
-				url, err := BuildSearchUrl("Ruby", GoogleSearchBaseUrl)
+				url, err := BuildSearchUrl("Ruby")
 				if err != nil {
 					Fail("Building search URL failed: " + err.Error())
 				}
@@ -21,13 +20,13 @@ var _ = Describe("Crawler", func() {
 			})
 		})
 
-		Context("given the root URL is invalid", func() {
-			It("returns an error", func() {
-				url, err := BuildSearchUrl("Ruby", "http://google:com")
+		Context("given the search string is empty", func() {
+			url, err := BuildSearchUrl("")
+			if err != nil {
+				Fail("Building search URL failed: " + err.Error())
+			}
 
-				Expect(err.Error()).To(Equal("parse \"http://google:com\": invalid port \":com\" after host"))
-				Expect(url).To(Equal(""))
-			})
+			Expect(url).To(Equal("https://www.google.com/search?hl=en&lr=lang_en&q="))
 		})
 	})
 })

@@ -4,7 +4,6 @@ import (
 	"errors"
 	"io/ioutil"
 
-	. "google-scraper/constants"
 	. "google-scraper/services/crawler"
 
 	"github.com/jarcoal/httpmock"
@@ -18,7 +17,7 @@ var _ = Describe("Http", func() {
 			It("returns no error", func() {
 				searchString := "Buy domain"
 				responseString := "success response"
-				searchUrl, err := BuildSearchUrl(searchString, GoogleSearchBaseUrl)
+				searchUrl, err := BuildSearchUrl(searchString)
 				if err != nil {
 					Fail("Building search url failed: " + err.Error())
 				}
@@ -41,7 +40,7 @@ var _ = Describe("Http", func() {
 
 		Context("given Google search returns error response", func() {
 			It("returns an error", func() {
-				searchUrl, err := BuildSearchUrl("Buy domain", GoogleSearchBaseUrl)
+				searchUrl, err := BuildSearchUrl("Buy domain")
 				if err != nil {
 					Fail("Building search url failed: " + err.Error())
 				}

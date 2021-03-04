@@ -7,6 +7,8 @@ import (
 	"github.com/beego/beego/v2/core/logs"
 )
 
+const googleSearchBaseUrl = "https://www.google.com/search"
+
 var doc *goquery.Document
 var htmlResponse string
 var selectorMapping = map[string]string{
@@ -30,8 +32,8 @@ type CrawlData struct {
 
 // Call this function with your search key and base url, it will return the necessary crawled data
 // Ex: Crawl("Buy laptop", "baseUrl")
-func Crawl(searchString string, baseUrl string) (data *CrawlData, err error) {
-	searchUrl, err := BuildSearchUrl(searchString, baseUrl)
+func Crawl(searchString string) (data *CrawlData, err error) {
+	searchUrl, err := BuildSearchUrl(searchString)
 	if err != nil {
 		return &CrawlData{}, err
 	}

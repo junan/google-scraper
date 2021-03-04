@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	. "google-scraper/services/crawler"
-	. "google-scraper/constants"
 	. "google-scraper/tests/testing_helpers"
 
 	. "github.com/onsi/ginkgo"
@@ -19,7 +18,7 @@ var _ = Describe("Crawler", func() {
 				htmlPath := fmt.Sprintf("%s/fixtures/services/crawler/valid_get_request.html", AppRootDir(0))
 				MockCrawling(searchString, htmlPath)
 
-				data, err := Crawl(searchString, GoogleSearchBaseUrl)
+				data, err := Crawl(searchString)
 				if err != nil {
 					Fail("Crawling failed: " + err.Error())
 				}
@@ -40,7 +39,7 @@ var _ = Describe("Crawler", func() {
 				htmlPath := fmt.Sprintf("%s/fixtures/services/crawler/invalid_get_request.html", AppRootDir(0))
 				MockCrawling(searchString, htmlPath)
 
-				data, err := Crawl(searchString, GoogleSearchBaseUrl)
+				data, err := Crawl(searchString)
 				if err != nil {
 					Fail("Crawling failed: " + err.Error())
 				}
@@ -52,15 +51,6 @@ var _ = Describe("Crawler", func() {
 				Expect(len(data.ResultsUrls)).To(Equal(0))
 				Expect(data.TotalLinksCount).To(Equal(17))
 				Expect(data.Html).NotTo(BeNil())
-			})
-		})
-
-		Context("given the base URL is invalid", func() {
-			It("returns an error", func() {
-				data, err := Crawl("Buy domain", "http://google:com")
-
-				Expect(data).To(Equal(&CrawlData{}))
-				Expect(err.Error()).To(Equal("parse \"http://google:com\": invalid port \":com\" after host"))
 			})
 		})
 	})

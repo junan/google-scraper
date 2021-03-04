@@ -10,7 +10,6 @@ import (
 	"google-scraper/controllers"
 	"google-scraper/models"
 	. "google-scraper/services/crawler"
-	. "google-scraper/constants"
 
 	"github.com/beego/beego/v2/server/web"
 	. "github.com/onsi/ginkgo"
@@ -57,7 +56,7 @@ func MakeAuthenticatedRequest(method string, url string, body io.Reader, user *m
 }
 
 func MockCrawling(searchString string, filePath string) {
-	searchUrl, err := BuildSearchUrl(searchString, GoogleSearchBaseUrl)
+	searchUrl, err := BuildSearchUrl(searchString)
 	if err != nil {
 		Fail("Building search url failed: " + err.Error())
 	}

@@ -4,8 +4,8 @@ import (
 	"net/url"
 )
 
-func BuildSearchUrl(searchString string, rootUrl string) (string, error) {
-	baseUrl, err := url.Parse(rootUrl)
+func BuildSearchUrl(searchString string) (string, error) {
+	baseUrl, err := url.Parse(googleSearchBaseUrl)
 	if err != nil {
 		return "", err
 	}
