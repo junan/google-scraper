@@ -21,7 +21,7 @@ func (c *Search) Create() {
 
 	//c.Ctx.Request.ParseForm()
 
-	_, errs := forms.SearchProcess(file, header)
+	errs := forms.SearchProcess(file, header)
 	if len(errs) > 0 {
 		flash.Error(fmt.Sprint(errs))
 	} else {
