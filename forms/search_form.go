@@ -2,7 +2,9 @@ package forms
 
 import (
 	"encoding/csv"
+	"fmt"
 	"mime/multipart"
+	"reflect"
 
 	"github.com/beego/beego/v2/core/validation"
 )
@@ -27,7 +29,6 @@ func SearchProcess(file multipart.File) ([][]string, error) {
 	return records, err
 }
 
-
 func readData(file multipart.File) ([][]string, error) {
 	//fileExt := path.Ext(head.Filename)
 	//if fileExt != ".jpg" && fileExt != ".png" && fileExt != ".jpeg"{
@@ -36,16 +37,17 @@ func readData(file multipart.File) ([][]string, error) {
 	//	return
 	//}
 
-
 	r := csv.NewReader(file)
 
 	// skip first line
-	if _, err := r.Read(); err != nil {
+	_, err := r.Read()
+	if err != nil {
 		return [][]string{}, err
 	}
 
 	records, err := r.ReadAll()
-
+	tj := reflect.TypeOf(records)
+	fmt.Println(tj)
 	if err != nil {
 		return [][]string{}, err
 	}
