@@ -1,10 +1,10 @@
 package crawler_test
 
 import (
+	. "google-scraper/services/crawler"
+
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
-
-	. "google-scraper/services/crawler"
 )
 
 var _ = Describe("Crawler", func() {
