@@ -4,7 +4,6 @@ import (
 	"encoding/csv"
 	"mime/multipart"
 	"path"
-
 	"github.com/beego/beego/v2/core/validation"
 )
 
@@ -36,7 +35,7 @@ func (csv *CSV) Valid(v *validation.Validation) {
 	// Verifying csv format
 	_, err := readKeywords(csv.File)
 	if err != nil {
-		_ = v.SetError("File", err.Error())
+		_ = v.SetError("File", firstCapitalise(err.Error()))
 	}
 }
 
