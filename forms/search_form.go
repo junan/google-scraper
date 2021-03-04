@@ -2,12 +2,18 @@ package forms
 
 import (
 	"encoding/csv"
+	"errors"
 	"fmt"
 	"mime/multipart"
+	"path"
 	"reflect"
 
 	"github.com/beego/beego/v2/core/validation"
 )
+
+var AllowExtensionMap = map[string]bool{
+	".csv": true,
+}
 
 type SearchForm struct {
 	File string `form:"file" valid:"Required;"`
@@ -23,10 +29,20 @@ func (searchForm *SearchForm) Valid(v *validation.Validation) {
 	//}
 }
 
-func SearchProcess(file multipart.File) ([][]string, error) {
-	records, err := readData(file)
+func SearchProcess(file multipart.File, header *multipart.FileHeader) ([][]string, []error) {
+	extension := path.Ext(header.Filename)
+	_, ok := AllowExtensionMap[extension]
+	if !ok {
+		err := errors.New("The uploaded file needs to be in CSV format")
+		return [][]string{}, []error{err}
+	}
 
-	return records, err
+	records, err := readData(file)
+	if err != nil {
+		return [][]string{}, []error{err}
+	}
+
+	return records, []error{}
 }
 
 func readData(file multipart.File) ([][]string, error) {

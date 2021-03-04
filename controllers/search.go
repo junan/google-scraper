@@ -14,14 +14,16 @@ type Search struct {
 }
 
 func (c *Search) Create() {
-	file, _, err := c.GetFile("file")
+	file, header, _ := c.GetFile("file")
 
 	redirectPath := "/"
 	flash := web.NewFlash()
 
-	_, err = forms.SearchProcess(file)
-	if err != nil {
-		flash.Error(fmt.Sprint(err))
+	//c.Ctx.Request.ParseForm()
+
+	_, errs := forms.SearchProcess(file, header)
+	if len(errs) > 0 {
+		flash.Error(fmt.Sprint(errs))
 	} else {
 		flash.Success("You csv file has been uploaded")
 	}
