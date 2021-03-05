@@ -25,6 +25,7 @@ type CSV struct {
 }
 
 func (csv *CSV) Valid(v *validation.Validation) {
+	// TODO: Need to implement CSV length validation
 	// Verifying file is not empty
 	if csv.File == nil {
 		_ = v.SetError("File", "File can't be blank")
