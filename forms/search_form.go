@@ -5,10 +5,15 @@ import (
 	"mime/multipart"
 	"path"
 
+	"google-scraper/models"
+	. "google-scraper/services/crawler"
+
+	"github.com/beego/beego/v2/core/logs"
 	"github.com/beego/beego/v2/core/validation"
 )
 
-var keywords [][]string
+var keywordStrings [][]string
+var keywordIds []int64
 var allowedExtensionMap = map[string]bool{
 	".csv": true,
 }
@@ -47,7 +52,7 @@ func (csv *CSV) Valid(v *validation.Validation) {
 	}
 }
 
-func PerformSearch(file multipart.File, header *multipart.FileHeader) (err error) {
+func PerformSearch(file multipart.File, header *multipart.FileHeader, user *models.User) (err error) {
 	csvFile := CSV{File: file, Header: header, Size: getSizeInMb(header)}
 	validation := validation.Validation{}
 	success, err := validation.Valid(&csvFile)
@@ -62,7 +67,16 @@ func PerformSearch(file multipart.File, header *multipart.FileHeader) (err error
 		}
 	}
 
-	// Do the cron jobs
+	// TODO: This part will be processed in cron job, will be added some request delay technique and requeue the jon on fails
+	// Storing the search string in the Keyword model and creating SearchData model with the crawled data using the keyword object
+	for _, row := range keywordStrings {
+		for _, name := range row {
+			keyword, err :=  storeKeyword(name, user)
+			if err != nil {
+				Crawl(keyword)
+			}
+		}
+	}
 
 	return err
 }
@@ -76,12 +90,12 @@ func readKeywords(file multipart.File) ([][]string, error) {
 		return [][]string{}, err
 	}
 
-	keywords, err := r.ReadAll()
+	keywordStrings, err = r.ReadAll()
 	if err != nil {
 		return [][]string{}, err
 	}
 
-	return keywords, nil
+	return keywordStrings, nil
 }
 
 func getSizeInMb(header *multipart.FileHeader) int64 {
@@ -93,4 +107,22 @@ func getSizeInMb(header *multipart.FileHeader) int64 {
 	}
 
 	return size
+}
+
+func storeKeyword(name string, user *models.User) (keyword *models.Keyword, err error) {
+	keyword = &models.Keyword{
+		Name: name,
+		User: user,
+	}
+
+	id, err := models.CreateKeyword(keyword)
+	if err != nil {
+		logs.Error("Creating keyword failed: ", err)
+
+	} else {
+		result := append(keywordIds, id)
+		keywordIds = result
+	}
+
+	return keyword, err
 }

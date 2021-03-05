@@ -21,13 +21,14 @@ func (c *Search) Create() {
 	if err != nil {
 		logs.Error("Getting file failed: ", err)
 	}
-	err = forms.PerformSearch(file, header)
+	err = forms.PerformSearch(file, header, c.CurrentUser)
 
 	if err != nil {
 		flash.Error(err.Error())
 	} else {
 		flash.Success("You csv file has been uploaded")
 	}
+
 	flash.Store(&c.Controller)
 	c.Ctx.Redirect(http.StatusFound, redirectPath)
 }
