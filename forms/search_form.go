@@ -84,6 +84,9 @@ func PerformSearch(file multipart.File, header *multipart.FileHeader, user *mode
 
 func readKeywords(file multipart.File) ([][]string, error) {
 	r := csv.NewReader(file)
+	// To support semicolon separated csv and comments
+	r.Comma = ';'
+	r.Comment = '#'
 
 	// skip csv header
 	_, err := r.Read()
