@@ -30,13 +30,13 @@ func MakeRequest(method string, url string, body io.Reader) *http.Response {
 	return response.Result()
 }
 
-func MakeAuthenticatedRequest(method string, url string, body io.Reader, user *models.User) *http.Response {
+func MakeAuthenticatedRequest(method string, url string, body io.Reader, contentType string,user *models.User) *http.Response {
 	request, err := http.NewRequest(method, url, body)
 	if err != nil {
 		Fail("Failed to create request: " + err.Error())
 	}
 
-	request.Header.Add("Content-Type", "application/x-www-form-urlencoded")
+	request.Header.Add("Content-Type", contentType)
 
 	responseRecorder := httptest.NewRecorder()
 	store, err := web.GlobalSessions.SessionStart(responseRecorder, request)
