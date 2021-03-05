@@ -26,7 +26,7 @@ func (c *Search) Create() {
 	if err != nil {
 		flash.Error(err.Error())
 	} else {
-		flash.Success("You csv file has been uploaded")
+		flash.Success("Your csv file has been uploaded successfully")
 	}
 
 	flash.Store(&c.Controller)

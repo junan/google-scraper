@@ -8,6 +8,7 @@ type Keyword struct {
 	Base
 
 	Name string
+	SearchCompleted bool  `default:"false"`
 	User *User `orm:"rel(fk)"`
 }
 
