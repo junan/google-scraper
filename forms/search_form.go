@@ -63,16 +63,17 @@ func PerformSearch(file multipart.File, header *multipart.FileHeader, user *mode
 
 	if !success {
 		for _, err := range validation.Errors {
+			// Returning only first error, as there will be only one error
 			return err
 		}
 	}
 
 	// TODO: This part will be processed in cron job, will be added some request delay technique and requeue the jon on fails
-	// Storing the search string in the Keyword model and creating SearchData model with the crawled data using the keyword object
+	// Storing the search string in the Keyword model and creating SearchResult model with the crawled data using the keyword object
 	for _, row := range keywordStrings {
 		for _, name := range row {
 			keyword, err :=  storeKeyword(name, user)
-			if err != nil {
+			if err == nil {
 				Crawl(keyword)
 			}
 		}

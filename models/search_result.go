@@ -14,7 +14,9 @@ type SearchResult struct {
 	ResultsUrls                 string `orm:"type(json);null"`
 	TotalLinksCount             int    `default:"0"`
 	Html                        string `orm:"type(text);"`
-	Keyword *Keyword `orm:"rel(fk)"`
+
+	//One to one relationship, each keyword(model) has one search result(model)
+	Keyword *Keyword `orm:"null;rel(one);on_delete(set_null)"`
 }
 
 func CreateSearchResult(s *SearchResult) (id int64, err error) {
