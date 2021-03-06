@@ -22,9 +22,9 @@ var _ = Describe("SearchController", func() {
 					email := "john@example.com"
 					password := "secret"
 					user := FabricateUser("John", email, password)
-					body, contentType := CreateMultipartFormData("valid_keywords.csv")
+					body := CreateMultipartFormData("valid_keywords.csv")
 
-					response := MakeAuthenticatedRequest("POST", "/search", body, contentType, &user)
+					response := MakeAuthenticatedRequest("POST", "/search", body, &user)
 
 					flash := GetFlash(response.Cookies())
 
@@ -35,9 +35,9 @@ var _ = Describe("SearchController", func() {
 					email := "john@example.com"
 					password := "secret"
 					user := FabricateUser("John", email, password)
-					body, contentType := CreateMultipartFormData("valid_keywords.csv")
+					body := CreateMultipartFormData("valid_keywords.csv")
 
-					response := MakeAuthenticatedRequest("POST", "/search", body, contentType, &user)
+					response := MakeAuthenticatedRequest("POST", "/search", body, &user)
 
 					path := GetUrlPath(response)
 

@@ -29,7 +29,7 @@ func GetSession(cookies []*http.Cookie, key string) interface{} {
 	return nil
 }
 
-func CreateMultipartFormData(filename string) (*bytes.Buffer, string) {
+func CreateMultipartFormData(filename string) *bytes.Buffer {
 	rootPath, err := os.Getwd()
 	if err != nil {
 		Fail("Getting rootPath failed: " + err.Error())
@@ -45,7 +45,11 @@ func CreateMultipartFormData(filename string) (*bytes.Buffer, string) {
 
 	body := &bytes.Buffer{}
 	writer := multipart.NewWriter(body)
-	part, _ := writer.CreateFormFile("file", filepath.Base(path))
+	writer.SetBoundary("multipart-boundary")
+	part, err := writer.CreateFormFile("file", filepath.Base(path))
+	if err != nil {
+		Fail("Creating form file failed: " + err.Error())
+	}
 
 	_, err = io.Copy(part, file)
 	if err != nil {
@@ -57,5 +61,5 @@ func CreateMultipartFormData(filename string) (*bytes.Buffer, string) {
 		Fail("Closing writer failed: " + err.Error())
 	}
 
-	return body, writer.FormDataContentType()
+	return body
 }

@@ -30,10 +30,17 @@ func MakeRequest(method string, url string, body io.Reader) *http.Response {
 	return response.Result()
 }
 
-func MakeAuthenticatedRequest(method string, url string, body io.Reader, contentType string,user *models.User) *http.Response {
+func MakeAuthenticatedRequest(method string, url string, body io.Reader, user *models.User) *http.Response {
+	var contentType string
 	request, err := http.NewRequest(method, url, body)
 	if err != nil {
 		Fail("Failed to create request: " + err.Error())
+	}
+
+	if url == "/search" {
+		contentType = "multipart/form-data; boundary=multipart-boundary"
+	} else {
+		contentType = "application/x-www-form-urlencoded"
 	}
 
 	request.Header.Add("Content-Type", contentType)
@@ -45,7 +52,6 @@ func MakeAuthenticatedRequest(method string, url string, body io.Reader, content
 	}
 
 	err = store.Set(context.Background(), controllers.CurrentUserSession, user.Id)
-
 	if err != nil {
 		Fail("Failed to set current user" + err.Error())
 	}

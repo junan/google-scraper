@@ -5,8 +5,8 @@ import (
 
 	"google-scraper/forms"
 
-	"github.com/beego/beego/v2/server/web"
 	"github.com/beego/beego/v2/core/logs"
+	"github.com/beego/beego/v2/server/web"
 )
 
 type Search struct {
