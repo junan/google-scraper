@@ -14,6 +14,14 @@ import (
 
 var keywordStrings [][]string
 var keywordIds []int64
+var CsvKeywordValidationCriteria = [...]string{"presence", "size", "extension", "format", "count"}
+var CSVValidationMessageMapping = map[string]string{
+	"presence":  "File can't be blank.",
+	"size":      "File size can't be more than 5 MB.",
+	"extension": "Please upload the file in CSV format.",
+	"format":    "CSV contents are not in correct format.",
+	"count":     "Keywords count can't be more than 1000 or less than 1.",
+}
 var allowedExtensionMap = map[string]bool{
 	".csv": true,
 }
@@ -25,31 +33,12 @@ type CSV struct {
 }
 
 func (csv *CSV) Valid(v *validation.Validation) {
-	// TODO: Need to implement CSV length validation
-	// Verifying file is not empty
-	if csv.File == nil {
-		_ = v.SetError("File", "File can't be blank")
-		return
-	}
-
-	// Verifying file size is not more than 5MB
-	if csv.Size > 5 {
-		_ = v.SetError("Size", "File size can't be more than 5 MB")
-		return
-	}
-
-	// Verifying uploaded file is in CSV format
-	extension := path.Ext(csv.Header.Filename)
-	_, ok := allowedExtensionMap[extension]
-	if !ok {
-		_ = v.SetError("File", "File should be in CSV format")
-		return
-	}
-
-	// Verifying csv format
-	_, err := readKeywords(csv.File)
-	if err != nil {
-		_ = v.SetError("File", firstCapitalise(err.Error()))
+	for _, criteria := range CsvKeywordValidationCriteria {
+		success := validate(criteria, csv)
+		if !success {
+			v.SetError("File", CSVValidationMessageMapping[criteria])
+			break
+		}
 	}
 }
 
@@ -73,7 +62,7 @@ func PerformSearch(file multipart.File, header *multipart.FileHeader, user *mode
 	// Storing the search string in the Keyword model and creating SearchResult model with the crawled data using the keyword object
 	for _, row := range keywordStrings {
 		for _, name := range row {
-			keyword, err :=  storeKeyword(name, user)
+			keyword, err := storeKeyword(name, user)
 			if err == nil {
 				Crawl(keyword)
 			}
@@ -85,9 +74,6 @@ func PerformSearch(file multipart.File, header *multipart.FileHeader, user *mode
 
 func readKeywords(file multipart.File) ([][]string, error) {
 	r := csv.NewReader(file)
-	// To support semicolon separated csv and comments
-	r.Comma = ';'
-	r.Comment = '#'
 
 	// skip csv header
 	_, err := r.Read()
@@ -130,4 +116,58 @@ func storeKeyword(name string, user *models.User) (keyword *models.Keyword, err 
 	}
 
 	return keyword, err
+}
+
+func validate(criteria string, csv *CSV) bool {
+	if criteria == "presence" {
+		return validateFilePresence(csv)
+	} else if criteria == "size" {
+		return validateFileSize(csv)
+	} else if criteria == "extension" {
+		return validateFileExtension(csv)
+	} else if criteria == "format" {
+		return validateKeywordFormat(csv)
+	} else if criteria == "count" {
+		return validateKeywordCount(keywordStrings)
+	}
+
+	return true
+}
+
+func validateFilePresence(csv *CSV) bool {
+	return csv.File != nil
+}
+
+func validateFileSize(csv *CSV) bool {
+	return csv.Size < 5 // 5 = five megabyte
+}
+
+func validateFileExtension(csv *CSV) bool {
+	extension := path.Ext(csv.Header.Filename)
+	_, ok := allowedExtensionMap[extension]
+
+	return ok
+}
+
+func validateKeywordFormat(csv *CSV) bool {
+	_, err := readKeywords(csv.File)
+	if err != nil {
+		return false
+	}
+
+	return true
+}
+
+func validateKeywordCount(keywords [][]string) bool {
+	row := len(keywords)
+	switch row {
+	case 0:
+		return false
+	case 1:
+		return len(keywords[0]) <= 1000
+	default:
+		column := len(keywords[1])
+		totalCount := row * column
+		return totalCount <= 1000
+	}
 }
