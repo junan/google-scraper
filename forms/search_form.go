@@ -58,7 +58,7 @@ func PerformSearch(file multipart.File, header *multipart.FileHeader, user *mode
 		}
 	}
 
-	// TODO: This part will be processed in cron job, will be added some request delay technique and requeue the job on fails
+	// TODO: This part will be processed in cron job, will be added some request delay technique and requeue the job on fails in other task.
 	// Storing the search string in the Keyword model and creating SearchResult model with the crawled data using the keyword object
 	for _, row := range keywordStrings {
 		for _, name := range row {

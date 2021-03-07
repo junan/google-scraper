@@ -15,6 +15,5 @@ func (c *Dashboard) New() {
 }
 
 func (c *Dashboard) setAttributes() {
-	c.Layout = "layouts/authentication.html"
 	c.TplName = "dashboard/new.html"
 }

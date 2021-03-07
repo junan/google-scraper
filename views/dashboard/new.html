@@ -1,7 +1,11 @@
-{{ template "shared/alert.html" . }}
+<div class="user-search">
+  <div class="user-search">
+    <h3 class="user-search__title">
+      Search on Google by uploading CSV keywords file
+    </h3>
+  </div>
+</div>
 
-<!-- TODO: will improve/refactor it in the front end tickets -->
-<form action="/search" method="post" enctype="multipart/form-data" >
-    <input type="file" name="file" />
-    <input type="submit" value="Upload" />
-</form>
+<div class="user-search__body">
+  {{ template "shared/alert.html" . }} {{ template "dashboard/form.html" . }}
+</div>
