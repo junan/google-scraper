@@ -13,7 +13,7 @@ import (
 var _ = Describe("Keyword", func() {
 	Describe("#CreateKeyword", func() {
 		Context("given the keyword with valid params", func() {
-			It("returns the user ID", func() {
+			It("returns the keyword ID", func() {
 				user := FabricateUser("John", "john@example.com", "secret")
 				keyword := &models.Keyword{
 					Name: "Buy Domain",
