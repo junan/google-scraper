@@ -42,76 +42,88 @@ var _ = Describe("SearchController", func() {
 					})
 				})
 			})
+
+			Context("given the form params are INVALID", func() {
+				Context("given the uploaded file is nil", func() {
+					It("sets flash error message", func() {
+						user := FabricateUser("John", "john@example.com", "secret")
+						body := CreateEmptyMultipartBody()
+
+						response := MakeAuthenticatedRequest("POST", "/search", body, &user)
+
+						flash := GetFlash(response.Cookies())
+
+						Expect(flash.Data["error"]).To(Equal("File can't be blank."))
+					})
+				})
+
+				Context("given the file keywords are empty", func() {
+					It("sets flash error message", func() {
+						user := FabricateUser("John", "john@example.com", "secret")
+						emptyCsvFilePath := AppRootDir(0) + "/fixtures/shared/empty_keyword.csv"
+						_, body := CreateMultipartFormData(emptyCsvFilePath)
+
+						response := MakeAuthenticatedRequest("POST", "/search", body, &user)
+
+						flash := GetFlash(response.Cookies())
+
+						Expect(flash.Data["error"]).To(Equal("Keywords count can't be more than 1000 or less than 1."))
+					})
+				})
+
+				Context("given the CSV file is wrong formatted", func() {
+					It("sets flash error message", func() {
+						user := FabricateUser("John", "john@example.com", "secret")
+						emptyCsvFilePath := AppRootDir(0) + "/fixtures/shared/invalid_keyword.csv"
+						_, body := CreateMultipartFormData(emptyCsvFilePath)
+
+						response := MakeAuthenticatedRequest("POST", "/search", body, &user)
+
+						flash := GetFlash(response.Cookies())
+
+						Expect(flash.Data["error"]).To(Equal("CSV contents are not in correct format."))
+					})
+				})
+
+				Context("given the file is an image", func() {
+					It("sets flash error message", func() {
+						user := FabricateUser("John", "john@example.com", "secret")
+						emptyCsvFilePath := AppRootDir(0) + "/fixtures/shared/test.jpeg"
+						_, body := CreateMultipartFormData(emptyCsvFilePath)
+
+						response := MakeAuthenticatedRequest("POST", "/search", body, &user)
+
+						flash := GetFlash(response.Cookies())
+
+						Expect(flash.Data["error"]).To(Equal("Please upload the file in CSV format."))
+					})
+				})
+
+				Context("given the file size is more than 5 megabytes", func() {
+					It("sets flash error message", func() {
+						user := FabricateUser("John", "john@example.com", "secret")
+						emptyCsvFilePath := AppRootDir(0) + "/fixtures/shared/big_file.pdf"
+						_, body := CreateMultipartFormData(emptyCsvFilePath)
+
+						response := MakeAuthenticatedRequest("POST", "/search", body, &user)
+
+						flash := GetFlash(response.Cookies())
+
+						Expect(flash.Data["error"]).To(Equal("File size can't be more than 5 MB."))
+					})
+				})
+			})
 		})
 
-		Context("given the form params are INVALID", func() {
-			Context("given the uploaded file is nil", func() {
-				It("sets flash error message", func() {
-					user := FabricateUser("John", "john@example.com", "secret")
-					body := CreateEmptyMultipartBody()
+		Context("given the user is a guest user", func() {
+			It("redirects to the login path", func() {
+				body := CreateEmptyMultipartBody()
 
-					response := MakeAuthenticatedRequest("POST", "/search", body, &user)
+				response := MakeRequest("POST", "/login", body)
 
-					flash := GetFlash(response.Cookies())
+				path := GetUrlPath(response)
 
-					Expect(flash.Data["error"]).To(Equal("File can't be blank."))
-				})
-			})
-
-			Context("given the file keywords are empty", func() {
-				It("sets flash error message", func() {
-					user := FabricateUser("John", "john@example.com", "secret")
-					emptyCsvFilePath := AppRootDir(0) + "/fixtures/shared/empty_keyword.csv"
-					_, body := CreateMultipartFormData(emptyCsvFilePath)
-
-					response := MakeAuthenticatedRequest("POST", "/search", body, &user)
-
-					flash := GetFlash(response.Cookies())
-
-					Expect(flash.Data["error"]).To(Equal("Keywords count can't be more than 1000 or less than 1."))
-				})
-			})
-
-			Context("given the CSV file is wrong formatted", func() {
-				It("sets flash error message", func() {
-					user := FabricateUser("John", "john@example.com", "secret")
-					emptyCsvFilePath := AppRootDir(0) + "/fixtures/shared/invalid_keyword.csv"
-					_, body := CreateMultipartFormData(emptyCsvFilePath)
-
-					response := MakeAuthenticatedRequest("POST", "/search", body, &user)
-
-					flash := GetFlash(response.Cookies())
-
-					Expect(flash.Data["error"]).To(Equal("CSV contents are not in correct format."))
-				})
-			})
-
-			Context("given the file is an image", func() {
-				It("sets flash error message", func() {
-					user := FabricateUser("John", "john@example.com", "secret")
-					emptyCsvFilePath := AppRootDir(0) + "/fixtures/shared/test.jpeg"
-					_, body := CreateMultipartFormData(emptyCsvFilePath)
-
-					response := MakeAuthenticatedRequest("POST", "/search", body, &user)
-
-					flash := GetFlash(response.Cookies())
-
-					Expect(flash.Data["error"]).To(Equal("Please upload the file in CSV format."))
-				})
-			})
-
-			Context("given the file size is more than 5 megabytes", func() {
-				It("sets flash error message", func() {
-					user := FabricateUser("John", "john@example.com", "secret")
-					emptyCsvFilePath := AppRootDir(0) + "/fixtures/shared/big_file.pdf"
-					_, body := CreateMultipartFormData(emptyCsvFilePath)
-
-					response := MakeAuthenticatedRequest("POST", "/search", body, &user)
-
-					flash := GetFlash(response.Cookies())
-
-					Expect(flash.Data["error"]).To(Equal("File size can't be more than 5 MB."))
-				})
+				Expect(path).To(Equal("/"))
 			})
 		})
 	})

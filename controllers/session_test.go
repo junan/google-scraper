@@ -137,7 +137,6 @@ var _ = Describe("SessionController", func() {
 				path := GetUrlPath(response)
 
 				Expect(path).To(Equal("/"))
-
 			})
 		})
 	})
