@@ -209,6 +209,6 @@ var _ = Describe("SessionForm", func() {
 	})
 
 	AfterEach(func() {
-		TruncateTable("users")
+		TruncateTables("users")
 	})
 })

@@ -13,10 +13,6 @@ import (
 )
 
 var _ = Describe("RegistrationController", func() {
-	AfterEach(func() {
-		TruncateTable("users")
-	})
-
 	Describe("GET", func() {
 		Context("given the user is a guest user", func() {
 			It("returns 200 status code", func() {
@@ -130,5 +126,9 @@ var _ = Describe("RegistrationController", func() {
 				Expect(path).To(Equal("/"))
 			})
 		})
+	})
+
+	AfterEach(func() {
+		TruncateTables("users")
 	})
 })

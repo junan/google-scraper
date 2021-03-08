@@ -9,12 +9,6 @@ import (
 )
 
 var _ = Describe("SearchController", func() {
-	AfterEach(func() {
-		TruncateTable("users")
-		TruncateTable("keywords")
-		TruncateTable("search_results")
-	})
-
 	Describe("POST", func() {
 		Context("given the user is an authenticated user", func() {
 			Context("given the user is uploaded a valid CSV file", func() {
@@ -45,5 +39,9 @@ var _ = Describe("SearchController", func() {
 				})
 			})
 		})
+	})
+
+	AfterEach(func() {
+		TruncateTables("users", "keywords", "search_results")
 	})
 })

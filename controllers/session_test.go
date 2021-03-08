@@ -180,6 +180,6 @@ var _ = Describe("SessionController", func() {
 	})
 
 	AfterEach(func() {
-		TruncateTable("users")
+		TruncateTables("users")
 	})
 })
