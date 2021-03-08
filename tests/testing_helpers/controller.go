@@ -1,7 +1,9 @@
 package testing_helpers
 
 import (
+	"bytes"
 	"context"
+	"mime/multipart"
 	"net/http"
 
 	"github.com/beego/beego/v2/server/web"
@@ -22,4 +24,13 @@ func GetSession(cookies []*http.Cookie, key string) interface{} {
 		}
 	}
 	return nil
+}
+
+func CreateEmptyMultipartBody() *bytes.Buffer {
+	body := &bytes.Buffer{}
+	writer := multipart.NewWriter(body)
+	writer.SetBoundary("multipart-boundary")
+	writer.Close()
+
+	return body
 }

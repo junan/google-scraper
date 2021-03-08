@@ -15,7 +15,7 @@ var _ = Describe("SearchForm", func() {
 		Context("given the search attributes are valid", func() {
 			It("does NOT generate any error", func() {
 				user := FabricateUser("John", "john@example.comn", "secret")
-				validCsvFilePath := AppRootDir(0) + "/fixtures/controller/search/valid_keywords.csv"
+				validCsvFilePath := AppRootDir(0) + "/fixtures/forms/valid_keywords.csv"
 				file, header, err := GetFormFileData(validCsvFilePath)
 				if err != nil {
 					Fail("Getting form file data failed: " + err.Error())
@@ -31,7 +31,7 @@ var _ = Describe("SearchForm", func() {
 		})
 
 		Context("given the search attributes are INVALID", func() {
-			Context("given the file is blank", func() {
+			Context("given the file is nil", func() {
 				It("returns an error", func() {
 					user := FabricateUser("John", "john@example.comn", "secret")
 
@@ -41,7 +41,7 @@ var _ = Describe("SearchForm", func() {
 				})
 			})
 
-			Context("given the file content is blank", func() {
+			Context("given the file keywords are empty", func() {
 				It("returns an error", func() {
 					user := FabricateUser("John", "john@example.comn", "secret")
 					validCsvFilePath := AppRootDir(0) + "/fixtures/forms/empty_keyword.csv"
@@ -71,7 +71,7 @@ var _ = Describe("SearchForm", func() {
 				})
 			})
 
-			Context("given the file is a image", func() {
+			Context("given the file is an image", func() {
 				It("returns an error", func() {
 					user := FabricateUser("John", "john@example.comn", "secret")
 					validCsvFilePath := AppRootDir(0) + "/fixtures/forms/test.jpeg"
