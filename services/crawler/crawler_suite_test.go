@@ -3,14 +3,12 @@ package crawler_test
 import (
 	"os"
 	"path"
-	"path/filepath"
-	"runtime"
 	"testing"
 
 	_ "google-scraper/initializers"
 
-	"github.com/beego/beego/v2/server/web"
 	"github.com/beego/beego/v2/core/logs"
+	"github.com/beego/beego/v2/server/web"
 	"github.com/jarcoal/httpmock"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
@@ -41,9 +39,3 @@ var _ = AfterSuite(func() {
 	httpmock.DeactivateAndReset()
 })
 
-func JppRootDir(skip int) string {
-	_, currentFile, _, _ := runtime.Caller(0)
-	currentFilePath := path.Join(path.Dir(currentFile), "..")
-	result := filepath.Dir(currentFilePath)
-	return result
-}
