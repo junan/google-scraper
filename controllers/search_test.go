@@ -16,7 +16,8 @@ var _ = Describe("SearchController", func() {
 					email := "john@example.com"
 					password := "secret"
 					user := FabricateUser("John", email, password)
-					body := CreateMultipartFormData("valid_keywords.csv")
+					filePath := AppRootDir(0) + "/fixtures/controller/search/valid_keywords.csv"
+					_, body := CreateMultipartFormData(filePath)
 
 					response := MakeAuthenticatedRequest("POST", "/search", body, &user)
 
@@ -29,7 +30,9 @@ var _ = Describe("SearchController", func() {
 					email := "john@example.com"
 					password := "secret"
 					user := FabricateUser("John", email, password)
-					body := CreateMultipartFormData("valid_keywords.csv")
+					filePath := AppRootDir(0) + "/fixtures/controller/search/valid_keywords.csv"
+
+					_, body := CreateMultipartFormData(filePath)
 
 					response := MakeAuthenticatedRequest("POST", "/search", body, &user)
 

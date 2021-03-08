@@ -1,13 +1,8 @@
 package testing_helpers
 
 import (
-	"bytes"
 	"context"
-	"io"
-	"mime/multipart"
 	"net/http"
-	"os"
-	"path/filepath"
 
 	"github.com/beego/beego/v2/server/web"
 	. "github.com/onsi/ginkgo"
@@ -27,39 +22,4 @@ func GetSession(cookies []*http.Cookie, key string) interface{} {
 		}
 	}
 	return nil
-}
-
-func CreateMultipartFormData(filename string) *bytes.Buffer {
-	rootPath, err := os.Getwd()
-	if err != nil {
-		Fail("Getting rootPath failed: " + err.Error())
-	}
-
-	path := rootPath + "/tests/fixtures/controller/search/" + filename
-	file, err := os.Open(path)
-	if err != nil {
-		Fail("Opening file failed: " + err.Error())
-	}
-
-	defer file.Close()
-
-	body := &bytes.Buffer{}
-	writer := multipart.NewWriter(body)
-	writer.SetBoundary("multipart-boundary")
-	part, err := writer.CreateFormFile("file", filepath.Base(path))
-	if err != nil {
-		Fail("Creating form file failed: " + err.Error())
-	}
-
-	_, err = io.Copy(part, file)
-	if err != nil {
-		Fail("Copying file failed: " + err.Error())
-	}
-
-	err = writer.Close()
-	if err != nil {
-		Fail("Closing writer failed: " + err.Error())
-	}
-
-	return body
 }

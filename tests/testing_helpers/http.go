@@ -1,19 +1,22 @@
 package testing_helpers
 
 import (
+	"bytes"
 	"context"
 	"io"
 	"io/ioutil"
+	"mime/multipart"
 	"net/http"
 	"net/http/httptest"
-
-	"google-scraper/controllers"
-	"google-scraper/models"
-	. "google-scraper/services/crawler"
+	"os"
+	"path/filepath"
 
 	"github.com/beego/beego/v2/server/web"
 	"github.com/jarcoal/httpmock"
 	. "github.com/onsi/ginkgo"
+
+	"google-scraper/controllers"
+	"google-scraper/models"
 )
 
 func MakeRequest(method string, url string, body io.Reader) *http.Response {
@@ -61,17 +64,62 @@ func MakeAuthenticatedRequest(method string, url string, body io.Reader, user *m
 	return responseRecorder.Result()
 }
 
-func MockCrawling(searchString string, filePath string) {
-	searchUrl, err := BuildSearchUrl(searchString)
-	if err != nil {
-		Fail("Building search url failed: " + err.Error())
-	}
-
-	content, err := ioutil.ReadFile(filePath)
+func MockCrawling(mockResponseFilePath string) {
+	content, err := ioutil.ReadFile(mockResponseFilePath)
 	if err != nil {
 		Fail("Reading file failed: " + err.Error())
 	}
 
-	httpmock.RegisterResponder("GET", searchUrl,
+	httpmock.RegisterResponder("GET", `=~^https://www.google.com/search+\z`,
 		httpmock.NewStringResponder(200, string(content)))
+}
+
+func CreateMultipartFormData(filePath string) (http.Header, *bytes.Buffer) {
+	file, err := os.Open(filePath)
+	if err != nil {
+		Fail("Opening file failed: " + err.Error())
+	}
+
+	defer file.Close()
+
+	body := &bytes.Buffer{}
+	writer := multipart.NewWriter(body)
+	writer.SetBoundary("multipart-boundary")
+	part, err := writer.CreateFormFile("file", filepath.Base(filePath))
+	if err != nil {
+		Fail("Creating form file failed: " + err.Error())
+	}
+
+	_, err = io.Copy(part, file)
+	if err != nil {
+		Fail("Copying file failed: " + err.Error())
+	}
+
+	err = writer.Close()
+	if err != nil {
+		Fail("Closing writer failed: " + err.Error())
+	}
+
+	headers := http.Header{}
+	headers.Set("Content-Type", writer.FormDataContentType())
+
+	return headers, body
+}
+
+
+func GetFormFileData(filePath string) (multipart.File, *multipart.FileHeader, error) {
+	headers, body := CreateMultipartFormData(filePath)
+
+	req, err := http.NewRequest("POST", "", body)
+	if err != nil {
+		Fail("Creating request failed: " + err.Error())
+	}
+	req.Header = headers
+
+	file, header, err := req.FormFile("file")
+	if err != nil {
+		Fail("Getting FormFile data failed: " + err.Error())
+	}
+
+	return file, header, err
 }

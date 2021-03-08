@@ -21,4 +21,3 @@ func TruncateTables(tableNames ...string) {
 		logs.Error("Failed to truncate table", err)
 	}
 }
-
