@@ -21,7 +21,7 @@ var _ = Describe("SearchForm", func() {
 					Fail("Getting form file data failed: " + err.Error())
 				}
 
-				mockResponseFilePath := AppRootDir(0) + "/fixtures/services/crawler/valid_get_request.html"
+				mockResponseFilePath := AppRootDir(0) + "/fixtures/services/crawler/valid_get_response.html"
 				MockCrawling(mockResponseFilePath)
 
 				err = forms.PerformSearch(file, header, &user)

@@ -17,7 +17,7 @@ var _ = Describe("SearchController", func() {
 						user := FabricateUser("John", "john@example.com", "secret")
 						validCsvFilePath := AppRootDir(0) + "/fixtures/shared/valid_keywords.csv"
 						_, body := CreateMultipartFormData(validCsvFilePath)
-						mockResponseFilePath := AppRootDir(0) + "/fixtures/services/crawler/valid_get_request.html"
+						mockResponseFilePath := AppRootDir(0) + "/fixtures/services/crawler/valid_get_response.html"
 						MockCrawling(mockResponseFilePath)
 
 						response := MakeAuthenticatedRequest("POST", "/search", body, &user)
@@ -31,7 +31,7 @@ var _ = Describe("SearchController", func() {
 						user := FabricateUser("John", "john@example.com", "secret")
 						validCsvFilePath := AppRootDir(0) + "/fixtures/shared/valid_keywords.csv"
 						_, body := CreateMultipartFormData(validCsvFilePath)
-						mockResponseFilePath := AppRootDir(0) + "/fixtures/services/crawler/valid_get_request.html"
+						mockResponseFilePath := AppRootDir(0) + "/fixtures/services/crawler/valid_get_response.html"
 						MockCrawling(mockResponseFilePath)
 
 						response := MakeAuthenticatedRequest("POST", "/search", body, &user)
