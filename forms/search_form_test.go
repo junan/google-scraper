@@ -15,7 +15,7 @@ var _ = Describe("SearchForm", func() {
 		Context("given the search attributes are valid", func() {
 			It("does NOT generate any error", func() {
 				user := FabricateUser("John", "john@example.comn", "secret")
-				validCsvFilePath := AppRootDir(0) + "/fixtures/forms/valid_keywords.csv"
+				validCsvFilePath := AppRootDir(0) + "/fixtures/shared/valid_keywords.csv"
 				file, header, err := GetFormFileData(validCsvFilePath)
 				if err != nil {
 					Fail("Getting form file data failed: " + err.Error())
@@ -44,7 +44,7 @@ var _ = Describe("SearchForm", func() {
 			Context("given the file keywords are empty", func() {
 				It("returns an error", func() {
 					user := FabricateUser("John", "john@example.comn", "secret")
-					validCsvFilePath := AppRootDir(0) + "/fixtures/forms/empty_keyword.csv"
+					validCsvFilePath := AppRootDir(0) + "/fixtures/shared/empty_keyword.csv"
 					file, header, err := GetFormFileData(validCsvFilePath)
 					if err != nil {
 						Fail("Getting form file data failed: " + err.Error())
@@ -59,7 +59,7 @@ var _ = Describe("SearchForm", func() {
 			Context("given the CSV file is wrong formatted", func() {
 				It("returns an error", func() {
 					user := FabricateUser("John", "john@example.comn", "secret")
-					validCsvFilePath := AppRootDir(0) + "/fixtures/forms/invalid_keyword.csv"
+					validCsvFilePath := AppRootDir(0) + "/fixtures/shared/invalid_keyword.csv"
 					file, header, err := GetFormFileData(validCsvFilePath)
 					if err != nil {
 						Fail("Getting form file data failed: " + err.Error())
@@ -74,7 +74,7 @@ var _ = Describe("SearchForm", func() {
 			Context("given the file is an image", func() {
 				It("returns an error", func() {
 					user := FabricateUser("John", "john@example.comn", "secret")
-					validCsvFilePath := AppRootDir(0) + "/fixtures/forms/test.jpeg"
+					validCsvFilePath := AppRootDir(0) + "/fixtures/shared/test.jpeg"
 					file, header, err := GetFormFileData(validCsvFilePath)
 					if err != nil {
 						Fail("Getting form file data failed: " + err.Error())
@@ -89,7 +89,7 @@ var _ = Describe("SearchForm", func() {
 			Context("given the file size is more than 5 megabytes", func() {
 				It("returns an error", func() {
 					user := FabricateUser("John", "john@example.comn", "secret")
-					validCsvFilePath := AppRootDir(0) + "/fixtures/forms/big_file.pdf"
+					validCsvFilePath := AppRootDir(0) + "/fixtures/shared/big_file.pdf"
 					file, header, err := GetFormFileData(validCsvFilePath)
 					if err != nil {
 						Fail("Getting form file data failed: " + err.Error())
