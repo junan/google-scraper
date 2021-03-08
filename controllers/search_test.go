@@ -74,7 +74,7 @@ var _ = Describe("SearchController", func() {
 				Context("given the CSV file is wrong formatted", func() {
 					It("sets flash error message", func() {
 						user := FabricateUser("John", "john@example.com", "secret")
-						filePath := AppRootDir(0) + "/fixtures/controller/search/invalid_keyword.csv"
+						filePath := AppRootDir(0) + "/fixtures/shared/invalid_keyword.csv"
 						_, body := CreateMultipartFormData(filePath)
 
 						response := MakeAuthenticatedRequest("POST", "/search", body, &user)
@@ -88,7 +88,7 @@ var _ = Describe("SearchController", func() {
 				Context("given the file is an image", func() {
 					It("sets flash error message", func() {
 						user := FabricateUser("John", "john@example.com", "secret")
-						filePath := AppRootDir(0) + "/fixtures/controller/search/test.jpeg"
+						filePath := AppRootDir(0) + "/fixtures/shared/test.jpeg"
 						_, body := CreateMultipartFormData(filePath)
 
 						response := MakeAuthenticatedRequest("POST", "/search", body, &user)
@@ -102,7 +102,7 @@ var _ = Describe("SearchController", func() {
 				Context("given the file size is more than 5 megabytes", func() {
 					It("sets flash error message", func() {
 						user := FabricateUser("John", "john@example.com", "secret")
-						filePath := AppRootDir(0) + "/fixtures/controller/search/big_file.pdf"
+						filePath := AppRootDir(0) + "/fixtures/shared/big_file.pdf"
 						_, body := CreateMultipartFormData(filePath)
 
 						response := MakeAuthenticatedRequest("POST", "/search", body, &user)
