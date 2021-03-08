@@ -6,8 +6,8 @@ import (
 	"path"
 
 	"google-scraper/models"
-	. "google-scraper/services/crawler"
 
+	. "google-scraper/services/crawler"
 	"github.com/beego/beego/v2/core/logs"
 	"github.com/beego/beego/v2/core/validation"
 )

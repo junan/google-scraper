@@ -11,12 +11,12 @@ import (
 	"os"
 	"path/filepath"
 
+	"google-scraper/controllers"
+	"google-scraper/models"
+
 	"github.com/beego/beego/v2/server/web"
 	"github.com/jarcoal/httpmock"
 	. "github.com/onsi/ginkgo"
-
-	"google-scraper/controllers"
-	"google-scraper/models"
 )
 
 func MakeRequest(method string, url string, body io.Reader) *http.Response {
@@ -70,6 +70,7 @@ func MockCrawling(mockResponseFilePath string) {
 		Fail("Reading file failed: " + err.Error())
 	}
 
+	// Mocking every query string as it is not feasible to mock 1000 urls for 1000 keywords
 	httpmock.RegisterResponder("GET", `=~^https://www.google.com/search+\z`,
 		httpmock.NewStringResponder(200, string(content)))
 }
@@ -77,7 +78,7 @@ func MockCrawling(mockResponseFilePath string) {
 func CreateMultipartFormData(filePath string) (http.Header, *bytes.Buffer) {
 	file, err := os.Open(filePath)
 	if err != nil {
-		Fail("Opening file failed: " + err.Error())
+		Fail("Reading file failed: " + err.Error())
 	}
 
 	defer file.Close()
@@ -109,7 +110,6 @@ func CreateMultipartFormData(filePath string) (http.Header, *bytes.Buffer) {
 
 	return headers, body
 }
-
 
 func GetFormFileData(filePath string) (multipart.File, *multipart.FileHeader, error) {
 	headers, body := CreateMultipartFormData(filePath)

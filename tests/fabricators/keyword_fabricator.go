@@ -13,7 +13,7 @@ func FabricateKeyword(name string, user *User) Keyword {
 
 	_, err := o.Insert(&keyword)
 	if err != nil {
-		logs.Error("keyword creation  failed: ", err)
+		logs.Error("Creating keyword failed: ", err)
 	}
 
 	return keyword

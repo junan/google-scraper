@@ -3,8 +3,6 @@ package controllers_test
 import (
 	"testing"
 
-	"github.com/jarcoal/httpmock"
-
 	_ "google-scraper/initializers"
 	_ "google-scraper/routers"
 	. "google-scraper/tests/testing_helpers"
@@ -12,6 +10,7 @@ import (
 	"github.com/beego/beego/v2/server/web"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
+	"github.com/jarcoal/httpmock"
 )
 
 func TestControllers(t *testing.T) {

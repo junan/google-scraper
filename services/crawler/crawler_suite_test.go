@@ -1,6 +1,7 @@
 package crawler_test
 
 import (
+	"os"
 	"path"
 	"path/filepath"
 	"runtime"
@@ -9,6 +10,7 @@ import (
 	_ "google-scraper/initializers"
 
 	"github.com/beego/beego/v2/server/web"
+	"github.com/beego/beego/v2/core/logs"
 	"github.com/jarcoal/httpmock"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
@@ -20,7 +22,12 @@ func TestCrawler(t *testing.T) {
 }
 
 var _ = BeforeSuite(func() {
-	web.TestBeegoInit(JppRootDir(0))
+	pwd, err := os.Getwd()
+	if err != nil {
+		logs.Error("Getting current directory failed", err)
+	}
+
+	web.TestBeegoInit(path.Join(pwd, "../.."))
 	// block all HTTP requests
 	httpmock.Activate()
 })

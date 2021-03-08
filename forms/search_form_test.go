@@ -44,8 +44,8 @@ var _ = Describe("SearchForm", func() {
 			Context("given the file keywords are empty", func() {
 				It("returns an error", func() {
 					user := FabricateUser("John", "john@example.comn", "secret")
-					validCsvFilePath := AppRootDir(0) + "/fixtures/shared/empty_keyword.csv"
-					file, header, err := GetFormFileData(validCsvFilePath)
+					filePath := AppRootDir(0) + "/fixtures/shared/empty_keyword.csv"
+					file, header, err := GetFormFileData(filePath)
 					if err != nil {
 						Fail("Getting form file data failed: " + err.Error())
 					}
@@ -59,8 +59,8 @@ var _ = Describe("SearchForm", func() {
 			Context("given the CSV file is wrong formatted", func() {
 				It("returns an error", func() {
 					user := FabricateUser("John", "john@example.comn", "secret")
-					validCsvFilePath := AppRootDir(0) + "/fixtures/shared/invalid_keyword.csv"
-					file, header, err := GetFormFileData(validCsvFilePath)
+					filePath := AppRootDir(0) + "/fixtures/shared/invalid_keyword.csv"
+					file, header, err := GetFormFileData(filePath)
 					if err != nil {
 						Fail("Getting form file data failed: " + err.Error())
 					}
@@ -74,8 +74,8 @@ var _ = Describe("SearchForm", func() {
 			Context("given the file is an image", func() {
 				It("returns an error", func() {
 					user := FabricateUser("John", "john@example.comn", "secret")
-					validCsvFilePath := AppRootDir(0) + "/fixtures/shared/test.jpeg"
-					file, header, err := GetFormFileData(validCsvFilePath)
+					filePath := AppRootDir(0) + "/fixtures/shared/test.jpeg"
+					file, header, err := GetFormFileData(filePath)
 					if err != nil {
 						Fail("Getting form file data failed: " + err.Error())
 					}
@@ -89,8 +89,8 @@ var _ = Describe("SearchForm", func() {
 			Context("given the file size is more than 5 megabytes", func() {
 				It("returns an error", func() {
 					user := FabricateUser("John", "john@example.comn", "secret")
-					validCsvFilePath := AppRootDir(0) + "/fixtures/shared/big_file.pdf"
-					file, header, err := GetFormFileData(validCsvFilePath)
+					filePath := AppRootDir(0) + "/fixtures/shared/big_file.pdf"
+					file, header, err := GetFormFileData(filePath)
 					if err != nil {
 						Fail("Getting form file data failed: " + err.Error())
 					}
