@@ -84,7 +84,12 @@ func CreateMultipartFormData(filePath string) (http.Header, *bytes.Buffer) {
 
 	body := &bytes.Buffer{}
 	writer := multipart.NewWriter(body)
-	writer.SetBoundary("multipart-boundary")
+	err = writer.SetBoundary("multipart-boundary")
+	if err != nil {
+		Fail("Setting multipart-boundary failed: " + err.Error())
+	}
+
+	writer.Close()
 	part, err := writer.CreateFormFile("file", filepath.Base(filePath))
 	if err != nil {
 		Fail("Creating form file failed: " + err.Error())

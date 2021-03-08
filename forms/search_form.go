@@ -36,7 +36,7 @@ func (csv *CSV) Valid(v *validation.Validation) {
 	for _, criteria := range CsvKeywordValidationCriteria {
 		success := validate(criteria, csv)
 		if !success {
-			v.SetError("File", CSVValidationMessageMapping[criteria])
+			_ = v.SetError("File", CSVValidationMessageMapping[criteria])
 			break
 		}
 	}
@@ -64,7 +64,10 @@ func PerformSearch(file multipart.File, header *multipart.FileHeader, user *mode
 		for _, name := range row {
 			keyword, err := storeKeyword(name, user)
 			if err == nil {
-				Crawl(keyword)
+				_, err = Crawl (keyword)
+				if err != nil {
+					logs.Error("Crawling failed: ", err)
+				}
 			}
 		}
 	}
@@ -151,11 +154,8 @@ func validateFileExtension(csv *CSV) bool {
 
 func validateKeywordFormat(csv *CSV) bool {
 	_, err := readKeywords(csv.File)
-	if err != nil {
-		return false
-	}
 
-	return true
+	return err == nil
 }
 
 func validateKeywordCount(keywords [][]string) bool {

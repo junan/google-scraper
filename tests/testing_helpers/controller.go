@@ -29,7 +29,11 @@ func GetSession(cookies []*http.Cookie, key string) interface{} {
 func CreateEmptyMultipartBody() *bytes.Buffer {
 	body := &bytes.Buffer{}
 	writer := multipart.NewWriter(body)
-	writer.SetBoundary("multipart-boundary")
+	err := writer.SetBoundary("multipart-boundary")
+	if err != nil {
+		Fail("Setting multipart-boundary failed: " + err.Error())
+	}
+
 	writer.Close()
 
 	return body
