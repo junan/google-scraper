@@ -13,7 +13,7 @@ func GetRequest(url string) ([]byte, error) {
 
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
-		return []byte{}, nil
+		return nil, err
 	}
 
 	req.Header.Set("User-Agent", randomUserAgent())
@@ -25,7 +25,7 @@ func GetRequest(url string) ([]byte, error) {
 	defer res.Body.Close()
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		return []byte{}, err
+		return nil, err
 	}
 
 	return body, nil
