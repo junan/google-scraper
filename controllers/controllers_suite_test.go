@@ -5,7 +5,7 @@ import (
 
 	_ "google-scraper/initializers"
 	_ "google-scraper/routers"
-	. "google-scraper/tests/testing_helpers"
+	. "google-scraper/tests"
 
 	"github.com/beego/beego/v2/server/web"
 	. "github.com/onsi/ginkgo"

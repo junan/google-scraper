@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	_ "google-scraper/initializers"
-	. "google-scraper/tests/testing_helpers"
+	. "google-scraper/tests"
 
 	"github.com/beego/beego/v2/server/web"
 	. "github.com/onsi/ginkgo"

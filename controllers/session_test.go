@@ -6,8 +6,7 @@ import (
 	"strings"
 
 	_ "google-scraper/initializers"
-	. "google-scraper/tests/fabricators"
-	. "google-scraper/tests/testing_helpers"
+	. "google-scraper/tests"
 	"google-scraper/controllers"
 
 	. "github.com/onsi/ginkgo"

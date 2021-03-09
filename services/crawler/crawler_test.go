@@ -4,8 +4,7 @@ import (
 	"encoding/json"
 
 	. "google-scraper/services/crawler"
-	. "google-scraper/tests/fabricators"
-	. "google-scraper/tests/testing_helpers"
+	. "google-scraper/tests"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"

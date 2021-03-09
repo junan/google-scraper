@@ -3,7 +3,7 @@ package initializers
 import (
 	"fmt"
 
-	helpers "google-scraper/tests/testing_helpers"
+	helpers "google-scraper/tests"
 
 	"github.com/beego/beego/v2/core/logs"
 	"github.com/beego/beego/v2/server/web"
