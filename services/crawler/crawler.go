@@ -27,18 +27,18 @@ var selectorMapping = map[string]string{
 func Crawl(keyword *models.Keyword) (searchResult *models.SearchResult, err error) {
 	searchUrl, err := BuildSearchUrl(keyword.Name)
 	if err != nil {
-		return &models.SearchResult{}, err
+		return nil, err
 	}
 
 	response, err := GetRequest(searchUrl)
 	if err != nil {
-		return &models.SearchResult{}, err
+		return nil, err
 	}
 
 	htmlResponse = string(response)
 	doc, err = goquery.NewDocumentFromReader(strings.NewReader(htmlResponse))
 	if err != nil {
-		return &models.SearchResult{}, err
+		return nil, err
 	}
 
 	searchResult = &models.SearchResult{
@@ -54,10 +54,10 @@ func Crawl(keyword *models.Keyword) (searchResult *models.SearchResult, err erro
 
 	_, err = models.CreateSearchResult(searchResult)
 	if err != nil {
-		return &models.SearchResult{}, err
+		return nil, err
 	}
 
-	return searchResult, err
+	return searchResult, nil
 }
 
 func getTopAdWordAdvertisersCount() int {
