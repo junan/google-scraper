@@ -9,8 +9,8 @@ import (
 	"github.com/onsi/ginkgo"
 )
 
-func AppRootDir() string {
-	_, currentFile, _, _ := runtime.Caller(1)
+func AppRootDir(skip int) string {
+	_, currentFile, _, _ := runtime.Caller(skip)
 	currentFilePath := path.Join(path.Dir(currentFile))
 	return filepath.Dir(currentFilePath)
 }

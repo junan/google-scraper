@@ -1,10 +1,9 @@
-package controllers_test
+package helpers_test
 
 import (
 	"testing"
 
 	_ "google-scraper/initializers"
-	_ "google-scraper/routers"
 	. "google-scraper/tests/testing_helpers"
 
 	"github.com/beego/beego/v2/server/web"
@@ -12,9 +11,9 @@ import (
 	. "github.com/onsi/gomega"
 )
 
-func TestControllers(t *testing.T) {
+func TestHelpers(t *testing.T) {
 	RegisterFailHandler(Fail)
-	RunSpecs(t, "Controllers Suite")
+	RunSpecs(t, "Helpers Suite")
 }
 
 var _ = BeforeSuite(func() {

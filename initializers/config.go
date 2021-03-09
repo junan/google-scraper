@@ -10,7 +10,7 @@ import (
 )
 
 func LoadAppConfig() {
-	configPath := fmt.Sprintf("%s/conf/app.conf", helpers.AppRootDir())
+	configPath := fmt.Sprintf("%s/conf/app.conf", helpers.AppRootDir(1))
 	err := web.LoadAppConfig("ini", configPath)
 
 	if err != nil {
