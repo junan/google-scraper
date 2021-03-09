@@ -38,4 +38,3 @@ var _ = BeforeEach(func() {
 var _ = AfterSuite(func() {
 	httpmock.DeactivateAndReset()
 })
-

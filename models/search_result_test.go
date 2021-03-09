@@ -13,7 +13,7 @@ import (
 var _ = Describe("SearchResult", func() {
 	Describe("#CreateSearchResult", func() {
 		Context("given the SearchResult with valid params", func() {
-			It("returns the user ID", func() {
+			It("returns the search result ID", func() {
 				user := FabricateUser("John", "john@example.com", "secret")
 				keyword := FabricateKeyword("Buy domain", &user)
 				searchResult := &models.SearchResult{
@@ -34,7 +34,7 @@ var _ = Describe("SearchResult", func() {
 				Expect(searchResultId).ToNot(BeNil())
 			})
 
-			It("returns an empty error", func() {
+			It("returns empty error", func() {
 				user := FabricateUser("John", "john@example.com", "secret")
 				keyword := FabricateKeyword("Buy domain", &user)
 				searchResult := &models.SearchResult{
@@ -48,9 +48,6 @@ var _ = Describe("SearchResult", func() {
 					Keyword:                     &keyword,
 				}
 				_, err := models.CreateSearchResult(searchResult)
-				if err != nil {
-					Fail("Storing search result failed: " + err.Error())
-				}
 
 				Expect(err).To(BeNil())
 			})

@@ -27,7 +27,7 @@ var _ = Describe("Keyword", func() {
 				Expect(keywordId).ToNot(BeNil())
 			})
 
-			It("returns an empty error", func() {
+			It("returns empty error", func() {
 				user := FabricateUser("John", "john@example.com", "secret")
 				keyword := &models.Keyword{
 					Name: "Buy Domain",

@@ -15,8 +15,8 @@ var _ = Describe("SearchController", func() {
 				Context("given the uploaded file is a valid CSV file", func() {
 					It("sets flash success message", func() {
 						user := FabricateUser("John", "john@example.com", "secret")
-						validCsvFilePath := AppRootDir(0) + "/fixtures/shared/valid_keywords.csv"
-						_, body := CreateMultipartFormData(validCsvFilePath)
+						filePath := AppRootDir(0) + "/fixtures/shared/valid_keywords.csv"
+						_, body := CreateMultipartFormData(filePath)
 						mockResponseFilePath := AppRootDir(0) + "/fixtures/services/crawler/valid_get_response.html"
 						MockCrawling(mockResponseFilePath)
 
@@ -29,8 +29,8 @@ var _ = Describe("SearchController", func() {
 
 					It("redirects to the root path", func() {
 						user := FabricateUser("John", "john@example.com", "secret")
-						validCsvFilePath := AppRootDir(0) + "/fixtures/shared/valid_keywords.csv"
-						_, body := CreateMultipartFormData(validCsvFilePath)
+						filePath := AppRootDir(0) + "/fixtures/shared/valid_keywords.csv"
+						_, body := CreateMultipartFormData(filePath)
 						mockResponseFilePath := AppRootDir(0) + "/fixtures/services/crawler/valid_get_response.html"
 						MockCrawling(mockResponseFilePath)
 

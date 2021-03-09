@@ -70,7 +70,7 @@ func MockCrawling(mockResponseFilePath string) {
 		Fail("Reading file failed: " + err.Error())
 	}
 
-	// Mocking every query string as it is not feasible to mock 1000 urls for 1000 keywords
+	// Mocking every query string as it is not feasible to mock 1000 urls for 1000 keywords manually
 	httpmock.RegisterResponder("GET", `=~^https://www.google.com/search+\z`,
 		httpmock.NewStringResponder(200, string(content)))
 }

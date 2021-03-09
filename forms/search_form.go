@@ -15,7 +15,7 @@ import (
 var keywordStrings [][]string
 var keywordIds []int64
 var CsvKeywordValidationCriteria = [...]string{"presence", "size", "extension", "format", "count"}
-var CSVValidationMessageMapping = map[string]string{
+var CsvValidationMessageMapping = map[string]string{
 	"presence":  "File can't be blank.",
 	"size":      "File size can't be more than 5 MB.",
 	"extension": "Please upload the file in CSV format.",
@@ -36,7 +36,7 @@ func (csv *CSV) Valid(v *validation.Validation) {
 	for _, criteria := range CsvKeywordValidationCriteria {
 		success := validate(criteria, csv)
 		if !success {
-			_ = v.SetError("File", CSVValidationMessageMapping[criteria])
+			_ = v.SetError("File", CsvValidationMessageMapping[criteria])
 			break
 		}
 	}
