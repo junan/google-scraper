@@ -5,7 +5,6 @@ import (
 	"math/rand"
 	"net/http"
 
-	"github.com/beego/beego/v2/core/logs"
 	"github.com/junan/fake-useragent"
 )
 
@@ -14,7 +13,7 @@ func GetRequest(url string) ([]byte, error) {
 
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
-		logs.Error("Building new request failed: ", err)
+		return []byte{}, nil
 	}
 
 	req.Header.Set("User-Agent", randomUserAgent())
@@ -25,8 +24,11 @@ func GetRequest(url string) ([]byte, error) {
 	// Closing response body
 	defer res.Body.Close()
 	body, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		return []byte{}, err
+	}
 
-	return body, err
+	return body, nil
 }
 
 // Returns random Chrome or Firefox user agent.

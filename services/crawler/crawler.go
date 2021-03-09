@@ -4,7 +4,6 @@ import (
 	"strings"
 
 	"github.com/PuerkitoBio/goquery"
-	"github.com/beego/beego/v2/core/logs"
 )
 
 const googleSearchBaseUrl = "https://www.google.com/search"
@@ -35,23 +34,23 @@ type CrawlData struct {
 func Crawl(searchString string) (data *CrawlData, err error) {
 	searchUrl, err := BuildSearchUrl(searchString)
 	if err != nil {
-		return &CrawlData{}, err
+		return nil, err
 	}
 
 	response, err := GetRequest(searchUrl)
 	if err != nil {
-		return &CrawlData{}, err
+		return nil, err
 	}
 
 	htmlResponse = string(response)
 	doc, err = goquery.NewDocumentFromReader(strings.NewReader(htmlResponse))
 	if err != nil {
-		logs.Error("Initializing Goquery document failed: ", err)
+		return nil, err
 	}
 
 	data = parseCrawledData()
 
-	return data, err
+	return data, nil
 }
 
 func getTopAdWordAdvertisersCount() int {
