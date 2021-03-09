@@ -1,6 +1,9 @@
 package crawler_test
 
 import (
+	"fmt"
+	"net/url"
+
 	. "google-scraper/services/crawler"
 
 	. "github.com/onsi/ginkgo"
@@ -17,6 +20,21 @@ var _ = Describe("Crawler", func() {
 				}
 
 				Expect(url).To(Equal("https://www.google.com/search?hl=en&lr=lang_en&q=Ruby"))
+			})
+		})
+
+		Context("given the search string is Thai string", func() {
+			It("returns the correct URL", func() {
+				queryString := "ทับทิม"
+				searchUrl, err := BuildSearchUrl(queryString)
+				if err != nil {
+					Fail("Building search URL failed: " + err.Error())
+				}
+
+				encodedQueryString := url.QueryEscape(queryString)
+				url := fmt.Sprintf("https://www.google.com/search?hl=en&lr=lang_en&q=%s", encodedQueryString)
+
+				Expect(searchUrl).To(Equal(url))
 			})
 		})
 
