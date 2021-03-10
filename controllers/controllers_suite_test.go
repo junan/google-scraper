@@ -19,7 +19,7 @@ func TestControllers(t *testing.T) {
 }
 
 var _ = BeforeSuite(func() {
-	web.TestBeegoInit(AppRootDir(1))
+	web.TestBeegoInit(AppRootDir())
 	httpmock.Activate()
 })
 
