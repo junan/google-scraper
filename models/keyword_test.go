@@ -53,6 +53,29 @@ var _ = Describe("Keyword", func() {
 		})
 	})
 
+	Describe("#FindKeywordById", func() {
+		Context("given the keyword already exist", func() {
+			It("returns the keyword object", func() {
+				user := FabricateUser("John", "john@example.com", "secret")
+				existingKeyword := FabricateKeyword("Buy domain", &user)
+				keyword, err :=  models.FindKeywordById(existingKeyword.Id)
+				if err != nil {
+					Fail("Finding user failed: " + err.Error())
+				}
+
+				Expect(keyword.Id).To(Equal(existingKeyword.Id))
+			})
+		})
+
+		Context("given the keyword does NOT exist", func() {
+			It("returns an error", func() {
+				_, err := models.FindKeywordById(-10)
+
+				Expect(err.Error()).To(ContainSubstring("no row found"))
+			})
+		})
+	})
+
 	AfterEach(func() {
 		TruncateTables("users", "keywords")
 	})
