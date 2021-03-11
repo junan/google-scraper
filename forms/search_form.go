@@ -6,7 +6,7 @@ import (
 	"path"
 
 	"google-scraper/models"
-	. "google-scraper/services/keyword"
+	. "google-scraper/services/queueing"
 
 	"github.com/beego/beego/v2/core/logs"
 	"github.com/beego/beego/v2/core/validation"
@@ -63,9 +63,9 @@ func PerformSearch(file multipart.File, header *multipart.FileHeader, user *mode
 		for _, name := range row {
 			keyword, err := storeKeyword(name, user)
 			if err == nil {
-				err = StartJob(keyword, secondsInTheFuture)
+				err = AddToQueue(keyword, secondsInTheFuture)
 				if err != nil {
-					logs.Error("Starting job failed: ", err)
+					logs.Error("Adding keyword to queue is failed: ", err)
 				}
 				// Each job will be run two seconds later than the previous job, jobs will be enqueued immediately
 				// But will be run based on secondsInTheFuture value in the future

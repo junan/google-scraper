@@ -1,4 +1,4 @@
-package keyword
+package queueing
 
 import (
 	"github.com/gocraft/work"
@@ -10,12 +10,10 @@ import (
 var enqueuer *work.Enqueuer
 
 func init() {
-	if enqueuer == nil {
-		enqueuer = work.NewEnqueuer("google_scraper", database.GetRedisPool())
-	}
+	enqueuer = work.NewEnqueuer("google_scraper", database.GetRedisPool())
 }
 
-func StartJob(keyword *models.Keyword, secondsInTheFuture int64) error {
+func AddToQueue(keyword *models.Keyword, secondsInTheFuture int64) error {
 	_, err := enqueuer.EnqueueIn("crawling_job", secondsInTheFuture, work.Q{"keywordId": keyword.Id})
 
 	if err != nil {
