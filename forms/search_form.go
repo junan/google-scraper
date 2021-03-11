@@ -43,6 +43,7 @@ func (csv *CSV) Valid(v *validation.Validation) {
 }
 
 func PerformSearch(file multipart.File, header *multipart.FileHeader, user *models.User) (err error) {
+	var secondsInTheFuture int64 = 0
 	csvFile := CSV{File: file, Header: header, Size: getSizeInMb(header)}
 	validation := validation.Validation{}
 	success, err := validation.Valid(&csvFile)
@@ -62,10 +63,13 @@ func PerformSearch(file multipart.File, header *multipart.FileHeader, user *mode
 		for _, name := range row {
 			keyword, err := storeKeyword(name, user)
 			if err == nil {
-				err = StartJob(keyword)
+				err = StartJob(keyword, secondsInTheFuture)
 				if err != nil {
 					logs.Error("Starting job failed: ", err)
 				}
+				// Each job will be run two seconds later than the previous job, jobs will be enqueued immediately
+				// But will be run based on secondsInTheFuture value in the future
+				secondsInTheFuture = secondsInTheFuture + 2
 			}
 		}
 	}

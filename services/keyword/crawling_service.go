@@ -9,10 +9,9 @@ import (
 
 var enqueuer *work.Enqueuer
 
-func StartJob(keyword *models.Keyword) error {
-
+func StartJob(keyword *models.Keyword, secondsInTheFuture int64) error {
 	setUpEnqueuer()
-	_, err := enqueuer.Enqueue("crawling_job", work.Q{"keywordId": keyword.Id})
+	_, err := enqueuer.EnqueueIn("crawling_job", secondsInTheFuture, work.Q{"keywordId": keyword.Id})
 
 	if err != nil {
 		return err
