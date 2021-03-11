@@ -8,6 +8,7 @@ import (
 	"github.com/beego/beego/v2/server/web"
 	_ "github.com/lib/pq"
 	_ "github.com/beego/beego/v2/server/web/session/redis"
+	"github.com/gomodule/redigo/redis"
 )
 
 func init() {
