@@ -5,12 +5,13 @@ import (
 	"os/signal"
 	"syscall"
 
-	"google-scraper/initializers"
 	"google-scraper/database"
+	_ "google-scraper/initializers"
 	"google-scraper/worker/jobs"
 
 	"github.com/gocraft/work"
 	"github.com/gomodule/redigo/redis"
+	"github.com/beego/beego/v2/core/logs"
 )
 
 // Make a redis pool
@@ -22,13 +23,11 @@ var redisPool = &redis.Pool{
 }
 
 func init() {
-	bootstrap.SetUp()
 }
 
 func main() {
+	logs.Error("Main worker is running: ")
 	pool := work.NewWorkerPool(jobs.Context{}, 5, "google_scraper_queue", redisPool)
-
-	//pool.Middleware((*jobs.Context).PerformCrawling)
 
 	pool.JobWithOptions("crawling_job", work.JobOptions{MaxFails: jobs.MaxFails}, (*jobs.Context).PerformCrawling)
 

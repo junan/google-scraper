@@ -10,8 +10,10 @@ import (
 var enqueuer *work.Enqueuer
 
 func StartJob(keyword *models.Keyword) error {
+
 	setUpEnqueuer()
-	_, err := enqueuer.Enqueue("google_scraper_job", work.Q{"keywordId": keyword.Id})
+	_, err := enqueuer.Enqueue("crawling_job", work.Q{"keywordId": keyword.Id})
+
 	if err != nil {
 		return err
 	}
