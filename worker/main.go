@@ -5,20 +5,35 @@ import (
 	"os/signal"
 	"syscall"
 
-	_ "google-scraper/initializers"
+	"github.com/beego/beego/v2/server/web"
+
 	"google-scraper/database"
+	_ "google-scraper/initializers"
 	"google-scraper/worker/jobs"
 
-
+	"github.com/beego/beego/v2/core/logs"
 	"github.com/gocraft/work"
 )
 
+var crawlingJobName string
+var enqueuerName string
+
 func init() {
+	var err error
+	crawlingJobName, err = web.AppConfig.String("crawlingJobName")
+	if err != nil {
+		logs.Critical("crawlingJobName is not found: ", err)
+	}
+
+	enqueuerName, err = web.AppConfig.String("redisEnqueuerName")
+	if err != nil {
+		logs.Critical("redisEnqueuerName is not found: ", err)
+	}
 }
 
 func main() {
-	pool := work.NewWorkerPool(jobs.Context{}, 5, "google_scraper", database.GetRedisPool())
-	pool.JobWithOptions("crawling_job", work.JobOptions{MaxFails: jobs.MaxFails}, (*jobs.Context).PerformCrawling)
+	pool := work.NewWorkerPool(jobs.Context{}, 5, enqueuerName, database.GetRedisPool())
+	pool.JobWithOptions(crawlingJobName, work.JobOptions{MaxFails: jobs.MaxFails}, (*jobs.Context).PerformCrawling)
 
 	// Start processing jobs
 	pool.Start()

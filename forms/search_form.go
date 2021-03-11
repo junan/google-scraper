@@ -13,7 +13,6 @@ import (
 )
 
 var keywordStrings [][]string
-var keywordIds []int64
 var CsvKeywordValidationCriteria = [...]string{"presence", "size", "extension", "format", "count"}
 var CsvValidationMessageMapping = map[string]string{
 	"presence":  "File can't be blank.",
