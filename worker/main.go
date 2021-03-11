@@ -9,25 +9,16 @@ import (
 	_ "google-scraper/initializers"
 	"google-scraper/worker/jobs"
 
-	"github.com/gocraft/work"
-	"github.com/gomodule/redigo/redis"
 	"github.com/beego/beego/v2/core/logs"
+	"github.com/gocraft/work"
 )
-
-// Make a redis pool
-var redisPool = &redis.Pool{
-	MaxActive: 5,
-	MaxIdle:   5,
-	Wait:      true,
-	Dial:      database.GetRedisUrl,
-}
 
 func init() {
 }
 
 func main() {
 	logs.Error("Main worker is running: ")
-	pool := work.NewWorkerPool(jobs.Context{}, 5, "google_scraper", redisPool)
+	pool := work.NewWorkerPool(jobs.Context{}, 5, "google_scraper", database.GetRedisPool())
 
 	pool.JobWithOptions("crawling_job", work.JobOptions{MaxFails: jobs.MaxFails}, (*jobs.Context).PerformCrawling)
 
