@@ -5,6 +5,7 @@ import (
 	"os/signal"
 	"syscall"
 
+	"google-scraper/initializers"
 	"google-scraper/database"
 	"google-scraper/worker/jobs"
 
@@ -27,9 +28,9 @@ func init() {
 func main() {
 	pool := work.NewWorkerPool(jobs.Context{}, 5, "google_scraper_queue", redisPool)
 
-	pool.Middleware((*jobs.Context).PerformLater)
+	//pool.Middleware((*jobs.Context).PerformCrawling)
 
-	pool.JobWithOptions(conf.GetString("scraperJobName"), work.JobOptions{MaxFails: jobs.MaxFails}, (*jobs.Context).PerformScrape)
+	pool.JobWithOptions("crawling_job", work.JobOptions{MaxFails: jobs.MaxFails}, (*jobs.Context).PerformCrawling)
 
 	pool.Start()
 

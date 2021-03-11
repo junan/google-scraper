@@ -21,6 +21,6 @@ func StartJob(keyword *models.Keyword) error {
 
 func setUpEnqueuer() {
 	if enqueuer == nil {
-		enqueuer = work.NewEnqueuer("google_scraper_queue", database.GetRedisPool())
+		enqueuer = work.NewEnqueuer("google_scraper", database.GetRedisPool())
 	}
 }

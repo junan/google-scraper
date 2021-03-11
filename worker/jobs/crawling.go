@@ -12,6 +12,8 @@ import (
 
 type Context struct{}
 
+const MaxFails = 3
+
 var enqueuer *work.Enqueuer
 
 type Crawling struct {
