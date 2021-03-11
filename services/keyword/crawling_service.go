@@ -9,8 +9,13 @@ import (
 
 var enqueuer *work.Enqueuer
 
+func init() {
+	if enqueuer == nil {
+		enqueuer = work.NewEnqueuer("google_scraper", database.GetRedisPool())
+	}
+}
+
 func StartJob(keyword *models.Keyword, secondsInTheFuture int64) error {
-	setUpEnqueuer()
 	_, err := enqueuer.EnqueueIn("crawling_job", secondsInTheFuture, work.Q{"keywordId": keyword.Id})
 
 	if err != nil {
@@ -18,10 +23,4 @@ func StartJob(keyword *models.Keyword, secondsInTheFuture int64) error {
 	}
 
 	return nil
-}
-
-func setUpEnqueuer() {
-	if enqueuer == nil {
-		enqueuer = work.NewEnqueuer("google_scraper", database.GetRedisPool())
-	}
 }

@@ -9,7 +9,6 @@ import (
 	_ "google-scraper/initializers"
 	"google-scraper/worker/jobs"
 
-	"github.com/beego/beego/v2/core/logs"
 	"github.com/gocraft/work"
 )
 
@@ -17,7 +16,6 @@ func init() {
 }
 
 func main() {
-	logs.Error("Main worker is running: ")
 	pool := work.NewWorkerPool(jobs.Context{}, 5, "google_scraper", database.GetRedisPool())
 
 	pool.JobWithOptions("crawling_job", work.JobOptions{MaxFails: jobs.MaxFails}, (*jobs.Context).PerformCrawling)
