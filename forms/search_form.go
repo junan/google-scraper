@@ -6,7 +6,7 @@ import (
 	"path"
 
 	"google-scraper/models"
-	worker "google-scraper/worker"
+	. "google-scraper/services/keyword"
 
 	"github.com/beego/beego/v2/core/logs"
 	"github.com/beego/beego/v2/core/validation"
@@ -58,14 +58,16 @@ func PerformSearch(file multipart.File, header *multipart.FileHeader, user *mode
 		}
 	}
 
-	job := worker.Crawling{
-		CsvKeywords: keywordStrings
-		UserId:      user.Id,
-	}
-
-	err = job.PerformLater()
-	if err != nil {
-		return err
+	for _, row := range keywordStrings {
+		for _, name := range row {
+			keyword, err := storeKeyword(name, user)
+			if err == nil {
+				err = StartJob(keyword)
+				if err != nil {
+					logs.Error("Starting job failed: ", err)
+				}
+			}
+		}
 	}
 
 	return nil
@@ -148,4 +150,18 @@ func validateKeywordCount(keywords [][]string) bool {
 		totalCount := row * column
 		return totalCount <= 1000
 	}
+}
+
+func storeKeyword(name string, user *models.User) (keyword *models.Keyword, err error) {
+	keyword = &models.Keyword{
+		Name: name,
+		User: user,
+	}
+
+	_, err = models.CreateKeyword(keyword)
+	if err != nil {
+		return nil, err
+	}
+
+	return keyword, err
 }

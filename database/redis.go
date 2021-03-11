@@ -17,13 +17,13 @@ func SetupRedisPool() {
 		MaxActive: 5,
 		MaxIdle:   5,
 		Wait:      true,
-		Dial:      getRedisUrl,
+		Dial:      GetRedisUrl,
 	}
 
 	RedisPool = pool
 }
 
-func getRedisUrl() (redis.Conn, error) {
+func GetRedisUrl() (redis.Conn, error) {
 	redisUrl, err := web.AppConfig.String("redisUrl")
 	if err != nil {
 		logs.Critical("Redis url not found: ", err)
