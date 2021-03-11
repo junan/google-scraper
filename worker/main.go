@@ -27,7 +27,7 @@ func init() {
 
 func main() {
 	logs.Error("Main worker is running: ")
-	pool := work.NewWorkerPool(jobs.Context{}, 5, "google_scraper_queue", redisPool)
+	pool := work.NewWorkerPool(jobs.Context{}, 5, "google_scraper", redisPool)
 
 	pool.JobWithOptions("crawling_job", work.JobOptions{MaxFails: jobs.MaxFails}, (*jobs.Context).PerformCrawling)
 
