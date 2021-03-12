@@ -1,0 +1,24 @@
+{{ if .Keywords }}
+    <table>
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Keyword</th>
+            <th>Status</th>
+            <th>Created At</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{ range $keyword := .Keywords }}
+            <tr>
+                <td>{{ $keyword.Id }}</td>
+                <td>{{ $keyword.Keyword }}</td>
+                <td>{{ $keyword.Status }}</td>
+                <td>{{ $keyword.CreatedAt }}</td>
+            </tr>
+        {{ end }}
+        </tbody>
+    </table>
+{{ else }}
+    <div>No keywords were found</div>
+{{ end }}
