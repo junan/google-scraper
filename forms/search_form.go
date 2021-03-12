@@ -62,10 +62,12 @@ func PerformSearch(file multipart.File, header *multipart.FileHeader, user *mode
 		for _, name := range row {
 			keyword, err := storeKeyword(name, user)
 			if err == nil {
-				err = AddToQueue(keyword, secondsInTheFuture)
+				job, err := AddToQueue(keyword, secondsInTheFuture)
 				if err != nil {
 					logs.Error("Adding keyword to queue is failed: ", err)
 				}
+				logs.Info("Enqueued %v keyword to the %v", keyword.Name, job.Name)
+
 				// Each job will be run two seconds later than the previous job, jobs will be enqueued immediately
 				// But will be run based on secondsInTheFuture value in the future
 				secondsInTheFuture = secondsInTheFuture + 2
