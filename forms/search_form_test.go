@@ -56,7 +56,7 @@ var _ = Describe("SearchForm", func() {
 				})
 			})
 
-			Context("given the CSV file is wrong formatted", func() {
+			Context("given the CSV file is wrongly formatted", func() {
 				It("returns an error", func() {
 					user := FabricateUser("John", "john@example.comn", "secret")
 					filePath := AppRootDir(0) + "/fixtures/shared/invalid_keyword.csv"
@@ -71,7 +71,7 @@ var _ = Describe("SearchForm", func() {
 				})
 			})
 
-			Context("given the file is an image", func() {
+			Context("given the file is of an INVALID type", func() {
 				It("returns an error", func() {
 					user := FabricateUser("John", "john@example.comn", "secret")
 					filePath := AppRootDir(0) + "/fixtures/shared/test.jpeg"
