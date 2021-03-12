@@ -9,7 +9,6 @@ import (
 
 	"github.com/beego/beego/v2/core/logs"
 	"github.com/beego/beego/v2/server/web"
-	"github.com/jarcoal/httpmock"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 )
@@ -26,15 +25,4 @@ var _ = BeforeSuite(func() {
 	}
 
 	web.TestBeegoInit(path.Join(pwd, "../.."))
-	// block all HTTP requests
-	httpmock.Activate()
-})
-
-var _ = BeforeEach(func() {
-	// remove any mocks
-	httpmock.Reset()
-})
-
-var _ = AfterSuite(func() {
-	httpmock.DeactivateAndReset()
 })

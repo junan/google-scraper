@@ -5,14 +5,13 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/beego/beego/v2/server/web"
-
 	"google-scraper/database"
 	_ "google-scraper/initializers"
 	"google-scraper/worker/jobs"
 
 	"github.com/beego/beego/v2/core/logs"
 	"github.com/gocraft/work"
+	"github.com/beego/beego/v2/server/web"
 )
 
 var crawlingJobName string

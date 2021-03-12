@@ -48,5 +48,6 @@ var _ = Describe("Queueing", func() {
 
 	AfterEach(func() {
 		TruncateTables("users", "keywords")
+		DeleteRedisJobs("google_scraper", "crawling_job")
 	})
 })
