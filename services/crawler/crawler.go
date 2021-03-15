@@ -44,7 +44,7 @@ func Crawl(keyword *models.Keyword) (searchResult *models.SearchResult, err erro
 	searchResult = &models.SearchResult{
 		TopAdWordAdvertisersCount:   getTopAdWordAdvertisersCount(),
 		TopAdWordAdvertisersUrls:    getTopAdWordAdvertisersUrls(),
-		TotalAdWordAdvertisersCount: GetTotalAdWordAdvertisersCount(),
+		TotalAdWordAdvertisersCount: getTotalAdWordAdvertisersCount(),
 		ResultsCount:                getResultsCount(),
 		ResultsUrls:                 getResultsUrls(),
 		TotalLinksCount:             getTotalLinks(),
@@ -68,7 +68,7 @@ func getTopAdWordAdvertisersUrls() string {
 	return parsedUrls("topAdWordAdvertisersUrls")
 }
 
-func GetTotalAdWordAdvertisersCount() int {
+func getTotalAdWordAdvertisersCount() int {
 	return len(getLinks(selectorMapping["totalAdWordAdvertisersCount"]))
 }
 
