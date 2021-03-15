@@ -1,8 +1,8 @@
-package queueing_test
+package enqueueing_test
 
 import (
 	"google-scraper/models"
-	. "google-scraper/services/queueing"
+	. "google-scraper/services/enqueueing"
 	. "google-scraper/tests"
 
 	. "github.com/onsi/ginkgo"
@@ -10,13 +10,13 @@ import (
 )
 
 var _ = Describe("Queueing", func() {
-	Describe("#AddToQueue", func() {
+	Describe("#DelayedEnqueue", func() {
 		Context("given a valid keyword object", func() {
 			It("does NOT return error", func() {
 				user := FabricateUser("John", "john@example.com", "secret")
 				keyword := FabricateKeyword("Buy domain", &user)
 
-				_, err := AddToQueue(&keyword, 1)
+				_, err := DelayedEnqueue(&keyword, 1)
 
 				Expect(err).To(BeNil())
 			})
@@ -25,7 +25,7 @@ var _ = Describe("Queueing", func() {
 				user := FabricateUser("John", "john@example.com", "secret")
 				keyword := FabricateKeyword("Buy domain", &user)
 
-				job, err := AddToQueue(&keyword, 1)
+				job, err := DelayedEnqueue(&keyword, 1)
 				if err != nil {
 					Fail("Adding to queue failed")
 				}
@@ -38,7 +38,7 @@ var _ = Describe("Queueing", func() {
 
 		Context("given an empty keyword object", func() {
 			It("returns an error", func() {
-				job, err := AddToQueue(&models.Keyword{}, 1)
+				job, err := DelayedEnqueue(&models.Keyword{}, 1)
 
 				Expect(err.Error()).To(Equal("invalid keyword object"))
 				Expect(job).To(BeNil())

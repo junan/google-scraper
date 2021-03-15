@@ -1,4 +1,4 @@
-package queueing_test
+package enqueueing_test
 
 import (
 	"os"

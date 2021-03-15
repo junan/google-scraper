@@ -6,7 +6,7 @@ import (
 	"path"
 
 	"google-scraper/models"
-	. "google-scraper/services/queueing"
+	. "google-scraper/services/enqueueing"
 
 	"github.com/beego/beego/v2/core/logs"
 	"github.com/beego/beego/v2/core/validation"
@@ -42,7 +42,7 @@ func (csv *CSV) Valid(v *validation.Validation) {
 }
 
 func PerformSearch(file multipart.File, header *multipart.FileHeader, user *models.User) (err error) {
-	var secondsInTheFuture int64 = 0
+	var keywordIndex int64 = 0
 	csvFile := CSV{File: file, Header: header, Size: getSizeInMb(header)}
 	validation := validation.Validation{}
 	success, err := validation.Valid(&csvFile)
@@ -62,15 +62,12 @@ func PerformSearch(file multipart.File, header *multipart.FileHeader, user *mode
 		for _, name := range row {
 			keyword, err := storeKeyword(name, user)
 			if err == nil {
-				job, err := AddToQueue(keyword, secondsInTheFuture)
+				job, err := DelayedEnqueue(keyword, keywordIndex)
 				if err != nil {
-					logs.Error("Adding keyword to queue is failed: ", err)
+					logs.Error("Adding keyword to queue failed: ", err)
 				}
 				logs.Info("Enqueued %v keyword to the %v", keyword.Name, job.Name)
-
-				// Each job will be run two seconds later than the previous job, jobs will be enqueued immediately
-				// But will be run based on secondsInTheFuture value in the future
-				secondsInTheFuture = secondsInTheFuture + 2
+				keywordIndex = keywordIndex + 1
 			}
 		}
 	}
@@ -168,5 +165,5 @@ func storeKeyword(name string, user *models.User) (keyword *models.Keyword, err 
 		return nil, err
 	}
 
-	return keyword, err
+	return keyword, nil
 }
