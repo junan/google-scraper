@@ -14,15 +14,15 @@ type Keyword struct {
 	User            *User `orm:"rel(fk)"`
 }
 
-func CreateKeyword(s *Keyword) (id int64, err error) {
+func CreateKeyword(k *Keyword) (id int64, err error) {
 	orm := orm.NewOrm()
-	return orm.Insert(s)
+	return orm.Insert(k)
 }
 
 
-func UpdateKeyword(s *Keyword) (int64, error) {
+func UpdateKeyword(k *Keyword) (int64, error) {
 	orm := orm.NewOrm()
-	return orm.Update(s, "SearchCompleted")
+	return orm.Update(k, "SearchCompleted")
 }
 
 func FindKeywordById(id int64) (keyword *Keyword, err error) {
@@ -51,8 +51,16 @@ func FetchKeywords(user *User) ([]*Keyword, error) {
 	return keywords, err
 }
 
+func (k *Keyword) displayStatus() string {
+	if k.SearchCompleted {
+		return "Yes"
+	} else {
+		return "False"
+	}
+}
+
 // Beego by default creates the table name as singular, it will make it plural
-func (u *Keyword) TableName() string {
+func (k *Keyword) TableName() string {
 	return "keywords"
 }
 

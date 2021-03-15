@@ -2,7 +2,6 @@
     <table class="table table-striped">
         <thead>
         <tr>
-            <th>ID</th>
             <th>Keyword</th>
             <th>Search Completed</th>
             <th>Created At</th>
@@ -12,10 +11,9 @@
 
         {{ range $keyword := .Keywords }}
             <tr>
-                <td>{{ $keyword.Id }}</td>
                 <td>{{ $keyword.Name }}</td>
-                <td>{{ $keyword.SearchCompleted }}</td>
-                <td>{{ $keyword.CreatedAt }}</td>
+                <td>{{ $keyword | displayStatus }}</td>
+                <td>{{ $keyword | displayFormattedCreatedDate }}</td>
             </tr>
         {{ end }}
 
