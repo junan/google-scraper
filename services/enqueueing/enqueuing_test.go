@@ -10,13 +10,13 @@ import (
 )
 
 var _ = Describe("Queueing", func() {
-	Describe("#DelayedEnqueue", func() {
+	Describe("#EnqueueKeywordJob", func() {
 		Context("given a valid keyword object", func() {
 			It("does NOT return error", func() {
 				user := FabricateUser("John", "john@example.com", "secret")
 				keyword := FabricateKeyword("Buy domain", &user)
 
-				_, err := DelayedEnqueue(&keyword, 1)
+				_, err := EnqueueKeywordJob(&keyword, 1)
 
 				Expect(err).To(BeNil())
 			})
@@ -25,7 +25,7 @@ var _ = Describe("Queueing", func() {
 				user := FabricateUser("John", "john@example.com", "secret")
 				keyword := FabricateKeyword("Buy domain", &user)
 
-				job, err := DelayedEnqueue(&keyword, 1)
+				job, err := EnqueueKeywordJob(&keyword, 1)
 				if err != nil {
 					Fail("Adding to queue failed")
 				}
@@ -38,7 +38,7 @@ var _ = Describe("Queueing", func() {
 
 		Context("given an empty keyword object", func() {
 			It("returns an error", func() {
-				job, err := DelayedEnqueue(&models.Keyword{}, 1)
+				job, err := EnqueueKeywordJob(&models.Keyword{}, 1)
 
 				Expect(err.Error()).To(Equal("invalid keyword object"))
 				Expect(job).To(BeNil())

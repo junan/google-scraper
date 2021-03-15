@@ -17,7 +17,7 @@ func init() {
 	enqueuer = work.NewEnqueuer("google_scraper", database.GetRedisPool())
 }
 
-func DelayedEnqueue(keyword *models.Keyword, keywordIndex int64) (*work.ScheduledJob, error) {
+func EnqueueKeywordJob(keyword *models.Keyword, throttleMultiplier int64) (*work.ScheduledJob, error) {
 	if keyword.Id <= 0 {
 		return nil, errors.New("invalid keyword object")
 	}
@@ -28,7 +28,7 @@ func DelayedEnqueue(keyword *models.Keyword, keywordIndex int64) (*work.Schedule
 		return nil, err
 	}
 
-	delayTimeInSeconds := getDelayTimeInSeconds(keywordIndex)
+	delayTimeInSeconds := getDelayTimeInSeconds(throttleMultiplier)
 	job, err := enqueuer.EnqueueIn(crawlingJobName, delayTimeInSeconds, work.Q{"keywordId": keyword.Id})
 
 	if err != nil {
@@ -38,8 +38,8 @@ func DelayedEnqueue(keyword *models.Keyword, keywordIndex int64) (*work.Schedule
 	return job, nil
 }
 
-func getDelayTimeInSeconds(keywordIndex int64) int64 {
+func getDelayTimeInSeconds(throttleMultiplier int64) int64 {
 	// Each job will be run two seconds later than the previous job, jobs will be enqueued immediately
 	// But will be run based on this seconds value in the future
-	return keywordIndex + 2
+	return throttleMultiplier + 2
 }

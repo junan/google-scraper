@@ -62,7 +62,7 @@ func PerformSearch(file multipart.File, header *multipart.FileHeader, user *mode
 		for _, name := range row {
 			keyword, err := storeKeyword(name, user)
 			if err == nil {
-				job, err := DelayedEnqueue(keyword, keywordIndex)
+				job, err := EnqueueKeywordJob(keyword, keywordIndex)
 				if err != nil {
 					logs.Error("Adding keyword to queue failed: ", err)
 				}
