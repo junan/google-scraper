@@ -4,8 +4,7 @@ import (
 	"encoding/json"
 
 	. "google-scraper/services/crawler"
-	. "google-scraper/tests/fabricators"
-	. "google-scraper/tests/testing_helpers"
+	. "google-scraper/tests"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
@@ -18,7 +17,7 @@ var _ = Describe("Crawler", func() {
 				searchString := "Buy domain"
 				user := FabricateUser("John", "john@example.com", "secret")
 				keyword := FabricateKeyword(searchString, &user)
-				mockResponseFilePath := AppRootDir(0) + "/fixtures/services/crawler/valid_get_response.html"
+				mockResponseFilePath := AppRootDir() + "/tests/fixtures/services/crawler/valid_get_response.html"
 				MockCrawling(mockResponseFilePath)
 
 				data, err := Crawl(&keyword)
@@ -57,7 +56,7 @@ var _ = Describe("Crawler", func() {
 				searchString := ""
 				user := FabricateUser("John", "john@example.com", "secret")
 				keyword := FabricateKeyword(searchString, &user)
-				mockResponseFilePath := AppRootDir(0) + "/fixtures/services/crawler/invalid_get_response.html"
+				mockResponseFilePath := AppRootDir() + "/tests/fixtures/services/crawler/invalid_get_response.html"
 				MockCrawling(mockResponseFilePath)
 
 				data, err := Crawl(&keyword)

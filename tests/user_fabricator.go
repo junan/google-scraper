@@ -1,4 +1,4 @@
-package fabricators
+package tests
 
 import (
 	. "google-scraper/helpers"

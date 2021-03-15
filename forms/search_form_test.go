@@ -3,8 +3,7 @@ package forms_test
 import (
 	"google-scraper/forms"
 	_ "google-scraper/initializers"
-	. "google-scraper/tests/fabricators"
-	. "google-scraper/tests/testing_helpers"
+	. "google-scraper/tests"
 
 	"github.com/beego/beego/v2/core/validation"
 	. "github.com/onsi/ginkgo"
@@ -16,13 +15,13 @@ var _ = Describe("SearchForm", func() {
 		Context("given the search attributes are valid", func() {
 			It("does NOT generate any error", func() {
 				user := FabricateUser("John", "john@example.comn", "secret")
-				validCsvFilePath := AppRootDir(0) + "/fixtures/shared/valid_keywords.csv"
+				validCsvFilePath := AppRootDir() + "/tests/fixtures/shared/valid_keywords.csv"
 				file, header, err := GetFormFileData(validCsvFilePath)
 				if err != nil {
 					Fail("Getting form file data failed: " + err.Error())
 				}
 
-				mockResponseFilePath := AppRootDir(0) + "/fixtures/services/crawler/valid_get_response.html"
+				mockResponseFilePath := AppRootDir() + "/tests/fixtures/services/crawler/valid_get_response.html"
 				MockCrawling(mockResponseFilePath)
 
 				err = forms.PerformSearch(file, header, &user)
@@ -45,7 +44,7 @@ var _ = Describe("SearchForm", func() {
 			Context("given the file keywords are empty", func() {
 				It("returns an error", func() {
 					user := FabricateUser("John", "john@example.comn", "secret")
-					filePath := AppRootDir(0) + "/fixtures/shared/empty_keyword.csv"
+					filePath := AppRootDir() + "/tests/fixtures/shared/empty_keyword.csv"
 					file, header, err := GetFormFileData(filePath)
 					if err != nil {
 						Fail("Getting form file data failed: " + err.Error())
@@ -60,7 +59,7 @@ var _ = Describe("SearchForm", func() {
 			Context("given the CSV file is wrongly formatted", func() {
 				It("returns an error", func() {
 					user := FabricateUser("John", "john@example.comn", "secret")
-					filePath := AppRootDir(0) + "/fixtures/shared/invalid_keyword.csv"
+					filePath := AppRootDir() + "/tests/fixtures/shared/invalid_keyword.csv"
 					file, header, err := GetFormFileData(filePath)
 					if err != nil {
 						Fail("Getting form file data failed: " + err.Error())
@@ -75,7 +74,7 @@ var _ = Describe("SearchForm", func() {
 			Context("given the file is of an INVALID type", func() {
 				It("returns an error", func() {
 					user := FabricateUser("John", "john@example.comn", "secret")
-					filePath := AppRootDir(0) + "/fixtures/shared/test.jpeg"
+					filePath := AppRootDir() + "/tests/fixtures/shared/test.jpeg"
 					file, header, err := GetFormFileData(filePath)
 					if err != nil {
 						Fail("Getting form file data failed: " + err.Error())
@@ -90,7 +89,7 @@ var _ = Describe("SearchForm", func() {
 			Context("given the file size is more than 5 megabytes", func() {
 				It("returns an error", func() {
 					user := FabricateUser("John", "john@example.comn", "secret")
-					filePath := AppRootDir(0) + "/fixtures/shared/big_file.pdf"
+					filePath := AppRootDir() + "/tests/fixtures/shared/big_file.pdf"
 					file, header, err := GetFormFileData(filePath)
 					if err != nil {
 						Fail("Getting form file data failed: " + err.Error())

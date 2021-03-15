@@ -1,8 +1,7 @@
 package controllers_test
 
 import (
-	. "google-scraper/tests/fabricators"
-	. "google-scraper/tests/testing_helpers"
+	. "google-scraper/tests"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
@@ -15,9 +14,9 @@ var _ = Describe("SearchController", func() {
 				Context("given the uploaded file is a valid CSV file", func() {
 					It("sets flash success message", func() {
 						user := FabricateUser("John", "john@example.com", "secret")
-						filePath := AppRootDir(0) + "/fixtures/shared/valid_keywords.csv"
+						filePath := AppRootDir() + "/tests/fixtures/shared/valid_keywords.csv"
 						_, body := CreateMultipartFormData(filePath)
-						mockResponseFilePath := AppRootDir(0) + "/fixtures/services/crawler/valid_get_response.html"
+						mockResponseFilePath := AppRootDir() + "/tests/fixtures/services/crawler/valid_get_response.html"
 						MockCrawling(mockResponseFilePath)
 
 						response := MakeAuthenticatedRequest("POST", "/search", body, &user)
@@ -29,9 +28,9 @@ var _ = Describe("SearchController", func() {
 
 					It("redirects to the root path", func() {
 						user := FabricateUser("John", "john@example.com", "secret")
-						filePath := AppRootDir(0) + "/fixtures/shared/valid_keywords.csv"
+						filePath := AppRootDir() + "/tests/fixtures/shared/valid_keywords.csv"
 						_, body := CreateMultipartFormData(filePath)
-						mockResponseFilePath := AppRootDir(0) + "/fixtures/services/crawler/valid_get_response.html"
+						mockResponseFilePath := AppRootDir() + "/tests/fixtures/services/crawler/valid_get_response.html"
 						MockCrawling(mockResponseFilePath)
 
 						response := MakeAuthenticatedRequest("POST", "/search", body, &user)
@@ -60,7 +59,7 @@ var _ = Describe("SearchController", func() {
 				Context("given the file keywords are empty", func() {
 					It("sets flash error message", func() {
 						user := FabricateUser("John", "john@example.com", "secret")
-						filePath := AppRootDir(0) + "/fixtures/shared/empty_keyword.csv"
+						filePath := AppRootDir() + "/tests/fixtures/shared/empty_keyword.csv"
 						_, body := CreateMultipartFormData(filePath)
 
 						response := MakeAuthenticatedRequest("POST", "/search", body, &user)
@@ -74,7 +73,7 @@ var _ = Describe("SearchController", func() {
 				Context("given the CSV file is wrong formatted", func() {
 					It("sets flash error message", func() {
 						user := FabricateUser("John", "john@example.com", "secret")
-						filePath := AppRootDir(0) + "/fixtures/shared/invalid_keyword.csv"
+						filePath := AppRootDir() + "/tests/fixtures/shared/invalid_keyword.csv"
 						_, body := CreateMultipartFormData(filePath)
 
 						response := MakeAuthenticatedRequest("POST", "/search", body, &user)
@@ -88,7 +87,7 @@ var _ = Describe("SearchController", func() {
 				Context("given the file is an image", func() {
 					It("sets flash error message", func() {
 						user := FabricateUser("John", "john@example.com", "secret")
-						filePath := AppRootDir(0) + "/fixtures/shared/test.jpeg"
+						filePath := AppRootDir() + "/tests/fixtures/shared/test.jpeg"
 						_, body := CreateMultipartFormData(filePath)
 
 						response := MakeAuthenticatedRequest("POST", "/search", body, &user)
@@ -102,7 +101,7 @@ var _ = Describe("SearchController", func() {
 				Context("given the file size is more than 5 megabytes", func() {
 					It("sets flash error message", func() {
 						user := FabricateUser("John", "john@example.com", "secret")
-						filePath := AppRootDir(0) + "/fixtures/shared/big_file.pdf"
+						filePath := AppRootDir() + "/tests/fixtures/shared/big_file.pdf"
 						_, body := CreateMultipartFormData(filePath)
 
 						response := MakeAuthenticatedRequest("POST", "/search", body, &user)

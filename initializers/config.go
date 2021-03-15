@@ -3,14 +3,14 @@ package initializers
 import (
 	"fmt"
 
-	helpers "google-scraper/tests/testing_helpers"
+	helpers "google-scraper/tests"
 
 	"github.com/beego/beego/v2/core/logs"
 	"github.com/beego/beego/v2/server/web"
 )
 
 func LoadAppConfig() {
-	configPath := fmt.Sprintf("%s/conf/app.conf", helpers.AppRootDir(1))
+	configPath := fmt.Sprintf("%s/conf/app.conf", helpers.AppRootDir())
 	err := web.LoadAppConfig("ini", configPath)
 
 	if err != nil {

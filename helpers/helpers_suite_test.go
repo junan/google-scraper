@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	_ "google-scraper/initializers"
-	. "google-scraper/tests/testing_helpers"
+	. "google-scraper/tests"
 
 	"github.com/beego/beego/v2/server/web"
 	. "github.com/onsi/ginkgo"
@@ -17,5 +17,5 @@ func TestHelpers(t *testing.T) {
 }
 
 var _ = BeforeSuite(func() {
-	web.TestBeegoInit(AppRootDir(1))
+	web.TestBeegoInit(AppRootDir())
 })
