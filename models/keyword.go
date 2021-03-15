@@ -19,6 +19,12 @@ func CreateKeyword(s *Keyword) (id int64, err error) {
 	return orm.Insert(s)
 }
 
+
+func UpdateKeyword(s *Keyword) (int64, error) {
+	orm := orm.NewOrm()
+	return orm.Update(s, "SearchCompleted")
+}
+
 func FindKeywordById(id int64) (keyword *Keyword, err error) {
 	orm := orm.NewOrm()
 	keyword = &Keyword{
@@ -53,5 +59,5 @@ func (u *Keyword) TableName() string {
 func userKeywordsQuerySeter(user *User) orm.QuerySeter {
 	o := orm.NewOrm()
 
-	return o.QueryTable(Keyword{}).Filter("user_id", 9)
+	return o.QueryTable(Keyword{}).Filter("user_id", user.Id)
 }
