@@ -1,22 +1,24 @@
 {{ if .Keywords }}
-    <table>
+    <table class="table table-striped">
         <thead>
         <tr>
             <th>Id</th>
             <th>Keyword</th>
-            <th>Status</th>
+            <th>SearchCompleted</th>
             <th>Created At</th>
         </tr>
         </thead>
         <tbody>
+
         {{ range $keyword := .Keywords }}
             <tr>
                 <td>{{ $keyword.Id }}</td>
-                <td>{{ $keyword.Keyword }}</td>
-                <td>{{ $keyword.Status }}</td>
+                <td>{{ $keyword.Name }}</td>
+                <td>{{ $keyword.SearchCompleted }}</td>
                 <td>{{ $keyword.CreatedAt }}</td>
             </tr>
         {{ end }}
+
         </tbody>
     </table>
 {{ else }}
