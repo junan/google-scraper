@@ -5,8 +5,11 @@
 @import 'base/form';
 
 // Layouts
+@import 'layouts/default';
 @import 'layouts/authentication';
 
 // Components
 @import 'components/user-auth';
+@import 'components/user-search';
+@import 'components/form-user-search';
 @import 'components/app-header';

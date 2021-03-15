@@ -34,6 +34,6 @@ var _ = Describe("DashboardController", func() {
 	})
 
 	AfterEach(func() {
-		TruncateTable("users")
+		TruncateTables("users")
 	})
 })

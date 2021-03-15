@@ -7,9 +7,14 @@ import (
 	"github.com/beego/beego/v2/core/logs"
 )
 
-func TruncateTable(tableName string) {
+func TruncateTables(tableNames ...string) {
+	var rawSql string
 	o := orm.NewOrm()
-	rawSql := fmt.Sprintf("TRUNCATE TABLE \"%s\";", tableName)
+
+	for _, tableName := range tableNames {
+		rawSql += fmt.Sprintf("TRUNCATE TABLE \"%s\";", tableName)
+	}
+
 	_, err := o.Raw(rawSql).Exec()
 	if err != nil {
 		err := orm.RunSyncdb("default", false, false)

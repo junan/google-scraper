@@ -10,6 +10,7 @@ import (
 func SetDataAttributes(c *web.Controller, user *models.User) {
 	controllerName, actionName := c.GetControllerAndAction()
 
+	c.Layout = "layouts/default.html"
 	c.Data["ControllerName"] = strcase.ToSnake(controllerName)
 	c.Data["ActionName"] = strcase.ToSnake(actionName)
 	c.Data["CurrentUser"] = user

@@ -137,7 +137,6 @@ var _ = Describe("SessionController", func() {
 				path := GetUrlPath(response)
 
 				Expect(path).To(Equal("/"))
-
 			})
 		})
 	})
@@ -180,6 +179,6 @@ var _ = Describe("SessionController", func() {
 	})
 
 	AfterEach(func() {
-		TruncateTable("users")
+		TruncateTables("users")
 	})
 })

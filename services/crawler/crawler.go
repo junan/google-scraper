@@ -1,7 +1,10 @@
 package crawler
 
 import (
+	"encoding/json"
 	"strings"
+
+	"google-scraper/models"
 
 	"github.com/PuerkitoBio/goquery"
 )
@@ -19,20 +22,10 @@ var selectorMapping = map[string]string{
 	"totalLinksCount":             "a",
 }
 
-type CrawlData struct {
-	TopAdWordAdvertisersCount   int
-	TopAdWordAdvertisersUrls    []string
-	TotalAdWordAdvertisersCount int
-	ResultsCount                int
-	ResultsUrls                 []string
-	TotalLinksCount             int
-	Html                        string
-}
-
-// Call this function with your search key, it will return the necessary crawled data
-// Ex: Crawl("Buy laptop")
-func Crawl(searchString string) (data *CrawlData, err error) {
-	searchUrl, err := BuildSearchUrl(searchString)
+// Call this function with by passi g the keyword object, it will return the necessary crawled data
+// Ex: Crawl(keywordObject)
+func Crawl(keyword *models.Keyword) (searchResult *models.SearchResult, err error) {
+	searchUrl, err := BuildSearchUrl(keyword.Name)
 	if err != nil {
 		return nil, err
 	}
@@ -48,20 +41,34 @@ func Crawl(searchString string) (data *CrawlData, err error) {
 		return nil, err
 	}
 
-	data = parseCrawledData()
+	searchResult = &models.SearchResult{
+		TopAdWordAdvertisersCount:   getTopAdWordAdvertisersCount(),
+		TopAdWordAdvertisersUrls:    getTopAdWordAdvertisersUrls(),
+		TotalAdWordAdvertisersCount: getTotalAdWordAdvertisersCount(),
+		ResultsCount:                getResultsCount(),
+		ResultsUrls:                 getResultsUrls(),
+		TotalLinksCount:             getTotalLinks(),
+		Html:                        htmlResponse,
+		Keyword:                     keyword,
+	}
 
-	return data, nil
+	_, err = models.CreateSearchResult(searchResult)
+	if err != nil {
+		return nil, err
+	}
+
+	return searchResult, nil
 }
 
 func getTopAdWordAdvertisersCount() int {
 	return doc.Find(selectorMapping["topAdWordAdvertisersCount"]).Length()
 }
 
-func getTopAdWordAdvertisersUrls() []string {
-	return getLinks(selectorMapping["topAdWordAdvertisersUrls"])
+func getTopAdWordAdvertisersUrls() string {
+	return parsedUrls("topAdWordAdvertisersUrls")
 }
 
-func GetTotalAdWordAdvertisersCount() int {
+func getTotalAdWordAdvertisersCount() int {
 	return len(getLinks(selectorMapping["totalAdWordAdvertisersCount"]))
 }
 
@@ -69,8 +76,8 @@ func getResultsCount() int {
 	return doc.Find(selectorMapping["resultsCount"]).Length()
 }
 
-func getResultsUrls() []string {
-	return getLinks(selectorMapping["resultsUrls"])
+func getResultsUrls() string {
+	return parsedUrls("resultsUrls")
 }
 
 func getTotalLinks() int {
@@ -90,14 +97,12 @@ func getLinks(selector string) []string {
 	return links
 }
 
-func parseCrawledData() *CrawlData {
-	return &CrawlData{
-		TopAdWordAdvertisersCount:   getTopAdWordAdvertisersCount(),
-		TopAdWordAdvertisersUrls:    getTopAdWordAdvertisersUrls(),
-		TotalAdWordAdvertisersCount: GetTotalAdWordAdvertisersCount(),
-		ResultsCount:                getResultsCount(),
-		ResultsUrls:                 getResultsUrls(),
-		TotalLinksCount:             getTotalLinks(),
-		Html:                        htmlResponse,
+func parsedUrls(selector string) string {
+	links := getLinks(selectorMapping[selector])
+	urls, err := json.Marshal(links)
+	if err != nil {
+		return ""
 	}
+
+	return string(urls)
 }

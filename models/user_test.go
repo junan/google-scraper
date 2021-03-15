@@ -130,6 +130,6 @@ var _ = Describe("User", func() {
 	})
 
 	AfterEach(func() {
-		TruncateTable("users")
+		TruncateTables("users")
 	})
 })

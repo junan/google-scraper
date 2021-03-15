@@ -10,6 +10,7 @@ import (
 	"github.com/beego/beego/v2/server/web"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
+	"github.com/jarcoal/httpmock"
 )
 
 func TestControllers(t *testing.T) {
@@ -19,4 +20,14 @@ func TestControllers(t *testing.T) {
 
 var _ = BeforeSuite(func() {
 	web.TestBeegoInit(AppRootDir(1))
+	httpmock.Activate()
+})
+
+var _ = BeforeEach(func() {
+	// remove any mocks
+	httpmock.Reset()
+})
+
+var _ = AfterSuite(func() {
+	httpmock.DeactivateAndReset()
 })

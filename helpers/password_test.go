@@ -41,6 +41,6 @@ var _ = Describe("Password", func() {
 	})
 
 	AfterEach(func() {
-		TruncateTable("users")
+		TruncateTables("users")
 	})
 })

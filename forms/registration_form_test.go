@@ -118,6 +118,6 @@ var _ = Describe("RegistrationForm", func() {
 	})
 
 	AfterEach(func() {
-		TruncateTable("users")
+		TruncateTables("users")
 	})
 })
