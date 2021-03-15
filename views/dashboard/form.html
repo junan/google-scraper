@@ -1,12 +1,16 @@
 <form
-  class="form form-user-search"
-  action="/search"
-  method="post"
-  enctype="multipart/form-data"
+        class="form form-user-search"
+        action="/search"
+        method="post"
+        enctype="multipart/form-data"
 >
-  <div class="form-group">
-    <input type="file" class="form-control" name="file" />
-  </div>
 
-  <button type="submit" class="btn btn-primary btn-block">Upload</button>
+    <div class="form-row">
+        <div class="col col-md-10">
+            <input type="file" class="form-control" name="file"/>
+        </div>
+        <div class="col">
+            <button type="submit" class="btn btn-primary btn-block">Upload</button>
+        </div>
+    </div>
 </form>

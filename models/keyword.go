@@ -40,7 +40,7 @@ func FetchKeywords(user *User) ([]*Keyword, error) {
 
 	var keywords []*Keyword
 
-	_, err := userKeywordsQuerySeter(user).OrderBy("-created_at").All(&keywords)
+	_, err := userKeywordsQuerySeter(user).OrderBy("-id").All(&keywords)
 
 	return keywords, err
 }
