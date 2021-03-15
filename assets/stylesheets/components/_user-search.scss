@@ -5,6 +5,12 @@
   }
 
   &__body {
-    margin-bottom: 30px;
+    //display: flex;
+    //flex-direction: column;
+    //align-items: center;
+  }
+
+  &__result{
+    //width: 900px;
   }
 }
