@@ -2,6 +2,7 @@ package models
 
 import (
 	"github.com/beego/beego/v2/adapter/orm"
+	"github.com/beego/beego/v2/core/logs"
 )
 
 type User struct {
@@ -10,6 +11,22 @@ type User struct {
 	Name           string
 	Email          string `orm:"unique"`
 	HashedPassword string
+}
+
+func (u *User) Keywords() orm.QuerySeter {
+	orm := orm.NewOrm()
+	return orm.QueryTable(Keyword{}).Filter("user_id", u.Id)
+}
+
+func (u *User) PaginatedKeywords(keywords orm.QuerySeter, offset int, paginatesPer int) ([]*Keyword, error) {
+	userKeywords := []*Keyword{}
+
+	_, err := keywords.Limit(paginatesPer, offset).OrderBy("-id").All(&userKeywords)
+	if err != nil {
+		logs.Error("Keywords pagination failed: ", err)
+	}
+
+	return userKeywords, nil
 }
 
 func CreateUser(u *User) (id int64, err error) {

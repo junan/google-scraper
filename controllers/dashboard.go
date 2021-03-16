@@ -5,26 +5,41 @@ import (
 
 	"github.com/beego/beego/v2/core/logs"
 	"github.com/beego/beego/v2/server/web"
+	"github.com/beego/beego/v2/server/web/pagination"
 )
+
+var paginatesPer int
 
 type Dashboard struct {
 	baseController
 }
 
-func (c *Dashboard) New() {
-	web.ReadFromRequest(&c.Controller)
-
-	c.setAttributes()
-
-
-	keywords, err := models.FetchKeywords(c.CurrentUser)
+func init() {
+	var err error
+	paginatesPer, err = web.AppConfig.Int("paginatesPer")
 	if err != nil {
-		logs.Error("Fetching keywords failed: ", err)
+		logs.Error("Retrieving paginatesPer failed: ", err)
 	}
-
-	c.Data["Keywords"] = keywords
 }
 
-func (c *Dashboard) setAttributes() {
+func (c *Dashboard) New() {
+	web.ReadFromRequest(&c.Controller)
+	keywords := c.CurrentUser.Keywords()
+	keywordCount, err := keywords.Count()
+	if err != nil {
+		logs.Error("Retrieving keyword count failed: ", err)
+	}
+
+	paginator := pagination.SetPaginator(c.Ctx, paginatesPer, keywordCount)
+	paginatedKeywords, err := c.CurrentUser.PaginatedKeywords(keywords, paginator.Offset(), paginatesPer)
+	if err != nil {
+		logs.Error("Retrieving keywords failed: ", err)
+	}
+
+	c.setAttributes(paginatedKeywords)
+}
+
+func (c *Dashboard) setAttributes(paginatedKeywords []*models.Keyword) {
 	c.TplName = "dashboard/new.html"
+	c.Data["Keywords"] = paginatedKeywords
 }
