@@ -1,10 +1,10 @@
 package initializers
 
 import (
+	"google-scraper/models"
+
 	"github.com/beego/beego/v2/server/web"
 	"github.com/beego/beego/v2/core/logs"
-
-	"google-scraper/models"
 )
 
 const (

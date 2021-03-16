@@ -25,12 +25,12 @@ func init() {
 func (c *Dashboard) New() {
 	web.ReadFromRequest(&c.Controller)
 	keywords := c.CurrentUser.Keywords()
-	keywordCount, err := keywords.Count()
+	keywordsCount, err := keywords.Count()
 	if err != nil {
 		logs.Error("Retrieving keyword count failed: ", err)
 	}
 
-	paginator := pagination.SetPaginator(c.Ctx, paginatesPer, keywordCount)
+	paginator := pagination.SetPaginator(c.Ctx, paginatesPer, keywordsCount)
 	paginatedKeywords, err := c.CurrentUser.PaginatedKeywords(keywords, paginator.Offset(), paginatesPer)
 	if err != nil {
 		logs.Error("Retrieving keywords failed: ", err)

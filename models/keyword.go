@@ -1,8 +1,6 @@
 package models
 
 import (
-	"errors"
-
 	"github.com/beego/beego/v2/adapter/orm"
 )
 
@@ -38,25 +36,7 @@ func FindKeywordById(id int64) (keyword *Keyword, err error) {
 	return keyword, nil
 }
 
-func FetchKeywords(user *User) ([]*Keyword, error) {
-	if user == nil {
-		return nil, errors.New("User is blank")
-	}
-
-	var keywords []*Keyword
-
-	_, err := userKeywordsQuerySeter(user).OrderBy("-id").All(&keywords)
-
-	return keywords, err
-}
-
 // Beego by default creates the table name as singular, it will make it plural
 func (k *Keyword) TableName() string {
 	return "keywords"
-}
-
-func userKeywordsQuerySeter(user *User) orm.QuerySeter {
-	o := orm.NewOrm()
-
-	return o.QueryTable(Keyword{}).Filter("user_id", user.Id)
 }
