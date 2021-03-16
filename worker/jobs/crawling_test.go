@@ -2,9 +2,11 @@ package jobs_test
 
 import (
 	_ "google-scraper/initializers"
+	"google-scraper/models"
 	. "google-scraper/tests"
 	jobs "google-scraper/worker/jobs"
 
+	"github.com/beego/beego/v2/core/logs"
 	work "github.com/gocraft/work"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
@@ -27,6 +29,29 @@ var _ = Describe("Crawling", func() {
 
 				err := context.PerformCrawling(keywordJob)
 
+				Expect(err).To(BeNil())
+			})
+
+			It("updates the keyword as completed", func() {
+				searchString := "Buy domain"
+				user := FabricateUser("John", "john@example.com", "secret")
+				keyword := FabricateKeyword(searchString, &user)
+				mockResponseFilePath := AppRootDir() + "/tests/fixtures/services/crawler/valid_get_response.html"
+				MockCrawling(mockResponseFilePath)
+
+				context := jobs.Context{}
+				keywordJob := &work.Job{
+					Args: work.Q{"keywordId": keyword.Id},
+				}
+
+				err := context.PerformCrawling(keywordJob)
+
+				updatedKeyword, err := models.FindKeywordById(keyword.Id)
+				if err != nil {
+					logs.Error("Finding keyword failed: ", err)
+				}
+
+				Expect(updatedKeyword.SearchCompleted).To(BeTrue())
 				Expect(err).To(BeNil())
 			})
 		})
