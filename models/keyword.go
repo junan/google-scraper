@@ -19,7 +19,6 @@ func CreateKeyword(k *Keyword) (id int64, err error) {
 	return orm.Insert(k)
 }
 
-
 func UpdateKeyword(k *Keyword) (int64, error) {
 	orm := orm.NewOrm()
 	return orm.Update(k, "SearchCompleted")
@@ -49,14 +48,6 @@ func FetchKeywords(user *User) ([]*Keyword, error) {
 	_, err := userKeywordsQuerySeter(user).OrderBy("-id").All(&keywords)
 
 	return keywords, err
-}
-
-func (k *Keyword) displayStatus() string {
-	if k.SearchCompleted {
-		return "Yes"
-	} else {
-		return "False"
-	}
 }
 
 // Beego by default creates the table name as singular, it will make it plural

@@ -2,6 +2,7 @@ package initializers
 
 import (
 	"github.com/beego/beego/v2/server/web"
+	"github.com/beego/beego/v2/core/logs"
 
 	"google-scraper/models"
 )
@@ -11,8 +12,15 @@ const (
 )
 
 func init() {
-	web.AddFuncMap("displayStatus", DisplayStatus)
-	web.AddFuncMap("displayFormattedCreatedDate", DisplayFormattedCreatedDate)
+	err := web.AddFuncMap("displayStatus", DisplayStatus)
+	if err != nil {
+		logs.Error("Registering displayStatus function to the template failed: ", err)
+	}
+
+	err = web.AddFuncMap("displayFormattedCreatedDate", DisplayFormattedCreatedDate)
+	if err != nil {
+		logs.Error("Registering displayFormattedCreatedDate function to the template failed: ", err)
+	}
 }
 
 func DisplayStatus(k models.Keyword) string {
