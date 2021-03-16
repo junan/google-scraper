@@ -9,7 +9,7 @@ import (
 	. "github.com/onsi/gomega"
 )
 
-var _ = Describe("Queueing", func() {
+var _ = Describe("Enqueueing", func() {
 	Describe("#EnqueueKeywordJob", func() {
 		Context("given a valid keyword object", func() {
 			It("does NOT return error", func() {
@@ -32,16 +32,26 @@ var _ = Describe("Queueing", func() {
 
 				Expect(job.Name).To(Equal("crawling_job"))
 				Expect(job.EnqueuedAt).NotTo(BeNil())
-				Expect(job.EnqueuedAt).NotTo(BeNil())
 			})
 		})
 
-		Context("given an empty keyword object", func() {
-			It("returns an error", func() {
-				job, err := EnqueueKeywordJob(&models.Keyword{}, 1)
+		Context("given an INVALID keyword object", func() {
+			Context("given an empty keyword object", func() {
+				It("returns an error", func() {
+					job, err := EnqueueKeywordJob(&models.Keyword{}, 1)
 
-				Expect(err.Error()).To(Equal("invalid keyword object"))
-				Expect(job).To(BeNil())
+					Expect(err.Error()).To(ContainSubstring("invalid keyword object"))
+					Expect(job).To(BeNil())
+				})
+			})
+
+			Context("given the keyword object is nil", func() {
+				It("returns an error", func() {
+					job, err := EnqueueKeywordJob(nil, 1)
+
+					Expect(err.Error()).To(Equal("keyword object can't be nil"))
+					Expect(job).To(BeNil())
+				})
 			})
 		})
 	})

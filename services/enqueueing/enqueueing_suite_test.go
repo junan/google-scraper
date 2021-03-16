@@ -13,9 +13,9 @@ import (
 	. "github.com/onsi/gomega"
 )
 
-func TestQueueing(t *testing.T) {
+func TestEnqueueing(t *testing.T) {
 	RegisterFailHandler(Fail)
-	RunSpecs(t, "Queueing Suite")
+	RunSpecs(t, "Enqueueing Suite")
 }
 
 var _ = BeforeSuite(func() {

@@ -1,14 +1,15 @@
 package enqueueing
 
 import (
+	"fmt"
 	"errors"
 
 	"google-scraper/database"
 	"google-scraper/models"
 
 	"github.com/beego/beego/v2/core/logs"
-	"github.com/gocraft/work"
 	"github.com/beego/beego/v2/server/web"
+	"github.com/gocraft/work"
 )
 
 var enqueuer *work.Enqueuer
@@ -18,8 +19,12 @@ func init() {
 }
 
 func EnqueueKeywordJob(keyword *models.Keyword, throttleMultiplier int64) (*work.ScheduledJob, error) {
+	if keyword == nil {
+		return nil,  errors.New("keyword object can't be nil")
+	}
+
 	if keyword.Id <= 0 {
-		return nil, errors.New("invalid keyword object")
+		return nil,  fmt.Errorf("invalid keyword object: %+v", keyword)
 	}
 
 	crawlingJobName, err := web.AppConfig.String("crawlingJobName")
