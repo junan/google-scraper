@@ -53,12 +53,27 @@ var _ = Describe("Keyword", func() {
 		})
 	})
 
+	Describe("#UpdateKeyword", func() {
+		It("updates keyword status as completed", func() {
+			user := FabricateUser("John", "john@example.com", "secret")
+			keyword := FabricateKeyword("Buy domain", false, &user)
+			keyword.SearchCompleted = true
+			updatedKeyword, err := models.UpdateKeyword(&keyword)
+
+			if err != nil {
+				Fail("Updating keyword failed: " + err.Error())
+			}
+
+			Expect(updatedKeyword.SearchCompleted).To(BeTrue())
+		})
+	})
+
 	Describe("#FindKeywordById", func() {
 		Context("given the keyword already exist", func() {
 			It("returns the keyword object", func() {
 				user := FabricateUser("John", "john@example.com", "secret")
 				existingKeyword := FabricateKeyword("Buy domain", false, &user)
-				keyword, err :=  models.FindKeywordById(existingKeyword.Id)
+				keyword, err := models.FindKeywordById(existingKeyword.Id)
 				if err != nil {
 					Fail("Finding user failed: " + err.Error())
 				}

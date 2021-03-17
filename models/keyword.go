@@ -17,9 +17,14 @@ func CreateKeyword(k *Keyword) (id int64, err error) {
 	return orm.Insert(k)
 }
 
-func UpdateKeyword(k *Keyword) (int64, error) {
+func UpdateKeyword(k *Keyword) (*Keyword, error) {
 	orm := orm.NewOrm()
-	return orm.Update(k, "SearchCompleted")
+	_, err := orm.Update(k, "SearchCompleted")
+	if err != nil {
+		return nil, err
+	}
+
+	return k, nil
 }
 
 func FindKeywordById(id int64) (keyword *Keyword, err error) {
