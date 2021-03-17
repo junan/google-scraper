@@ -1,15 +1,12 @@
 package initializers
 
 import (
-	"google-scraper/models"
+	. "google-scraper/presenters"
 
-	"github.com/beego/beego/v2/server/web"
 	"github.com/beego/beego/v2/core/logs"
+	"github.com/beego/beego/v2/server/web"
 )
 
-const (
-	layoutUS = "January 2, 2006"
-)
 
 func init() {
 	err := web.AddFuncMap("displayStatus", DisplayStatus)
@@ -23,14 +20,3 @@ func init() {
 	}
 }
 
-func DisplayStatus(k models.Keyword) string {
-	if k.SearchCompleted {
-		return "Yes"
-	} else {
-		return "No"
-	}
-}
-
-func DisplayFormattedCreatedDate(k models.Keyword) string {
-	return k.CreatedAt.Format(layoutUS)
-}

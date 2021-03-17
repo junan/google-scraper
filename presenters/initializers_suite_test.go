@@ -1,4 +1,4 @@
-package initializers_test
+package presenters_test
 
 import (
 	"testing"
@@ -7,7 +7,7 @@ import (
 	. "github.com/onsi/gomega"
 )
 
-func TestInitializers(t *testing.T) {
+func TestPresenters(t *testing.T) {
 	RegisterFailHandler(Fail)
-	RunSpecs(t, "Initializers Suite")
+	RunSpecs(t, "Presenters Suite")
 }
