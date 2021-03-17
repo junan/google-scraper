@@ -8,6 +8,9 @@ build-dependencies:
 build-assets:
 	wt watch assets/stylesheets/application.scss -s compressed -b static/css
 
+start-worker:
+	go run worker/main.go
+
 dev:
 	docker-compose -f docker-compose.dev.yml up -d
 	bee run

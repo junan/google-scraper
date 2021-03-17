@@ -25,6 +25,12 @@ Clone the repository
   make build-assets
   ```
 
+#### Run the worker
+
+  ```sh
+  make start-worker
+  ```
+
 #### Run the application in your local machine
 
   ```sh

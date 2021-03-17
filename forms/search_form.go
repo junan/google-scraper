@@ -6,14 +6,13 @@ import (
 	"path"
 
 	"google-scraper/models"
+	. "google-scraper/services/enqueueing"
 
-	. "google-scraper/services/crawler"
 	"github.com/beego/beego/v2/core/logs"
 	"github.com/beego/beego/v2/core/validation"
 )
 
 var keywordStrings [][]string
-var keywordIds []int64
 var CsvKeywordValidationCriteria = [...]string{"presence", "size", "extension", "format", "count"}
 var CsvValidationMessageMapping = map[string]string{
 	"presence":  "File can't be blank.",
@@ -43,6 +42,7 @@ func (csv *CSV) Valid(v *validation.Validation) {
 }
 
 func PerformSearch(file multipart.File, header *multipart.FileHeader, user *models.User) (err error) {
+	var keywordIndex int64 = 0
 	csvFile := CSV{File: file, Header: header, Size: getSizeInMb(header)}
 	validation := validation.Validation{}
 	success, err := validation.Valid(&csvFile)
@@ -58,21 +58,21 @@ func PerformSearch(file multipart.File, header *multipart.FileHeader, user *mode
 		}
 	}
 
-	// TODO: This part will be processed in cron job, will be added some request delay technique and requeue the job on fails in other task.
-	// Storing the search string in the Keyword model and creating SearchResult model with the crawled data using the keyword object
 	for _, row := range keywordStrings {
 		for _, name := range row {
 			keyword, err := storeKeyword(name, user)
 			if err == nil {
-				_, err = Crawl (keyword)
+				job, err := EnqueueKeywordJob(keyword, keywordIndex)
 				if err != nil {
-					logs.Error("Crawling failed: ", err)
+					logs.Error("Adding keyword to queue failed: ", err)
 				}
+				logs.Info("Enqueued %v keyword to the %v", keyword.Name, job.Name)
+				keywordIndex = keywordIndex + 1
 			}
 		}
 	}
 
-	return err
+	return nil
 }
 
 func readKeywords(file multipart.File) ([][]string, error) {
@@ -101,24 +101,6 @@ func getSizeInMb(header *multipart.FileHeader) int64 {
 	}
 
 	return size
-}
-
-func storeKeyword(name string, user *models.User) (keyword *models.Keyword, err error) {
-	keyword = &models.Keyword{
-		Name: name,
-		User: user,
-	}
-
-	id, err := models.CreateKeyword(keyword)
-	if err != nil {
-		logs.Error("Creating keyword failed: ", err)
-
-	} else {
-		result := append(keywordIds, id)
-		keywordIds = result
-	}
-
-	return keyword, err
 }
 
 func validate(criteria string, csv *CSV) bool {
@@ -170,4 +152,18 @@ func validateKeywordCount(keywords [][]string) bool {
 		totalCount := row * column
 		return totalCount <= 1000
 	}
+}
+
+func storeKeyword(name string, user *models.User) (keyword *models.Keyword, err error) {
+	keyword = &models.Keyword{
+		Name: name,
+		User: user,
+	}
+
+	_, err = models.CreateKeyword(keyword)
+	if err != nil {
+		return nil, err
+	}
+
+	return keyword, nil
 }
