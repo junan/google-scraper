@@ -6,7 +6,6 @@ import (
 	. "google-scraper/tests"
 	jobs "google-scraper/worker/jobs"
 
-	"github.com/beego/beego/v2/core/logs"
 	work "github.com/gocraft/work"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
@@ -45,10 +44,13 @@ var _ = Describe("Crawling", func() {
 				}
 
 				err := context.PerformCrawling(keywordJob)
+				if err != nil {
+					Fail("Crawling failed: " + err.Error())
+				}
 
 				updatedKeyword, err := models.FindKeywordById(keyword.Id)
 				if err != nil {
-					logs.Error("Finding keyword failed: ", err)
+					Fail("Finding keyword failed: " + err.Error())
 				}
 
 				Expect(updatedKeyword.SearchCompleted).To(BeTrue())
