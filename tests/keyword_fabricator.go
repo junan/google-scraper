@@ -7,9 +7,9 @@ import (
 	"github.com/beego/beego/v2/core/logs"
 )
 
-func FabricateKeyword(name string, user *User) Keyword {
+func FabricateKeyword(name string, searchCompleted bool, user *User) Keyword {
 	o := orm.NewOrm()
-	keyword := Keyword{Name: name, User: user}
+	keyword := Keyword{Name: name, User: user, SearchCompleted: searchCompleted}
 
 	_, err := o.Insert(&keyword)
 	if err != nil {

@@ -18,7 +18,7 @@ var _ = Describe("Crawling", func() {
 			It("returns no errors", func() {
 				searchString := "Buy domain"
 				user := FabricateUser("John", "john@example.com", "secret")
-				keyword := FabricateKeyword(searchString, &user)
+				keyword := FabricateKeyword(searchString, false, &user)
 				mockResponseFilePath := AppRootDir() + "/tests/fixtures/services/crawler/valid_get_response.html"
 				MockCrawling(mockResponseFilePath)
 
@@ -35,7 +35,7 @@ var _ = Describe("Crawling", func() {
 			It("updates the keyword as completed", func() {
 				searchString := "Buy domain"
 				user := FabricateUser("John", "john@example.com", "secret")
-				keyword := FabricateKeyword(searchString, &user)
+				keyword := FabricateKeyword(searchString, false, &user)
 				mockResponseFilePath := AppRootDir() + "/tests/fixtures/services/crawler/valid_get_response.html"
 				MockCrawling(mockResponseFilePath)
 

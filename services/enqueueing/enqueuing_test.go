@@ -14,7 +14,7 @@ var _ = Describe("Enqueueing", func() {
 		Context("given a valid keyword object", func() {
 			It("does NOT return error", func() {
 				user := FabricateUser("John", "john@example.com", "secret")
-				keyword := FabricateKeyword("Buy domain", &user)
+				keyword := FabricateKeyword("Buy domain", false, &user)
 
 				_, err := EnqueueKeywordJob(&keyword, 1)
 
@@ -23,7 +23,7 @@ var _ = Describe("Enqueueing", func() {
 
 			It("enqueues the job", func() {
 				user := FabricateUser("John", "john@example.com", "secret")
-				keyword := FabricateKeyword("Buy domain", &user)
+				keyword := FabricateKeyword("Buy domain", false, &user)
 
 				job, err := EnqueueKeywordJob(&keyword, 1)
 				if err != nil {

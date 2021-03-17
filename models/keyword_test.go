@@ -57,7 +57,7 @@ var _ = Describe("Keyword", func() {
 		Context("given the keyword already exist", func() {
 			It("returns the keyword object", func() {
 				user := FabricateUser("John", "john@example.com", "secret")
-				existingKeyword := FabricateKeyword("Buy domain", &user)
+				existingKeyword := FabricateKeyword("Buy domain", false, &user)
 				keyword, err :=  models.FindKeywordById(existingKeyword.Id)
 				if err != nil {
 					Fail("Finding user failed: " + err.Error())
