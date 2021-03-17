@@ -25,7 +25,7 @@ var _ = Describe("User", func() {
 	})
 
 	Describe("#PaginatedKeywords", func() {
-		Context("given the paginatesPer is 10", func() {
+		Context("given the sizePerPage is 10", func() {
 			It("returns 10 keywords", func() {
 				user := FabricateUser("John", "john@example.com", "secret")
 
@@ -43,7 +43,7 @@ var _ = Describe("User", func() {
 			})
 		})
 
-		Context("given the paginatesPer is 5", func() {
+		Context("given the sizePerPage is 5", func() {
 			It("returns 5 keywords", func() {
 				user := FabricateUser("John", "john@example.com", "secret")
 

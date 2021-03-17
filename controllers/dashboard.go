@@ -8,7 +8,7 @@ import (
 	"github.com/beego/beego/v2/server/web/pagination"
 )
 
-var paginatesPer int
+var sizePerPage int
 
 type Dashboard struct {
 	baseController
@@ -16,9 +16,9 @@ type Dashboard struct {
 
 func init() {
 	var err error
-	paginatesPer, err = web.AppConfig.Int("paginatesPer")
+	sizePerPage, err = web.AppConfig.Int("sizePerPage")
 	if err != nil {
-		logs.Error("Retrieving paginatesPer failed: ", err)
+		logs.Error("Retrieving sizePerPage failed: ", err)
 	}
 }
 
@@ -30,8 +30,8 @@ func (c *Dashboard) New() {
 		logs.Error("Retrieving keyword count failed: ", err)
 	}
 
-	paginator := pagination.SetPaginator(c.Ctx, paginatesPer, keywordsCount)
-	paginatedKeywords, err := c.CurrentUser.PaginatedKeywords(keywords, paginator.Offset(), paginatesPer)
+	paginator := pagination.SetPaginator(c.Ctx, sizePerPage, keywordsCount)
+	paginatedKeywords, err := c.CurrentUser.PaginatedKeywords(keywords, paginator.Offset(), sizePerPage)
 	if err != nil {
 		logs.Error("Retrieving keywords failed: ", err)
 	}

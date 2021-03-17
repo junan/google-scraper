@@ -18,10 +18,10 @@ func (u *User) Keywords() orm.QuerySeter {
 	return orm.QueryTable(Keyword{}).Filter("user_id", u.Id)
 }
 
-func (u *User) PaginatedKeywords(keywords orm.QuerySeter, offset int, paginatesPer int) ([]*Keyword, error) {
+func (u *User) PaginatedKeywords(keywords orm.QuerySeter, offset int, sizePerPage int) ([]*Keyword, error) {
 	userKeywords := []*Keyword{}
 
-	_, err := keywords.Limit(paginatesPer, offset).OrderBy("-id").All(&userKeywords)
+	_, err := keywords.Limit(sizePerPage, offset).OrderBy("-id").All(&userKeywords)
 	if err != nil {
 		logs.Error("Keywords pagination failed: ", err)
 	}
