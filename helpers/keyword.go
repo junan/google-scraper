@@ -10,6 +10,7 @@ type KeywordSearchResult struct {
 	TotalAdWordAdvertisersCount int
 	TotalLinksCount             int
 	ResultsCount                int
+	Html                string
 }
 
 func KeywordPresenter(k *models.Keyword) (*KeywordSearchResult, error) {
@@ -24,6 +25,7 @@ func KeywordPresenter(k *models.Keyword) (*KeywordSearchResult, error) {
 		TotalAdWordAdvertisersCount: searchResult.TotalAdWordAdvertisersCount,
 		TotalLinksCount:             searchResult.TotalLinksCount,
 		ResultsCount:                searchResult.ResultsCount,
+		Html: searchResult.Html,
 	}
 	return &keywordSearchResult, nil
 }
