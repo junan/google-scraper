@@ -2,6 +2,7 @@ package models
 
 import (
 	"github.com/beego/beego/v2/adapter/orm"
+	"github.com/beego/beego/v2/core/logs"
 )
 
 type Keyword struct {
@@ -25,6 +26,22 @@ func UpdateKeyword(k *Keyword) (*Keyword, error) {
 	}
 
 	return k, nil
+}
+
+func GetKeywords(u *User) orm.QuerySeter {
+	orm := orm.NewOrm()
+	return orm.QueryTable(Keyword{}).Filter("user_id", u.Id)
+}
+
+func GetPaginatedKeywords(u *User, offset int, sizePerPage int) ([]*Keyword, error) {
+	userKeywords := []*Keyword{}
+
+	_, err := GetKeywords(u).Limit(sizePerPage, offset).OrderBy("-id").All(&userKeywords)
+	if err != nil {
+		logs.Error("Keywords pagination failed: ", err)
+	}
+
+	return userKeywords, nil
 }
 
 func FindKeywordById(id int64) (keyword *Keyword, err error) {

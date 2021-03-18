@@ -24,14 +24,14 @@ func init() {
 
 func (c *Dashboard) New() {
 	web.ReadFromRequest(&c.Controller)
-	keywords := c.CurrentUser.Keywords()
+	keywords := models.GetKeywords(c.CurrentUser)
 	keywordsCount, err := keywords.Count()
 	if err != nil {
 		logs.Error("Retrieving keyword count failed: ", err)
 	}
 
 	paginator := pagination.SetPaginator(c.Ctx, sizePerPage, keywordsCount)
-	paginatedKeywords, err := c.CurrentUser.PaginatedKeywords(keywords, paginator.Offset(), sizePerPage)
+	paginatedKeywords, err := models.GetPaginatedKeywords(c.CurrentUser, paginator.Offset(), sizePerPage)
 	if err != nil {
 		logs.Error("Retrieving keywords failed: ", err)
 	}
