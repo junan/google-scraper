@@ -1,6 +1,8 @@
 package controllers
 
 import (
+	"net/http"
+
 	. "google-scraper/helpers"
 	. "google-scraper/models"
 	presenter "google-scraper/presenters"
@@ -16,8 +18,10 @@ type KeywordController struct {
 func (c *KeywordController) Show() {
 	web.ReadFromRequest(&c.Controller)
 	keyword, err := c.getKeyword()
-	if keyword != nil {
+	if err != nil {
 		logs.Error("Converting String to Int failed: ", err)
+		c.Ctx.Redirect(http.StatusFound, "/")
+		return
 	}
 
 	keywordPresenter, err := presenter.KeywordPresenter(keyword)
@@ -38,6 +42,6 @@ func (c *KeywordController) getKeyword() (*Keyword, error) {
 
 func (c *KeywordController) setAttributes(ksr *presenter.KeywordSearchResult) {
 	c.TplName = "keyword/show.html"
-	c.Data["Keywords"] = ksr
+	c.Data["KeywordPresenter"] = ksr
 }
 

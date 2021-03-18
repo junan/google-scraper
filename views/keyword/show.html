@@ -1,1 +1,26 @@
-<h1>Hello World</h1>
+<div class="text-center">
+    <table class="table table-centralised ">
+        <tbody>
+        <tr>
+            <th>Keyword:</th>
+            <td>{{ .KeywordPresenter.Keyword }}</td>
+        </tr>
+        <tr>
+            <th>Top Advertisers Count:</th>
+            <td>{{ .KeywordPresenter.TopAdWordAdvertisersCount }}</td>
+        </tr>
+        <tr>
+            <th>Total Advertisers Count:</th>
+            <td>{{ .KeywordPresenter.TotalAdWordAdvertisersCount }}</td>
+        </tr>
+        <tr>
+            <th>Total Link Count:</th>
+            <td>{{ .KeywordPresenter.TotalLinksCount }}</td>
+        </tr>
+        <tr>
+            <th>Total Result Count:</th>
+            <td>{{ .KeywordPresenter.ResultsCount }}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
