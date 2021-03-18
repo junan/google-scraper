@@ -1,0 +1,30 @@
+<table class="table table-borderless">
+    <thead>
+    <tr>
+        <th>ResultsUrls</th>
+        <th>TopAdWordAdvertisersUrls</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>
+            <ul class="list-group">
+                <ul class="list-group">
+                    {{ range $url := .KeywordPresenter.ResultsUrls }}
+                        <a href="{{ $url }}"
+                           class="list-group-item list-group-item-action d-inline-block text-truncate">{{ $url }}</a>
+                    {{ end }}
+                </ul>
+            </ul>
+        </td>
+        <td>
+            <ul class="list-group">
+                {{ range $url := .KeywordPresenter.TopAdWordAdvertisersUrls }}
+                    <a href="{{ $url }}"
+                       class="list-group-item list-group-item-action text-truncate">{{ $url }}</a>
+                {{ end }}
+            </ul>
+        </td>
+    </tr>
+    </tbody>
+</table>
