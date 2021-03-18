@@ -1,7 +1,7 @@
 package initializers
 
 import (
-	. "google-scraper/presenters"
+	. "google-scraper/helpers"
 
 	"github.com/beego/beego/v2/core/logs"
 	"github.com/beego/beego/v2/server/web"

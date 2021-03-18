@@ -1,4 +1,4 @@
-package presenters
+package helpers
 
 import "google-scraper/models"
 

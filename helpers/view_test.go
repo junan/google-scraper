@@ -1,17 +1,17 @@
-package presenters_test
+package helpers_test
 
 import (
 	"time"
 
+	. "google-scraper/helpers"
 	_ "google-scraper/initializers"
-	. "google-scraper/presenters"
 	. "google-scraper/tests"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 )
 
-var _ = Describe("Dashboard", func() {
+var _ = Describe("View", func() {
 	Describe("#DisplayStatus", func() {
 		Context("given the keyword search has not completed", func() {
 			It("returns No", func() {
