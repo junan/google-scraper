@@ -7,6 +7,7 @@ import (
 )
 
 type KeywordSearchResult struct {
+	KeywordId int64
 	Keyword                     string
 	TopAdWordAdvertisersCount   int
 	TotalAdWordAdvertisersCount int
@@ -34,6 +35,7 @@ func KeywordPresenter(k *models.Keyword) (*KeywordSearchResult, error) {
 	}
 
 	keywordSearchResult := KeywordSearchResult{
+		KeywordId:                   k.Id,
 		Keyword:                     k.Name,
 		TopAdWordAdvertisersCount:   searchResult.TopAdWordAdvertisersCount,
 		TotalAdWordAdvertisersCount: searchResult.TotalAdWordAdvertisersCount,
