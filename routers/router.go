@@ -8,8 +8,9 @@ import (
 
 func init() {
 	web.Router("/", &controllers.Dashboard{}, "get:New")
-	web.Router("/search", &controllers.Search{}, "post:Create")
 	web.Router("/register", &controllers.Registration{}, "get:New;post:Create")
 	web.Router("/login", &controllers.Session{}, "get:New;post:Create")
 	web.Router("/logout", &controllers.Session{}, "get:Delete")
+	web.Router("/search", &controllers.Search{}, "post:Create")
+	web.Router("/keyword/:id:int", &controllers.Keyword{}, "get:Show")
 }
