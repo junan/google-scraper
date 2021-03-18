@@ -1,5 +1,5 @@
 <div class="text-center">
-    <table class="table table-centralised ">
+    <table class="table table-centralised">
         <tbody>
         <tr>
             <th>Keyword:</th>
@@ -25,22 +25,34 @@
     </table>
 </div>
 
+<br><br>
 
-
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th>Keyword</th>
-            <th>Search Completed</th>
-
-        </tr>
-        </thead>
-        <tbody>
-
-            <tr>
-                <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid amet aperiam at et impedit laudantium natus reprehenderit rerum voluptas voluptates! Debitis distinctio dolore facere magni nostrum odit, quasi quisquam sequi.</td>
-                <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab aliquid assumenda consequuntur, dicta enim fuga fugiat illum inventore ipsa iure molestiae nulla quia quo, sapiente tempora tenetur ullam voluptas voluptatum?</td>
-            </tr>
-
-        </tbody>
-    </table>
+<table class="table table-borderless">
+    <thead>
+    <tr>
+        <th>ResultsUrls</th>
+        <th>TopAdWordAdvertisersUrls</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>
+            <ul class="list-group">
+                <ul class="list-group">
+                    {{ range $url := .KeywordPresenter.ResultsUrls }}
+                        <a href="{{ $url }}"
+                           class="list-group-item list-group-item-action d-inline-block text-truncate">{{ $url }}</a>
+                    {{ end }}
+                </ul>
+            </ul>
+        </td>
+        <td>
+            <ul class="list-group">
+                {{ range $url := .KeywordPresenter.TopAdWordAdvertisersUrls }}
+                <a href="{{ $url }}" class="list-group-item list-group-item-action text-truncate">{{ $url }}</a>
+                {{ end }}
+            </ul>
+    </td>
+    </tr>
+    </tbody>
+</table>

@@ -14,3 +14,9 @@
 @import 'components/user-search';
 @import 'components/form-user-search';
 @import 'components/app-header';
+
+.list-group {
+  a {
+    max-width: 500px;
+  }
+}

@@ -1,6 +1,8 @@
 package presenters
 
 import (
+	"encoding/json"
+
 	"google-scraper/models"
 )
 
@@ -10,11 +12,23 @@ type KeywordSearchResult struct {
 	TotalAdWordAdvertisersCount int
 	TotalLinksCount             int
 	ResultsCount                int
-	Html                string
+	Html                        string
+	TopAdWordAdvertisersUrls    []string
+	ResultsUrls                 []string
 }
 
 func KeywordPresenter(k *models.Keyword) (*KeywordSearchResult, error) {
 	searchResult, err := models.FindSearchResultByKeywordId(k.Id)
+	if err != nil {
+		return nil, err
+	}
+
+	topAdWordAdvertisersUrls, err := UnmarshalUrls(searchResult.TopAdWordAdvertisersUrls)
+	if err != nil {
+		return nil, err
+	}
+
+	resultsUrls, err := UnmarshalUrls(searchResult.ResultsUrls)
 	if err != nil {
 		return nil, err
 	}
@@ -25,7 +39,20 @@ func KeywordPresenter(k *models.Keyword) (*KeywordSearchResult, error) {
 		TotalAdWordAdvertisersCount: searchResult.TotalAdWordAdvertisersCount,
 		TotalLinksCount:             searchResult.TotalLinksCount,
 		ResultsCount:                searchResult.ResultsCount,
-		Html: searchResult.Html,
+		Html:                        searchResult.Html,
+		TopAdWordAdvertisersUrls:    topAdWordAdvertisersUrls,
+		ResultsUrls:                 resultsUrls,
 	}
+
 	return &keywordSearchResult, nil
+}
+
+func UnmarshalUrls(urls string) ([]string, error) {
+	var result []string
+	err := json.Unmarshal([]byte(urls), &result)
+	if err != nil {
+		return nil, err
+	}
+
+	return result, nil
 }
