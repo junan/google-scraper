@@ -1,27 +1,23 @@
 <table class="table table-borderless">
     <thead>
     <tr>
-        <th>ResultsUrls</th>
-        <th>TopAdWordAdvertisersUrls</th>
+        <th>Search Results Urls</th>
+        <th>Top AdWordAdvertisers Urls</th>
     </tr>
     </thead>
     <tbody>
     <tr>
         <td>
-            <ul class="list-group">
-                <ul class="list-group">
-                    {{ range $url := .KeywordPresenter.ResultsUrls }}
-                        <a href="{{ $url }}"
-                           class="list-group-item list-group-item-action d-inline-block text-truncate">{{ $url }}</a>
-                    {{ end }}
-                </ul>
+            <ul class="table__list-group">
+                {{ range $url := .KeywordPresenter.ResultsUrls }}
+                    <a href="{{ $url }}" class="table__list-group-item d-inline-block text-truncate">{{ $url }}</a>
+                {{ end }}
             </ul>
         </td>
         <td>
             <ul class="list-group">
                 {{ range $url := .KeywordPresenter.TopAdWordAdvertisersUrls }}
-                    <a href="{{ $url }}"
-                       class="list-group-item list-group-item-action text-truncate">{{ $url }}</a>
+                    <a href="{{ $url }}" class="table__list-group-item text-truncate">{{ $url }}</a>
                 {{ end }}
             </ul>
         </td>

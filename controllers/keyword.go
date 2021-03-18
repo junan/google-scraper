@@ -25,6 +25,9 @@ func (c *KeywordController) Show() {
 	}
 
 	keywordPresenter, err := presenter.KeywordPresenter(keyword)
+	if err != nil {
+		logs.Error("Initializing presenter failed: ", err)
+	}
 
 	c.setAttributes(keywordPresenter)
 }
@@ -44,4 +47,3 @@ func (c *KeywordController) setAttributes(ksr *presenter.KeywordSearchResult) {
 	c.TplName = "keyword/show.html"
 	c.Data["KeywordPresenter"] = ksr
 }
-

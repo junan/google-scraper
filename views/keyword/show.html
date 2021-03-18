@@ -1,12 +1,7 @@
 <div class="keyword-detail">
-    <h2 class="keyword-detail__title">{{ .KeywordPresenter.Keyword }} search result report</h2>
+    <h2 class="keyword-detail__title">{{ .KeywordPresenter.Keyword }} keyword search result report</h2>
     <div class="keyword-detail__body">
         {{ template "keyword/_counting_result_report.html" . }}
-        <div class="keyword-detail__html_result text-center">
-            <a href="/keywords/{{ .KeywordPresenter.KeywordId }}/render-html"
-               class="btn btn-primary text-center">Render Raw HTML</a>
-        </div>
         {{ template "keyword/_url_result_report.html" . }}
     </div>
 </div>
-

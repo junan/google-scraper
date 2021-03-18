@@ -7,7 +7,7 @@ import (
 )
 
 type KeywordSearchResult struct {
-	KeywordId int64
+	KeywordId                   int64
 	Keyword                     string
 	TopAdWordAdvertisersCount   int
 	TotalAdWordAdvertisersCount int

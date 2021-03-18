@@ -1,0 +1,10 @@
+.table {
+  &__list-group {
+    @extend .list-group;
+  }
+
+  &__list-group-item {
+    @extend .list-group-item;
+    max-width: 500px;
+  }
+}
