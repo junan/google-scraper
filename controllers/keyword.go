@@ -3,6 +3,7 @@ package controllers
 import (
 	. "google-scraper/helpers"
 	. "google-scraper/models"
+	presenter "google-scraper/presenters"
 
 	"github.com/beego/beego/v2/core/logs"
 	"github.com/beego/beego/v2/server/web"
@@ -19,11 +20,9 @@ func (c *KeywordController) Show() {
 		logs.Error("Converting String to Int failed: ", err)
 	}
 
-	c.setAttributes()
-}
+	keywordPresenter, err := presenter.KeywordPresenter(keyword)
 
-func (c *KeywordController) setAttributes() {
-	c.TplName = "keyword/show.html"
+	c.setAttributes(keywordPresenter)
 }
 
 func (c *KeywordController) getKeyword() (*Keyword, error) {
@@ -36,3 +35,9 @@ func (c *KeywordController) getKeyword() (*Keyword, error) {
 
 	return FindKeywordById(Id)
 }
+
+func (c *KeywordController) setAttributes(ksr *presenter.KeywordSearchResult) {
+	c.TplName = "keyword/show.html"
+	c.Data["Keywords"] = ksr
+}
+

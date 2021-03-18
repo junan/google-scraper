@@ -12,5 +12,5 @@ func init() {
 	web.Router("/login", &controllers.Session{}, "get:New;post:Create")
 	web.Router("/logout", &controllers.Session{}, "get:Delete")
 	web.Router("/search", &controllers.Search{}, "post:Create")
-	web.Router("/keyword/:id:int", &controllers.Keyword{}, "get:Show")
+	web.Router("/keyword/:id:int", &controllers.KeywordController{}, "get:Show")
 }
