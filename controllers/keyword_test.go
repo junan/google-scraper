@@ -19,6 +19,7 @@ var _ = Describe("KeywordController", func() {
 					user := FabricateUser("John", "john@example.com", "secret")
 					keyword := FabricateKeyword("Buy domain", false, &user)
 					url := fmt.Sprintf("/keyword/%d", keyword.Id)
+
 					response := MakeAuthenticatedRequest("GET", url, nil, &user)
 
 					Expect(response.StatusCode).To(Equal(http.StatusOK))

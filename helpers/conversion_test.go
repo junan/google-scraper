@@ -1,15 +1,15 @@
 package helpers_test
 
 import (
+	"google-scraper/helpers"
+
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
-
-	"google-scraper/helpers"
 )
 
 var _ = Describe("Conversion", func() {
 	Describe("#StringToInt", func() {
-		Context("given a integer string", func() {
+		Context("given the integer string", func() {
 			It("returns the integer string as integer", func() {
 				result, err := helpers.StringToInt("10")
 				if err != nil {
