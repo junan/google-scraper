@@ -58,6 +58,17 @@ func FindKeywordById(id int64) (keyword *Keyword, err error) {
 	return keyword, nil
 }
 
+func (k *Keyword) CreatedByUser(u *User) bool {
+	userKeywords := GetKeywords(u)
+	var keyword Keyword
+	err := userKeywords.Filter("id", k.Id).One(&keyword)
+	if err != nil {
+		return false
+	}
+
+	return true
+}
+
 // Beego by default creates the table name as singular, it will make it plural
 func (k *Keyword) TableName() string {
 	return "keywords"

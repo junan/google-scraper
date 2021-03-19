@@ -19,7 +19,12 @@ func (c *KeywordController) Show() {
 	web.ReadFromRequest(&c.Controller)
 	keyword, err := c.getKeyword()
 	if err != nil {
-		logs.Error("Converting String to Int failed: ", err)
+		c.Ctx.Redirect(http.StatusFound, "/")
+		return
+	}
+
+	result := keyword.CreatedByUser(c.CurrentUser)
+	if !result {
 		c.Ctx.Redirect(http.StatusFound, "/")
 		return
 	}

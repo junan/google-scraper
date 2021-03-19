@@ -24,12 +24,12 @@ func KeywordPresenter(k *models.Keyword) (*KeywordSearchResult, error) {
 		return nil, err
 	}
 
-	topAdWordAdvertisersUrls, err := UnmarshalUrls(searchResult.TopAdWordAdvertisersUrls)
+	topAdWordAdvertisersUrls, err := unmarshalUrls(searchResult.TopAdWordAdvertisersUrls)
 	if err != nil {
 		return nil, err
 	}
 
-	resultsUrls, err := UnmarshalUrls(searchResult.ResultsUrls)
+	resultsUrls, err := unmarshalUrls(searchResult.ResultsUrls)
 	if err != nil {
 		return nil, err
 	}
@@ -49,7 +49,7 @@ func KeywordPresenter(k *models.Keyword) (*KeywordSearchResult, error) {
 	return &keywordSearchResult, nil
 }
 
-func UnmarshalUrls(urls string) ([]string, error) {
+func unmarshalUrls(urls string) ([]string, error) {
 	var result []string
 	err := json.Unmarshal([]byte(urls), &result)
 	if err != nil {
