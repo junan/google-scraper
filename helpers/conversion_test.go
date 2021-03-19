@@ -8,7 +8,7 @@ import (
 )
 
 var _ = Describe("Conversion", func() {
-	Describe("StringToInt", func() {
+	Describe("#StringToInt", func() {
 		Context("given a integer string", func() {
 			It("returns the integer string as integer", func() {
 				result, err := helpers.StringToInt("10")

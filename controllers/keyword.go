@@ -5,7 +5,7 @@ import (
 
 	. "google-scraper/helpers"
 	. "google-scraper/models"
-	presenter "google-scraper/presenters"
+	"google-scraper/presenters"
 
 	"github.com/beego/beego/v2/core/logs"
 	"github.com/beego/beego/v2/server/web"
@@ -29,7 +29,7 @@ func (c *KeywordController) Show() {
 		return
 	}
 
-	keywordPresenter, err := presenter.InitializeKeywordPresenter(keyword)
+	keywordPresenter, err := presenters.InitializeKeywordPresenter(keyword)
 	if err != nil {
 		logs.Error("Initializing presenter failed: ", err)
 	}
@@ -48,7 +48,7 @@ func (c *KeywordController) findKeyword() (*Keyword, error) {
 	return FindKeywordById(Id)
 }
 
-func (c *KeywordController) setAttributes(keywordPresenter *presenter.KeywordSearchResult) {
+func (c *KeywordController) setAttributes(keywordPresenter *presenters.KeywordSearchResult) {
 	c.TplName = "keyword/show.html"
 	c.Data["KeywordPresenter"] = keywordPresenter
 }
