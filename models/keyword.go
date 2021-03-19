@@ -58,7 +58,7 @@ func FindKeywordById(id int64) (keyword *Keyword, err error) {
 	return keyword, nil
 }
 
-func (k *Keyword) IsCreatedByUser(u *User) bool {
+func (k *Keyword) IsBelongTo(u *User) bool {
 	userKeywords := GetKeywords(u)
 	var keyword Keyword
 	err := userKeywords.Filter("id", k.Id).One(&keyword)

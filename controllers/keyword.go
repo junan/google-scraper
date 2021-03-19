@@ -23,7 +23,7 @@ func (c *KeywordController) Show() {
 		return
 	}
 
-	result := keyword.IsCreatedByUser(c.CurrentUser)
+	result := keyword.IsBelongTo(c.CurrentUser)
 	if !result {
 		c.Ctx.Redirect(http.StatusFound, "/")
 		return

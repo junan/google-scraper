@@ -14,7 +14,7 @@ import (
 var _ = Describe("KeywordController", func() {
 	Describe("GET /keyword/:id", func() {
 		Context("given the user is an authenticated user", func() {
-			Context("given the keyword is belongs to the user", func() {
+			Context("given the keyword is belong to the user", func() {
 				It("returns 200 status code", func() {
 					user := FabricateUser("John", "john@example.com", "secret")
 					keyword := FabricateKeyword("Buy domain", false, &user)
@@ -25,7 +25,7 @@ var _ = Describe("KeywordController", func() {
 				})
 			})
 
-			Context("given the keyword is NOT belongs to the user", func() {
+			Context("given the keyword is NOT belong to the user", func() {
 				It("redirects to the root path", func() {
 					user1 := FabricateUser("John", "john@example.com", "secret")
 					FabricateKeyword("Buy domain", false, &user1)

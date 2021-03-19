@@ -144,6 +144,32 @@ var _ = Describe("Keyword", func() {
 		})
 	})
 
+	Describe("#IsBelongTo", func() {
+		Context("given the keyword is belong to the user", func() {
+			It("returns true", func() {
+				user := FabricateUser("John", "john@example.com", "secret")
+				keyword := FabricateKeyword("Buy domain", false, &user)
+
+				result := keyword.IsBelongTo(&user)
+
+				Expect(result).To(BeTrue())
+			})
+		})
+
+		Context("given the keyword does NOT belong to the user", func() {
+			It("returns false", func() {
+				user1 := FabricateUser("John", "john@example.com", "secret")
+				FabricateKeyword("Buy domain", false, &user1)
+				user2 := FabricateUser("Mike", "mike@example.com", "secret")
+				keyword2 := FabricateKeyword("Buy bike", false, &user2)
+
+				result := keyword2.IsBelongTo(&user1)
+
+				Expect(result).To(BeFalse())
+			})
+		})
+	})
+
 	AfterEach(func() {
 		TruncateTables("users", "keywords")
 	})
