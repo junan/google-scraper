@@ -75,6 +75,30 @@ var _ = Describe("SearchResult", func() {
 		})
 	})
 
+	Describe("#FindSearchResultByKeywordId", func() {
+		Context("given the keyword already exist", func() {
+			It("returns the keyword's SearchResult object", func() {
+				user := FabricateUser("John", "john@example.com", "secret")
+				keyword := FabricateKeyword("Buy domain", false, &user)
+				existingSearchResult := FabricateSearchResult(&keyword)
+				searchResult, err := models.FindSearchResultByKeywordId(keyword.Id)
+				if err != nil {
+					Fail("Finding search result failed: " + err.Error())
+				}
+
+				Expect(searchResult.Id).To(BeNumerically("==", existingSearchResult.Id))
+			})
+		})
+
+		Context("given the keyword does NOT exist", func() {
+			It("returns an error", func() {
+				_, err := models.FindSearchResultByKeywordId(1000)
+
+				Expect(err.Error()).To(Equal("<QuerySeter> no row found"))
+			})
+		})
+	})
+
 	AfterEach(func() {
 		TruncateTables("users", "keywords", "search_results")
 	})
