@@ -49,7 +49,7 @@ func (c *KeywordController) RenderHtml() {
 		logs.Error("Finding search result failed: ", err)
 	}
 
-	c.TplName = "keyword/render_html.html"
+	c.TplName = "keyword/search_result.html"
 	c.Data["SearchResult"] = searchResult
 }
 
