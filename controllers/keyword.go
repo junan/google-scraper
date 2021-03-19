@@ -17,13 +17,13 @@ type KeywordController struct {
 
 func (c *KeywordController) Show() {
 	web.ReadFromRequest(&c.Controller)
-	keyword, err := c.getKeyword()
+	keyword, err := c.findKeyword()
 	if err != nil {
 		c.Ctx.Redirect(http.StatusFound, "/")
 		return
 	}
 
-	result := keyword.CreatedByUser(c.CurrentUser)
+	result := keyword.IsCreatedByUser(c.CurrentUser)
 	if !result {
 		c.Ctx.Redirect(http.StatusFound, "/")
 		return
@@ -37,7 +37,7 @@ func (c *KeywordController) Show() {
 	c.setAttributes(keywordPresenter)
 }
 
-func (c *KeywordController) getKeyword() (*Keyword, error) {
+func (c *KeywordController) findKeyword() (*Keyword, error) {
 	keywordId := c.Ctx.Input.Param(":id")
 	Id, err := StringToInt(keywordId)
 	if err != nil {
@@ -48,7 +48,7 @@ func (c *KeywordController) getKeyword() (*Keyword, error) {
 	return FindKeywordById(Id)
 }
 
-func (c *KeywordController) setAttributes(ksr *presenter.KeywordSearchResult) {
+func (c *KeywordController) setAttributes(keywordPresenter *presenter.KeywordSearchResult) {
 	c.TplName = "keyword/show.html"
-	c.Data["KeywordPresenter"] = ksr
+	c.Data["KeywordPresenter"] = keywordPresenter
 }
