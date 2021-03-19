@@ -29,7 +29,7 @@ func (c *KeywordController) Show() {
 		return
 	}
 
-	keywordPresenter, err := presenter.KeywordPresenter(keyword)
+	keywordPresenter, err := presenter.InitializeKeywordPresenter(keyword)
 	if err != nil {
 		logs.Error("Initializing presenter failed: ", err)
 	}

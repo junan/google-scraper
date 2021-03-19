@@ -2,6 +2,7 @@ package presenters
 
 import (
 	"encoding/json"
+	"errors"
 
 	"google-scraper/models"
 )
@@ -18,7 +19,11 @@ type KeywordSearchResult struct {
 	ResultsUrls                 []string
 }
 
-func KeywordPresenter(k *models.Keyword) (*KeywordSearchResult, error) {
+func InitializeKeywordPresenter(k *models.Keyword) (*KeywordSearchResult, error) {
+	if k == nil {
+		return nil, errors.New("keyword object can't be nil")
+	}
+
 	searchResult, err := models.FindSearchResultByKeywordId(k.Id)
 	if err != nil {
 		return nil, err
