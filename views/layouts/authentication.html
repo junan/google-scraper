@@ -9,10 +9,10 @@
 </head>
 
 <body class="{{.ControllerName}} {{.ActionName}}">
-{{ template "shared/header.html" . }}
+{{ template "shared/_header.html" . }}
 
 <main class="app-main">{{ .LayoutContent }}</main>
 
-<footer class="app-footer">{{ template "shared/footer.html" . }}</footer>
+<footer class="app-footer">{{ template "shared/_footer.html" . }}</footer>
 </body>
 </html>
