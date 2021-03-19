@@ -99,6 +99,6 @@ func (c *baseController) getRedirectPath() string {
 	if c.isAuthenticatedUser() {
 		return "/"
 	} else {
-		return "login"
+		return "/login"
 	}
 }
