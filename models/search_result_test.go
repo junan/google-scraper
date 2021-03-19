@@ -14,7 +14,7 @@ var _ = Describe("SearchResult", func() {
 		Context("given the SearchResult with valid params", func() {
 			It("returns the search result ID", func() {
 				user := FabricateUser("John", "john@example.com", "secret")
-				keyword := FabricateKeyword("Buy domain", &user)
+				keyword := FabricateKeyword("Buy domain", false, &user)
 				searchResult := &models.SearchResult{
 					TopAdWordAdvertisersCount:   2,
 					TopAdWordAdvertisersUrls:    `["http://example1.com", "http://example2.com"]`,
@@ -35,7 +35,7 @@ var _ = Describe("SearchResult", func() {
 
 			It("returns empty error", func() {
 				user := FabricateUser("John", "john@example.com", "secret")
-				keyword := FabricateKeyword("Buy domain", &user)
+				keyword := FabricateKeyword("Buy domain", false, &user)
 				searchResult := &models.SearchResult{
 					TopAdWordAdvertisersCount:   2,
 					TopAdWordAdvertisersUrls:    `["http://example1.com", "http://example2.com"]`,
@@ -56,7 +56,7 @@ var _ = Describe("SearchResult", func() {
 			Context("given the keyword is nil", func() {
 				It("returns an error", func() {
 					user := FabricateUser("John", "john@example.com", "secret")
-					keyword := FabricateKeyword("Buy domain", &user)
+					keyword := FabricateKeyword("Buy domain", false, &user)
 					searchResult := &models.SearchResult{
 						TopAdWordAdvertisersCount:   2,
 						TopAdWordAdvertisersUrls:    `["http://example1.com", "http://example2.com"]`,

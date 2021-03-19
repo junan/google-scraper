@@ -16,7 +16,7 @@ var _ = Describe("Crawler", func() {
 			It("returns the expected crawled data", func() {
 				searchString := "Buy domain"
 				user := FabricateUser("John", "john@example.com", "secret")
-				keyword := FabricateKeyword(searchString, &user)
+				keyword := FabricateKeyword(searchString, false, &user)
 				mockResponseFilePath := AppRootDir() + "/tests/fixtures/services/crawler/valid_get_response.html"
 				MockCrawling(mockResponseFilePath)
 
@@ -55,7 +55,7 @@ var _ = Describe("Crawler", func() {
 			It("returns the expected crawled data", func() {
 				searchString := ""
 				user := FabricateUser("John", "john@example.com", "secret")
-				keyword := FabricateKeyword(searchString, &user)
+				keyword := FabricateKeyword(searchString, false, &user)
 				mockResponseFilePath := AppRootDir() + "/tests/fixtures/services/crawler/invalid_get_response.html"
 				MockCrawling(mockResponseFilePath)
 

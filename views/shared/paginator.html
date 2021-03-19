@@ -1,0 +1,32 @@
+{{ if .paginator.HasPages }}
+  <ul class="pagination justify-content-center">
+    {{ if .paginator.HasPrev }}
+      <li class="pagination__page-item">
+        <a class="pagination__page-link" href="{{ .paginator.PageLinkFirst }}">First Page</a>
+      </li>
+      <li class="pagination__page-item">
+        <a class="pagination__page-link" href="{{ .paginator.PageLinkPrev }}">Previous</a>
+      </li>
+    {{else}}
+      <li class="pagination__page-item disabled"><a class="pagination__page-link">First Page</a></li>
+      <li class="pagination__page-item disabled"><a class="pagination__page-link">Previous</a></li>
+    {{ end }}
+    {{ range $index, $page := .paginator.Pages }}
+      <li{{if $.paginator.IsActive .}} class="active pagination__page-item"{{end}}>
+        <a class="pagination__page-link" href="{{ $.paginator.PageLink $page }}">{{ $page }}</a>
+      </li>
+    {{ end }}
+
+    {{ if .paginator.HasNext }}
+      <li class="pagination__page-item">
+        <a class="pagination__page-link" href="{{ .paginator.PageLinkNext }}">Next</a>
+      </li>
+      <li class="pagination__page-item">
+        <a class="pagination__page-link" href="{{.paginator.PageLinkLast}}">Last Page</a>
+      </li>
+    {{else}}
+      <li class="pagination__page-item disabled"><a class="pagination__page-link">Next</a></li>
+      <li class="pagination__page-item disabled"><a class="pagination__page-link">Last Page</a></li>
+    {{ end }}
+    </ul>
+{{ end }}

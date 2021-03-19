@@ -2,6 +2,7 @@ package jobs_test
 
 import (
 	_ "google-scraper/initializers"
+	"google-scraper/models"
 	. "google-scraper/tests"
 	jobs "google-scraper/worker/jobs"
 
@@ -16,7 +17,7 @@ var _ = Describe("Crawling", func() {
 			It("returns no errors", func() {
 				searchString := "Buy domain"
 				user := FabricateUser("John", "john@example.com", "secret")
-				keyword := FabricateKeyword(searchString, &user)
+				keyword := FabricateKeyword(searchString, false, &user)
 				mockResponseFilePath := AppRootDir() + "/tests/fixtures/services/crawler/valid_get_response.html"
 				MockCrawling(mockResponseFilePath)
 
@@ -27,6 +28,32 @@ var _ = Describe("Crawling", func() {
 
 				err := context.PerformCrawling(keywordJob)
 
+				Expect(err).To(BeNil())
+			})
+
+			It("updates the keyword as completed", func() {
+				searchString := "Buy domain"
+				user := FabricateUser("John", "john@example.com", "secret")
+				keyword := FabricateKeyword(searchString, false, &user)
+				mockResponseFilePath := AppRootDir() + "/tests/fixtures/services/crawler/valid_get_response.html"
+				MockCrawling(mockResponseFilePath)
+
+				context := jobs.Context{}
+				keywordJob := &work.Job{
+					Args: work.Q{"keywordId": keyword.Id},
+				}
+
+				err := context.PerformCrawling(keywordJob)
+				if err != nil {
+					Fail("Crawling failed: " + err.Error())
+				}
+
+				updatedKeyword, err := models.FindKeywordById(keyword.Id)
+				if err != nil {
+					Fail("Finding keyword failed: " + err.Error())
+				}
+
+				Expect(updatedKeyword.SearchCompleted).To(BeTrue())
 				Expect(err).To(BeNil())
 			})
 		})

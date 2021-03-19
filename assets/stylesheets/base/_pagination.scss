@@ -1,0 +1,9 @@
+.pagination {
+  &__page-item {
+    @extend .page-item
+  }
+
+  &__page-link {
+    @extend .page-link
+  }
+}

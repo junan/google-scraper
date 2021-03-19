@@ -4,9 +4,12 @@
   method="post"
   enctype="multipart/form-data"
 >
-  <div class="form-group">
-    <input type="file" class="form-control" name="file" />
+  <div class="form-row">
+    <div class="col col-md-10">
+      <input type="file" class="form-control" name="file" />
+    </div>
+    <div class="col">
+      <button type="submit" class="btn btn-primary btn-block">Upload</button>
+    </div>
   </div>
-
-  <button type="submit" class="btn btn-primary btn-block">Upload</button>
 </form>

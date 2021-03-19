@@ -1,0 +1,22 @@
+{{ if .Keywords }}
+  <table class="table table-striped text-center">
+    <thead>
+      <tr>
+        <th>Keyword</th>
+        <th>Search Completed</th>
+        <th>Created At</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{ range $keyword := .Keywords }}
+      <tr>
+        <td>{{ $keyword.Name }}</td>
+        <td>{{ $keyword | displayStatus }}</td>
+        <td>{{ $keyword | displayFormattedCreatedDate }}</td>
+      </tr>
+      {{ end }}
+    </tbody>
+  </table>
+{{ else }}
+  <h4 class="text-center">You have not performed any google search yet</h4>
+{{ end }}
