@@ -55,7 +55,7 @@ var _ = Describe("KeywordController", func() {
 				})
 			})
 
-			Context("given the keyword does NOT exist in the database", func() {
+			Context("given the keyword does NOT exists in the database", func() {
 				It("redirects to the root path", func() {
 					user := FabricateUser("John", "john@example.com", "secret")
 					FabricateKeyword("Buy domain", false, &user)
