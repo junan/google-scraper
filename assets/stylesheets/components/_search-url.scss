@@ -1,0 +1,10 @@
+.search-url {
+  &__item {
+    max-width: 400px;
+  }
+
+  &--result,
+  &--advertiser {
+    border: 1px solid rgba(0, 0, 0, 0.125);
+  }
+}

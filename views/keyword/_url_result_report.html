@@ -1,26 +1,15 @@
-<table class="table table-borderless">
-  <thead>
-    <tr>
-      <th>Search Results Urls</th>
-      <th>Top AdWord Advertisers Urls</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>
-        <ul class="table__list-group">
-          {{ range $url := .KeywordPresenter.ResultsUrls }}
-            <a href="{{ $url }}" class="table__list-group-item d-inline-block text-truncate" target="_blank">{{ $url }}</a>
-          {{ end }}
-        </ul>
-      </td>
-      <td>
-        <ul class="table__list-group">
-          {{ range $url := .KeywordPresenter.TopAdWordAdvertisersUrls }}
-            <a href="{{ $url }}" class="table__list-group-item text-truncate" target="_blank">{{ $url }}</a>
-          {{ end }}
-        </ul>
-      </td>
-    </tr>
-  </tbody>
-</table>
+<div class="search-url row">
+  <div class="search-url--result col-lg-6 col-sm-12">
+    <h4 class="search-url__title">Search Results Urls</h4>
+    {{ range $url := .KeywordPresenter.ResultsUrls }}
+      <a  href="{{ $url }}" class="search-url__item d-inline-block text-truncate" target="_blank">{{ $url }}</a>
+    {{ end }}
+  </div>
+
+  <div class="search-url--advertiser col-lg-6 col-sm-12">
+    <h4 class="search-url__title">Top AdWord Advertisers Urls</h4>
+    {{ range $url := .KeywordPresenter.TopAdWordAdvertisersUrls }}
+      <a href="{{ $url }}" class="search-url__item d-inline-block text-truncate" target="_blank">{{ $url }}</a>
+    {{ end }}
+  </div>
+</div>
