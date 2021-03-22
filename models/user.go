@@ -19,7 +19,10 @@ func CreateUser(u *User) (id int64, err error) {
 
 func (u *User) IsExistingUser() bool {
 	o := orm.NewOrm()
-	err := o.Read(u, "Email")
+	var user User
+
+	err := o.QueryTable(User{}).Filter("email__iexact", u.Email).One(&user)
+
 	return err == nil
 }
 

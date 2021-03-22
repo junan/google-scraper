@@ -105,14 +105,27 @@ var _ = Describe("User", func() {
 
 	Describe("#IsExistingUser", func() {
 		Context("given the user already exist", func() {
-			It("returns true", func() {
-				email := "john@example.com"
-				FabricateUser("John", email, "secret")
-				user := &models.User{
-					Email: email,
-				}
+			Context("given the email in lowercase letter", func() {
+				It("returns true", func() {
+					email := "john@example.com"
+					FabricateUser("John", email, "secret")
+					user := &models.User{
+						Email: email,
+					}
 
-				Expect(user.IsExistingUser()).To(BeTrue())
+					Expect(user.IsExistingUser()).To(BeTrue())
+				})
+			})
+
+			Context("given the email in lowercase and uppercase letter", func() {
+				It("returns true", func() {
+					FabricateUser("John", "john@example.com", "secret")
+					user := &models.User{
+						Email: "JoHn@example.com",
+					}
+
+					Expect(user.IsExistingUser()).To(BeTrue())
+				})
 			})
 		})
 
