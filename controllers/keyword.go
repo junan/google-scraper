@@ -37,9 +37,11 @@ func (c *KeywordController) Show() {
 
 func (c *KeywordController) RenderHtml() {
 	web.ReadFromRequest(&c.Controller)
-
 	keyword, err := c.findKeyword()
 	if err != nil {
+		flash := web.NewFlash()
+		flash.Error(err.Error())
+		flash.Store(&c.Controller)
 		c.Ctx.Redirect(http.StatusFound, "/")
 		return
 	}
