@@ -168,7 +168,7 @@ var _ = Describe("Keyword", func() {
 
 				_, err := models.FindKeywordBy(keyword2.Id, &user1)
 
-				Expect(err.Error()).To(Equal("Keyword not found"))
+				Expect(err.Error()).To(Equal("Keyword not found."))
 			})
 		})
 	})
