@@ -40,6 +40,19 @@ var _ = Describe("KeywordController", func() {
 					Expect(response.StatusCode).To(Equal(http.StatusFound))
 					Expect(currentPath).To(Equal("/"))
 				})
+
+				It("sets the flash error message", func() {
+					user1 := FabricateUser("John", "john@example.com", "secret")
+					FabricateKeyword("Buy domain", false, &user1)
+					user2 := FabricateUser("Mike", "mike@example.com", "secret")
+					keyword2 := FabricateKeyword("Buy bike", false, &user2)
+					url := fmt.Sprintf("/keyword/%d", keyword2.Id)
+
+					response := MakeAuthenticatedRequest("GET", url, nil, &user1)
+					flash := GetFlash(response.Cookies())
+
+					Expect(flash.Data["error"]).To(Equal("Keyword not found."))
+				})
 			})
 
 			Context("given the keyword does NOT exist in the database", func() {
@@ -53,6 +66,18 @@ var _ = Describe("KeywordController", func() {
 
 					Expect(response.StatusCode).To(Equal(http.StatusFound))
 					Expect(currentPath).To(Equal("/"))
+				})
+
+				It("sets the flash error message", func() {
+					user := FabricateUser("John", "john@example.com", "secret")
+					FabricateKeyword("Buy domain", false, &user)
+					url := fmt.Sprintf("/keyword/%d", 1000)
+
+					response := MakeAuthenticatedRequest("GET", url, nil, &user)
+
+					flash := GetFlash(response.Cookies())
+
+					Expect(flash.Data["error"]).To(Equal("Keyword not found."))
 				})
 			})
 		})

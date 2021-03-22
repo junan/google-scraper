@@ -144,28 +144,31 @@ var _ = Describe("Keyword", func() {
 		})
 	})
 
-	Describe("#IsBelongTo", func() {
+	Describe("#FindKeywordBy", func() {
 		Context("given the keyword is belong to the user", func() {
-			It("returns true", func() {
+			It("returns the keyword", func() {
 				user := FabricateUser("John", "john@example.com", "secret")
 				keyword := FabricateKeyword("Buy domain", false, &user)
 
-				result := keyword.IsBelongTo(&user)
+				result, err := models.FindKeywordBy(keyword.Id, &user)
+				if err != nil {
+					Fail("Finding keyword failed: " + err.Error())
+				}
 
-				Expect(result).To(BeTrue())
+				Expect(result.Id).To(Equal(keyword.Id))
 			})
 		})
 
 		Context("given the keyword does NOT belong to the user", func() {
-			It("returns false", func() {
+			It("returns an error", func() {
 				user1 := FabricateUser("John", "john@example.com", "secret")
 				FabricateKeyword("Buy domain", false, &user1)
 				user2 := FabricateUser("Mike", "mike@example.com", "secret")
 				keyword2 := FabricateKeyword("Buy bike", false, &user2)
 
-				result := keyword2.IsBelongTo(&user1)
+				_, err := models.FindKeywordBy(keyword2.Id, &user1)
 
-				Expect(result).To(BeFalse())
+				Expect(err.Error()).To(Equal("Keyword not found"))
 			})
 		})
 	})

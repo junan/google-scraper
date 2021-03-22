@@ -19,12 +19,9 @@ func (c *KeywordController) Show() {
 	web.ReadFromRequest(&c.Controller)
 	keyword, err := c.findKeyword()
 	if err != nil {
-		c.Ctx.Redirect(http.StatusFound, "/")
-		return
-	}
-
-	result := keyword.IsBelongTo(c.CurrentUser)
-	if !result {
+		flash := web.NewFlash()
+		flash.Error(err.Error())
+		flash.Store(&c.Controller)
 		c.Ctx.Redirect(http.StatusFound, "/")
 		return
 	}
@@ -45,7 +42,7 @@ func (c *KeywordController) findKeyword() (*Keyword, error) {
 		return nil, err
 	}
 
-	return FindKeywordById(Id)
+	return FindKeywordBy(Id, c.CurrentUser)
 }
 
 func (c *KeywordController) setAttributes(keywordPresenter *presenters.KeywordSearchResult) {
