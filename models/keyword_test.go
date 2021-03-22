@@ -145,7 +145,7 @@ var _ = Describe("Keyword", func() {
 	})
 
 	Describe("#FindKeywordBy", func() {
-		Context("given the keyword is belong to the user", func() {
+		Context("given the keyword belongs to the user", func() {
 			It("returns the keyword", func() {
 				user := FabricateUser("John", "john@example.com", "secret")
 				keyword := FabricateKeyword("Buy domain", false, &user)

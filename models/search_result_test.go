@@ -76,7 +76,7 @@ var _ = Describe("SearchResult", func() {
 	})
 
 	Describe("#FindSearchResultByKeywordId", func() {
-		Context("given the keyword already exist", func() {
+		Context("given the keyword already exists", func() {
 			It("returns the keyword's SearchResult object", func() {
 				user := FabricateUser("John", "john@example.com", "secret")
 				keyword := FabricateKeyword("Buy domain", false, &user)
