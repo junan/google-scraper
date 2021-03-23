@@ -1,0 +1,11 @@
+.form-keyword-search {
+  margin-top: 30px;
+
+  &__input-group {
+    @extend .input-group;
+  }
+
+  &__input-group-append {
+    @extend .input-group-append;
+  }
+}
