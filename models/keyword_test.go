@@ -133,7 +133,7 @@ var _ = Describe("Keyword", func() {
 			})
 		})
 
-		Context("given the search query string is Buy", func() {
+		Context("given the search query string is purchase", func() {
 			It("returns matched user keywords", func() {
 				var keywordIds []int64
 				userKeywords := []*models.Keyword{}

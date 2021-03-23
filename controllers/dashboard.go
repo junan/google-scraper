@@ -25,8 +25,8 @@ func init() {
 func (c *Dashboard) New() {
 	web.ReadFromRequest(&c.Controller)
 
-	searchedKeyword := c.GetString("keyword")
-	keywords := models.GetKeywords(c.CurrentUser, searchedKeyword)
+	searchKeyword := c.GetString("keyword")
+	keywords := models.GetKeywords(c.CurrentUser, searchKeyword)
 
 	keywordsCount, err := keywords.Count()
 	if err != nil {
@@ -39,11 +39,11 @@ func (c *Dashboard) New() {
 		logs.Error("Retrieving keywords failed: ", err)
 	}
 
-	c.setAttributes(paginatedKeywords, searchedKeyword)
+	c.setAttributes(paginatedKeywords, searchKeyword)
 }
 
-func (c *Dashboard) setAttributes(paginatedKeywords []*models.Keyword, searchedKeyword string) {
+func (c *Dashboard) setAttributes(paginatedKeywords []*models.Keyword, searchKeyword string) {
 	c.TplName = "dashboard/new.html"
 	c.Data["Keywords"] = paginatedKeywords
-	c.Data["SearchKeyword"] = searchedKeyword
+	c.Data["SearchKeyword"] = searchKeyword
 }

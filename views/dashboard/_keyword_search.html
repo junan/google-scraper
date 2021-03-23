@@ -1,10 +1,16 @@
 <form class="form form-keyword-search" action="/" method="get">
-    <div class="form-keyword-search__input-group">
-        <input type="text" value="{{ .SearchKeyword }}" class="form-keyword-search__input form-control" name="keyword" placeholder="Search Keyword">
-        <div class="form-keyword-search__input-group-append">
-            <button class="btn btn-primary" type="submit">
-                <i class="fa fa-search"></i>
-            </button>
-        </div>
+  <div class="form-keyword-search__input-group">
+    <input
+      type="text"
+      value="{{ .SearchKeyword }}"
+      class="form-keyword-search__input form-control"
+      name="keyword"
+      placeholder="Search Keyword"
+    />
+    <div class="form-keyword-search__input-group-append">
+      <button class="btn btn-primary" type="submit">
+        <i class="fa fa-search"></i>
+      </button>
     </div>
+  </div>
 </form>
