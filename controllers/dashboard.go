@@ -39,10 +39,11 @@ func (c *Dashboard) New() {
 		logs.Error("Retrieving keywords failed: ", err)
 	}
 
-	c.setAttributes(paginatedKeywords)
+	c.setAttributes(paginatedKeywords, searchedKeyword)
 }
 
-func (c *Dashboard) setAttributes(paginatedKeywords []*models.Keyword) {
+func (c *Dashboard) setAttributes(paginatedKeywords []*models.Keyword, searchedKeyword string) {
 	c.TplName = "dashboard/new.html"
 	c.Data["Keywords"] = paginatedKeywords
+	c.Data["SearchKeyword"] = searchedKeyword
 }
