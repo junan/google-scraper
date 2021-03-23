@@ -1,6 +1,8 @@
 package models_test
 
 import (
+	"fmt"
+
 	_ "google-scraper/initializers"
 	"google-scraper/models"
 	. "google-scraper/tests"
@@ -174,40 +176,44 @@ var _ = Describe("Keyword", func() {
 	})
 
 	Describe("#GetPaginatedKeywords", func() {
-		//Context("given the sizePerPage is 10", func() {
-		//	//It("returns 10 keywords", func() {
-		//	//	user := FabricateUser("John", "john@example.com", "secret")
-		//	//
-		//	//	// Creating 11 keywords record
-		//	//	for i := 1; i <= 11; i++ {
-		//	//		FabricateKeyword(fmt.Sprintf("Buy domain %d", i), false, &user)
-		//	//	}
-		//	//
-		//	//	paginatedKeywords, err := models.GetPaginatedKeywords(&user, 0, 10)
-		//	//	if err != nil {
-		//	//		Fail("Getting paginated keywords failed: " + err.Error())
-		//	//	}
-		//	//
-		//	//	Expect(len(paginatedKeywords)).To(BeNumerically("==", 10))
-		//	//})
-		//})
+		Context("given the sizePerPage is 10", func() {
+			It("returns 10 keywords", func() {
+				user := FabricateUser("John", "john@example.com", "secret")
+
+				// Creating 11 keywords record
+				for i := 1; i <= 11; i++ {
+					FabricateKeyword(fmt.Sprintf("Buy domain %d", i), false, &user)
+				}
+
+				keywords := models.GetKeywords(&user, "")
+
+				paginatedKeywords, err := models.GetPaginatedKeywords(keywords, 0, 10)
+				if err != nil {
+					Fail("Getting paginated keywords failed: " + err.Error())
+				}
+
+				Expect(len(paginatedKeywords)).To(BeNumerically("==", 10))
+			})
+		})
 
 		Context("given the sizePerPage is 5", func() {
-			//It("returns 5 keywords", func() {
-			//	user := FabricateUser("John", "john@example.com", "secret")
-			//
-			//	// Creating 6 keywords record
-			//	for i := 1; i <= 6; i++ {
-			//		FabricateKeyword(fmt.Sprintf("Buy domain %d", i), false, &user)
-			//	}
-			//
-			//	paginatedKeywords, err := models.GetPaginatedKeywords(&user, 0, 5)
-			//	if err != nil {
-			//		Fail("Getting paginated keywords failed: " + err.Error())
-			//	}
-			//
-			//	Expect(len(paginatedKeywords)).To(BeNumerically("==", 5))
-			//})
+			It("returns 5 keywords", func() {
+				user := FabricateUser("John", "john@example.com", "secret")
+
+				// Creating 6 keywords record
+				for i := 1; i <= 6; i++ {
+					FabricateKeyword(fmt.Sprintf("Buy domain %d", i), false, &user)
+				}
+
+				keywords := models.GetKeywords(&user, "")
+
+				paginatedKeywords, err := models.GetPaginatedKeywords(keywords, 0, 5)
+				if err != nil {
+					Fail("Getting paginated keywords failed: " + err.Error())
+				}
+
+				Expect(len(paginatedKeywords)).To(BeNumerically("==", 5))
+			})
 		})
 	})
 
