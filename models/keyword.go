@@ -30,15 +30,21 @@ func UpdateKeyword(k *Keyword) (*Keyword, error) {
 	return k, nil
 }
 
-func GetKeywords(u *User) orm.QuerySeter {
+func GetKeywords(u *User, searchQueryString string) orm.QuerySeter {
 	orm := orm.NewOrm()
-	return orm.QueryTable(Keyword{}).Filter("user_id", u.Id)
+	result :=  orm.QueryTable(Keyword{}).Filter("user_id", u.Id)
+
+	if len(searchQueryString) > 0 {
+		result = result.Filter("name__iexact", searchQueryString)
+	}
+
+	return result
 }
 
-func GetPaginatedKeywords(u *User, offset int, sizePerPage int) ([]*Keyword, error) {
+func GetPaginatedKeywords(keywords orm.QuerySeter, offset int, sizePerPage int) ([]*Keyword, error) {
 	userKeywords := []*Keyword{}
 
-	_, err := GetKeywords(u).Limit(sizePerPage, offset).OrderBy("-id").All(&userKeywords)
+	_, err := keywords.Limit(sizePerPage, offset).OrderBy("-id").All(&userKeywords)
 	if err != nil {
 		logs.Error("Keywords pagination failed: ", err)
 	}
@@ -62,7 +68,7 @@ func FindKeywordById(id int64) (keyword *Keyword, err error) {
 
 func FindKeywordBy(Id int64, u *User) (*Keyword, error) {
 	var keyword Keyword
-	userKeywords := GetKeywords(u)
+	userKeywords := GetKeywords(u, "")
 	err := userKeywords.Filter("id", Id).One(&keyword)
 	if err != nil {
 		return nil, errors.New("Keyword not found.")
