@@ -25,7 +25,7 @@ func init() {
 func (c *Dashboard) New() {
 	web.ReadFromRequest(&c.Controller)
 
-	searchedKeyword := c.GetString("search")
+	searchedKeyword := c.GetString("keyword")
 	keywords := models.GetKeywords(c.CurrentUser, searchedKeyword)
 
 	keywordsCount, err := keywords.Count()

@@ -35,7 +35,7 @@ func GetKeywords(u *User, searchQueryString string) orm.QuerySeter {
 	result :=  orm.QueryTable(Keyword{}).Filter("user_id", u.Id)
 
 	if len(searchQueryString) > 0 {
-		result = result.Filter("name__iexact", searchQueryString)
+		result = result.Filter("name__icontains", searchQueryString)
 	}
 
 	return result
