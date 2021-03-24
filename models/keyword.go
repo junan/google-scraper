@@ -30,12 +30,12 @@ func UpdateKeyword(k *Keyword) (*Keyword, error) {
 	return k, nil
 }
 
-func GetKeywords(u *User, searchQueryString string) orm.QuerySeter {
+func GetKeywords(u *User, keyword string) orm.QuerySeter {
 	orm := orm.NewOrm()
 	result :=  orm.QueryTable(Keyword{}).Filter("user_id", u.Id)
 
-	if len(searchQueryString) > 0 {
-		result = result.Filter("name__icontains", searchQueryString)
+	if len(keyword) > 0 {
+		result = result.Filter("name__icontains", keyword)
 	}
 
 	return result
