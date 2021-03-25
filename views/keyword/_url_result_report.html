@@ -1,0 +1,16 @@
+<div class="search-url">
+  <div class="search-url__panel-container">
+    <div class="search-url__panel">
+      <h4 class="search-url__title">Search Results Urls</h4>
+      {{ range $url := .KeywordPresenter.ResultsUrls }}
+        <a href="{{ $url }}" class="search-url__item d-inline-block text-truncate" target="_blank">{{ $url }}</a>
+      {{ end }}
+    </div>
+    <div class="search-url__panel">
+      <h4 class="search-url__title">Top AdWord Advertisers Urls</h4>
+      {{ range $url := .KeywordPresenter.TopAdWordAdvertisersUrls }}
+        <a href="{{ $url }}" class="search-url__item d-inline-block text-truncate" target="_blank">{{ $url }}</a>
+      {{ end }}
+    </div>
+  </div>
+</div>

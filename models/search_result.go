@@ -24,6 +24,17 @@ func CreateSearchResult(s *SearchResult) (id int64, err error) {
 	return orm.Insert(s)
 }
 
+func FindSearchResultByKeywordId(keywordId int64) (*SearchResult, error) {
+	orm := orm.NewOrm()
+	var searchResult SearchResult
+	err := orm.QueryTable("search_results").Filter("keyword_id", keywordId).One(&searchResult)
+	if err != nil {
+		return nil, err
+	}
+
+	return &searchResult, nil
+}
+
 // Beego by default creates the table name as singular, it will make it plural
 func (u *SearchResult) TableName() string {
 	return "search_results"
