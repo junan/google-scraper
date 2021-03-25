@@ -89,6 +89,66 @@ var _ = Describe("RegistrationController", func() {
 
 					Expect(path).To(Equal("/register"))
 				})
+
+				Context("given the email already exist in the database", func() {
+					Context("given the email in lowercase letter", func() {
+						It("sets flash error message", func() {
+							FabricateUser("John", "john@example.com", "secret")
+							form := url.Values{
+								"name":     {"John"},
+								"email":    {"john@example.com"},
+								"password": {"secret"},
+							}
+							body := strings.NewReader(form.Encode())
+							response := MakeRequest("POST", "/register", body)
+							flash := GetFlash(response.Cookies())
+
+							Expect(flash.Data["error"]).To(Equal("Email already exists"))
+						})
+
+						It("re-renders the registration page", func() {
+							form := url.Values{
+								"name":     {""},
+								"email":    {"john@example.com"},
+								"password": {"secret"},
+							}
+							body := strings.NewReader(form.Encode())
+							response := MakeRequest("POST", "/register", body)
+							path := GetUrlPath(response)
+
+							Expect(path).To(Equal("/register"))
+						})
+					})
+
+					Context("given the email in lowercase and uppercase letter", func() {
+						It("sets flash error message", func() {
+							FabricateUser("John", "john@example.com", "secret")
+							form := url.Values{
+								"name":     {"John"},
+								"email":    {"JoHn@example.com"},
+								"password": {"secret"},
+							}
+							body := strings.NewReader(form.Encode())
+							response := MakeRequest("POST", "/register", body)
+							flash := GetFlash(response.Cookies())
+
+							Expect(flash.Data["error"]).To(Equal("Email already exists"))
+						})
+
+						It("re-renders the registration page", func() {
+							form := url.Values{
+								"name":     {""},
+								"email":    {"JoHn@example.com"},
+								"password": {"secret"},
+							}
+							body := strings.NewReader(form.Encode())
+							response := MakeRequest("POST", "/register", body)
+							path := GetUrlPath(response)
+
+							Expect(path).To(Equal("/register"))
+						})
+					})
+				})
 			})
 		})
 
