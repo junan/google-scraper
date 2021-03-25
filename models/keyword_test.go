@@ -93,16 +93,67 @@ var _ = Describe("Keyword", func() {
 		})
 	})
 
-	Describe("#GetKeywords", func() {
-		It("returns user keywords", func() {
-			user := FabricateUser("John", "john@example.com", "secret")
-			FabricateKeyword("Buy domain", false, &user)
-			FabricateKeyword("Buy bike", false, &user)
-			user2 := FabricateUser("David", "david@example.com", "secret")
-			FabricateKeyword("Buy car", false, &user2)
+	Describe("#GetGetQuerySeterKeywords", func() {
+		Context("given params with keyword filtering", func() {
+			Context("given the filtered keyword exists in the database", func() {
+				It("returns matched user keywords", func() {
+					var keywordIds []int64
+					userKeywords := []*models.Keyword{}
+					keyword := "Buy domain"
+					user := FabricateUser("John", "john@example.com", "secret")
+					buyDomainKeyword := FabricateKeyword(keyword, false, &user)
+					FabricateKeyword("Purchase domain", false, &user)
+					FabricateKeyword("Buy bike", false, &user)
+					user2 := FabricateUser("David", "david@example.com", "secret")
+					FabricateKeyword("Buy car", false, &user2)
 
-			keywords := models.GetKeywords(&user)
-			Expect(keywords.Count()).To(BeNumerically("==", 2))
+					_, err := models.GetQuerySeterKeywords(&user, keyword).All(&userKeywords)
+					if err != nil {
+						Fail("Getting keyword failed: " + err.Error())
+					}
+
+					for _, v := range userKeywords {
+						keywordIds = append(keywordIds, v.Id)
+					}
+
+					expectedKeywordIds := []int64{buyDomainKeyword.Id}
+
+					Expect(keywordIds).To(Equal(expectedKeywordIds))
+				})
+			})
+
+			Context("given the filtered keyword does NOT exist in the database", func() {
+				It("returns empty keywords", func() {
+					nonExistedKeyword := "Non existed keyword"
+					user := FabricateUser("John", "john@example.com", "secret")
+					FabricateKeyword("Buy domain", false, &user)
+					FabricateKeyword("Purchase domain", false, &user)
+					FabricateKeyword("Buy bike", false, &user)
+					user2 := FabricateUser("David", "david@example.com", "secret")
+					FabricateKeyword("Buy car", false, &user2)
+
+					keywords := models.GetQuerySeterKeywords(&user, nonExistedKeyword)
+
+					Expect(keywords.Count()).To(BeNumerically("==", 0))
+				})
+			})
+		})
+
+		Context("given params without keyword filtering", func() {
+			It("returns user keywords", func() {
+				var expectedKeyword models.Keyword
+				user := FabricateUser("John", "john@example.com", "secret")
+				keyword := FabricateKeyword("Buy domain", false, &user)
+
+				keywords := models.GetQuerySeterKeywords(&user, "")
+				err := keywords.One(&expectedKeyword)
+				if err != nil {
+					Fail("Getting keyword failed: " + err.Error())
+				}
+
+				Expect(keywords.Count()).To(BeNumerically("==", 1))
+				Expect(keyword.Id).To(BeNumerically("==", expectedKeyword.Id))
+			})
 		})
 	})
 
@@ -116,7 +167,9 @@ var _ = Describe("Keyword", func() {
 					FabricateKeyword(fmt.Sprintf("Buy domain %d", i), false, &user)
 				}
 
-				paginatedKeywords, err := models.GetPaginatedKeywords(&user, 0, 10)
+				keywords := models.GetQuerySeterKeywords(&user, "")
+
+				paginatedKeywords, err := models.GetPaginatedKeywords(keywords, 0, 10)
 				if err != nil {
 					Fail("Getting paginated keywords failed: " + err.Error())
 				}
@@ -134,7 +187,9 @@ var _ = Describe("Keyword", func() {
 					FabricateKeyword(fmt.Sprintf("Buy domain %d", i), false, &user)
 				}
 
-				paginatedKeywords, err := models.GetPaginatedKeywords(&user, 0, 5)
+				keywords := models.GetQuerySeterKeywords(&user, "")
+
+				paginatedKeywords, err := models.GetPaginatedKeywords(keywords, 0, 5)
 				if err != nil {
 					Fail("Getting paginated keywords failed: " + err.Error())
 				}

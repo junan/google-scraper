@@ -4,10 +4,13 @@
   </h3>
 
   <div class="user-search__box">
-    {{ template "shared/_alert.html" . }} {{ template "dashboard/_form.html" . }}
+    {{ template "shared/_alert.html" . }}
+    {{ template "dashboard/_form.html" . }}
+    {{ template "dashboard/_keyword_search.html" . }}
   </div>
 
   <div class="user-search__result">
-    {{ template "dashboard/_keywords.html" . }} {{ template "shared/_paginator.html" . }}
+    {{ template "dashboard/_keywords.html" . }}
+    {{ template "shared/_paginator.html" . }}
   </div>
 </div>
