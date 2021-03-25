@@ -32,7 +32,28 @@ func (c *KeywordController) Show() {
 		logs.Error("Initializing presenter failed: ", err)
 	}
 
-	c.setAttributes(keywordPresenter)
+	c.TplName = "keyword/show.html"
+	c.Data["KeywordPresenter"] = keywordPresenter
+}
+
+func (c *KeywordController) RenderHtml() {
+	web.ReadFromRequest(&c.Controller)
+	keyword, err := c.findKeyword()
+	if err != nil {
+		flash := web.NewFlash()
+		flash.Error(err.Error())
+		flash.Store(&c.Controller)
+		c.Ctx.Redirect(http.StatusFound, "/")
+		return
+	}
+
+	searchResult, err := FindSearchResultByKeywordId(keyword.Id)
+	if err != nil {
+		logs.Error("Finding search result failed: ", err)
+	}
+
+	c.TplName = "keyword/search_result.html"
+	c.Data["SearchResult"] = searchResult
 }
 
 func (c *KeywordController) findKeyword() (*Keyword, error) {
@@ -46,9 +67,4 @@ func (c *KeywordController) findKeyword() (*Keyword, error) {
 	}
 
 	return FindKeywordBy(Id, c.CurrentUser)
-}
-
-func (c *KeywordController) setAttributes(keywordPresenter *presenters.KeywordSearchResult) {
-	c.TplName = "keyword/show.html"
-	c.Data["KeywordPresenter"] = keywordPresenter
 }
