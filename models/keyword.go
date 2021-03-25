@@ -30,7 +30,7 @@ func UpdateKeyword(k *Keyword) (*Keyword, error) {
 	return k, nil
 }
 
-func GetKeywords(u *User, keyword string) orm.QuerySeter {
+func GetQuerySeterKeywords(u *User, keyword string) orm.QuerySeter {
 	orm := orm.NewOrm()
 	result :=  orm.QueryTable(Keyword{}).Filter("user_id", u.Id)
 
@@ -68,7 +68,7 @@ func FindKeywordById(id int64) (keyword *Keyword, err error) {
 
 func FindKeywordBy(Id int64, u *User) (*Keyword, error) {
 	var keyword Keyword
-	userKeywords := GetKeywords(u, "")
+	userKeywords := GetQuerySeterKeywords(u, "")
 	err := userKeywords.Filter("id", Id).One(&keyword)
 	if err != nil {
 		return nil, errors.New("Keyword not found.")

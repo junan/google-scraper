@@ -26,7 +26,7 @@ func (c *Dashboard) New() {
 	web.ReadFromRequest(&c.Controller)
 
 	keyword := c.GetString("keyword")
-	keywords := models.GetKeywords(c.CurrentUser, keyword)
+	keywords := models.GetQuerySeterKeywords(c.CurrentUser, keyword)
 
 	keywordsCount, err := keywords.Count()
 	if err != nil {

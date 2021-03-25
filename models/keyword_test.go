@@ -93,7 +93,7 @@ var _ = Describe("Keyword", func() {
 		})
 	})
 
-	Describe("#GetKeywords", func() {
+	Describe("#GetGetQuerySeterKeywords", func() {
 		Context("given params with keyword filtering", func() {
 			Context("given the filtered keyword exists in the database", func() {
 				It("returns matched user keywords", func() {
@@ -107,7 +107,7 @@ var _ = Describe("Keyword", func() {
 					user2 := FabricateUser("David", "david@example.com", "secret")
 					FabricateKeyword("Buy car", false, &user2)
 
-					_, err := models.GetKeywords(&user, keyword).All(&userKeywords)
+					_, err := models.GetQuerySeterKeywords(&user, keyword).All(&userKeywords)
 					if err != nil {
 						Fail("Getting keyword failed: " + err.Error())
 					}
@@ -132,7 +132,7 @@ var _ = Describe("Keyword", func() {
 					user2 := FabricateUser("David", "david@example.com", "secret")
 					FabricateKeyword("Buy car", false, &user2)
 
-					keywords := models.GetKeywords(&user, nonExistedKeyword)
+					keywords := models.GetQuerySeterKeywords(&user, nonExistedKeyword)
 
 					Expect(keywords.Count()).To(BeNumerically("==", 0))
 				})
@@ -145,7 +145,7 @@ var _ = Describe("Keyword", func() {
 				user := FabricateUser("John", "john@example.com", "secret")
 				keyword := FabricateKeyword("Buy domain", false, &user)
 
-				keywords := models.GetKeywords(&user, "")
+				keywords := models.GetQuerySeterKeywords(&user, "")
 				err := keywords.One(&expectedKeyword)
 				if err != nil {
 					Fail("Getting keyword failed: " + err.Error())
@@ -167,7 +167,7 @@ var _ = Describe("Keyword", func() {
 					FabricateKeyword(fmt.Sprintf("Buy domain %d", i), false, &user)
 				}
 
-				keywords := models.GetKeywords(&user, "")
+				keywords := models.GetQuerySeterKeywords(&user, "")
 
 				paginatedKeywords, err := models.GetPaginatedKeywords(keywords, 0, 10)
 				if err != nil {
@@ -187,7 +187,7 @@ var _ = Describe("Keyword", func() {
 					FabricateKeyword(fmt.Sprintf("Buy domain %d", i), false, &user)
 				}
 
-				keywords := models.GetKeywords(&user, "")
+				keywords := models.GetQuerySeterKeywords(&user, "")
 
 				paginatedKeywords, err := models.GetPaginatedKeywords(keywords, 0, 5)
 				if err != nil {
