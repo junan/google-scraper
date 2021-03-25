@@ -94,46 +94,62 @@ var _ = Describe("Keyword", func() {
 	})
 
 	Describe("#GetKeywords", func() {
-		Context("given the keyword exists in the database", func() {
-			It("returns matched user keywords", func() {
-				var keywordIds []int64
-				userKeywords := []*models.Keyword{}
-				keyword := "Buy domain"
-				user := FabricateUser("John", "john@example.com", "secret")
-				buyDomainKeyword := FabricateKeyword(keyword, false, &user)
-				FabricateKeyword("Purchase domain", false, &user)
-				FabricateKeyword("Buy bike", false, &user)
-				user2 := FabricateUser("David", "david@example.com", "secret")
-				FabricateKeyword("Buy car", false, &user2)
+		Context("given params with keyword filtering", func() {
+			Context("given the filtered keyword exists in the database", func() {
+				It("returns matched user keywords", func() {
+					var keywordIds []int64
+					userKeywords := []*models.Keyword{}
+					keyword := "Buy domain"
+					user := FabricateUser("John", "john@example.com", "secret")
+					buyDomainKeyword := FabricateKeyword(keyword, false, &user)
+					FabricateKeyword("Purchase domain", false, &user)
+					FabricateKeyword("Buy bike", false, &user)
+					user2 := FabricateUser("David", "david@example.com", "secret")
+					FabricateKeyword("Buy car", false, &user2)
 
-				_, err := models.GetKeywords(&user, keyword).All(&userKeywords)
-				if err != nil {
-					Fail("Getting keyword failed: " + err.Error())
-				}
+					_, err := models.GetKeywords(&user, keyword).All(&userKeywords)
+					if err != nil {
+						Fail("Getting keyword failed: " + err.Error())
+					}
 
-				for _, v := range userKeywords {
-					keywordIds = append(keywordIds, v.Id)
-				}
+					for _, v := range userKeywords {
+						keywordIds = append(keywordIds, v.Id)
+					}
 
-				expectedKeywordIds := []int64{buyDomainKeyword.Id}
+					expectedKeywordIds := []int64{buyDomainKeyword.Id}
 
-				Expect(keywordIds).To(Equal(expectedKeywordIds))
+					Expect(keywordIds).To(Equal(expectedKeywordIds))
+				})
+			})
+
+			Context("given the filtered keyword does NOT exist in the database", func() {
+				It("returns empty keywords", func() {
+					nonExistedKeyword := "Non existed keyword"
+					user := FabricateUser("John", "john@example.com", "secret")
+					FabricateKeyword("Buy domain", false, &user)
+					FabricateKeyword("Purchase domain", false, &user)
+					FabricateKeyword("Buy bike", false, &user)
+					user2 := FabricateUser("David", "david@example.com", "secret")
+					FabricateKeyword("Buy car", false, &user2)
+
+					keywords := models.GetKeywords(&user, nonExistedKeyword)
+
+					Expect(keywords.Count()).To(BeNumerically("==", 0))
+				})
 			})
 		})
 
-		Context("given the keyword does NOT exist in the database", func() {
-			It("returns empty keywords", func() {
-				nonExistedKeyword := "Non existed keyword"
+		Context("given params without keyword filtering", func() {
+			It("returns user keywords", func() {
+				var expectedKeyword models.Keyword
 				user := FabricateUser("John", "john@example.com", "secret")
-				FabricateKeyword("Buy domain", false, &user)
-				FabricateKeyword("Purchase domain", false, &user)
-				FabricateKeyword("Buy bike", false, &user)
-				user2 := FabricateUser("David", "david@example.com", "secret")
-				FabricateKeyword("Buy car", false, &user2)
+				keyword := FabricateKeyword("Buy domain", false, &user)
 
-				keywords := models.GetKeywords(&user, nonExistedKeyword)
+				keywords := models.GetKeywords(&user, "")
+				keywords.One(&expectedKeyword)
 
-				Expect(keywords.Count()).To(BeNumerically("==", 0))
+				Expect(keywords.Count()).To(BeNumerically("==", 1))
+				Expect(keyword.Id).To(BeNumerically("==", expectedKeyword.Id))
 			})
 		})
 	})
