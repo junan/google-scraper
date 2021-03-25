@@ -146,7 +146,10 @@ var _ = Describe("Keyword", func() {
 				keyword := FabricateKeyword("Buy domain", false, &user)
 
 				keywords := models.GetKeywords(&user, "")
-				keywords.One(&expectedKeyword)
+				err := keywords.One(&expectedKeyword)
+				if err != nil {
+					Fail("Getting keyword failed: " + err.Error())
+				}
 
 				Expect(keywords.Count()).To(BeNumerically("==", 1))
 				Expect(keyword.Id).To(BeNumerically("==", expectedKeyword.Id))
