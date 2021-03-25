@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"errors"
 	"net/http"
 
 	. "google-scraper/helpers"
@@ -39,7 +40,9 @@ func (c *KeywordController) findKeyword() (*Keyword, error) {
 	Id, err := StringToInt(keywordId)
 	if err != nil {
 		logs.Error("Converting String to Int failed: ", err)
-		return nil, err
+
+		// The error message will show to the users
+		return nil, errors.New("Something went wrong. Please try again.")
 	}
 
 	return FindKeywordBy(Id, c.CurrentUser)
