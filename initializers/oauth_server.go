@@ -12,7 +12,11 @@ import (
 	"github.com/jackc/pgx/v4"
 	pg "github.com/vgarvardt/go-oauth2-pg/v4"
 	"github.com/vgarvardt/go-pg-adapter/pgx4adapter"
+
+	"google-scraper/services/oauth"
 )
+
+var ClientStore *pg.ClientStore
 
 func init() {
 	dbUrl, err := web.AppConfig.String("dbUrl")
@@ -52,6 +56,7 @@ func init() {
 	})
 	oauthServer.SetResponseErrorHandler(func(re *errors.Response) {
 		logs.Critical("Setting error response handler failed: ", err)
-		return
 	})
+
+	oauth.ClientStore = clientStore
 }
