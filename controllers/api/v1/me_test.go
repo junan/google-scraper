@@ -11,8 +11,8 @@ import (
 )
 
 var _ = Describe("MeController", func() {
-	Describe("GET", func() {
-		It("returns status OK", func() {
+	Describe("GET /api/v1/me", func() {
+		It("returns 200 status code", func() {
 			response := MakeRequest("GET", "/api/v1/me", nil)
 
 			Expect(response.StatusCode).To(Equal(http.StatusOK))
@@ -32,7 +32,7 @@ var _ = Describe("MeController", func() {
 			response := MakeRequest("GET", "/api/v1/me", nil)
 			responseBody, err := ioutil.ReadAll(response.Body)
 			if err != nil {
-				Fail("Building search url failed: " + err.Error())
+				Fail("Reading response body failed: " + err.Error())
 			}
 
 			Expect(string(responseBody)).To(MatchJSON(expectedResponse))

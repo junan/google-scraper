@@ -22,7 +22,7 @@ func TestAPIV1(t *testing.T) {
 var _ = BeforeSuite(func() {
 	pwd, err := os.Getwd()
 	if err != nil {
-		logs.Error("Getting current directory failed", err)
+		logs.Error("Getting current directory failed: ", err)
 	}
 
 	web.TestBeegoInit(path.Join(pwd, "../../.."))
