@@ -19,7 +19,7 @@ func init() {
 	// API
 	// init namespace
 	ns := web.NewNamespace("/api/v1",
-		web.NSRouter("/me", &apiv1.Me{}),
+		web.NSRouter("/health-check", &apiv1.HealthCheck{}),
 	)
 
 	// register namespace
