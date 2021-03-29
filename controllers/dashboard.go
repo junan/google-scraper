@@ -1,12 +1,11 @@
 package controllers
 
 import (
-	"google-scraper/models"
-	"google-scraper/services/oauth"
-
 	"github.com/beego/beego/v2/core/logs"
 	"github.com/beego/beego/v2/server/web"
 	"github.com/beego/beego/v2/server/web/pagination"
+
+	"google-scraper/models"
 )
 
 var sizePerPage int
@@ -26,16 +25,12 @@ func init() {
 func (c *Dashboard) New() {
 	web.ReadFromRequest(&c.Controller)
 
-	domain := c.Ctx.Request.Host
-	serviceOauth := oauth.ClientGenerator{Domain: domain}
-	clientId, err := serviceOauth.Generate(c.CurrentUser.Id)
-
 	keyword := c.GetString("keyword")
 	keywords := models.GetQuerySeterKeywords(c.CurrentUser, keyword)
 
 	keywordsCount, err := keywords.Count()
 	if err != nil {
-		logs.Error("Retrieving keyword count failed: ", err, clientId)
+		logs.Error("Retrieving keyword count failed: ", err)
 	}
 
 	paginator := pagination.SetPaginator(c.Ctx, sizePerPage, keywordsCount)

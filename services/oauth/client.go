@@ -7,26 +7,21 @@ import (
 	"github.com/google/uuid"
 )
 
-
-type ClientGenerator struct {
-	Domain string
-}
-
-func (service *ClientGenerator) Generate(userID int64) (id string, err error) {
+func GenerateOauthClient(userID int64, domain string) (client *models.Client, err error) {
 	clientId := uuid.New().String()
 	clientSecret := uuid.New().String()
 
-	client := &models.Client{
+	client = &models.Client{
 		ID:     clientId,
 		Secret: clientSecret,
-		Domain: service.Domain,
+		Domain: domain,
 		UserID: IntToString(userID),
 	}
 
 	err = ClientStore.Create(client)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
-	return client.GetID(), nil
+	return client, nil
 }

@@ -1,0 +1,25 @@
+<form class="form form-oauth-client" action="/oauth-client" method="post">
+    {{ if .OauthClient }}
+        <div class="form-group">
+            <input
+                    type="email"
+                    class="form-control form__input"
+                    name="email"
+                    placeholder="Email"
+                    required
+            />
+        </div>
+        <div class="form-group">
+            <input
+                    type="password"
+                    class="form-control form__input"
+                    name="password"
+                    placeholder="Password"
+                    required
+            />
+        </div>
+
+    {{ else }}
+        <button type="submit" class="btn btn-primary btn-block">Create</button>
+    {{ end }}
+</form>
