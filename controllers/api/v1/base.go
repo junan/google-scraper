@@ -19,10 +19,13 @@ func (c *baseAPIController) serveJSON(data interface{}) {
 	}
 
 	c.Data["json"] = response
-	c.ServeJSON()
+	err = c.ServeJSON()
+	if err != nil {
+		c.renderError(err)
+	}
 }
 
-func (c *baseAPIController) renderError(err error){
+func (c *baseAPIController) renderError(err error) {
 	err = jsonapi.MarshalErrors(c.Ctx.ResponseWriter, []*jsonapi.ErrorObject{{
 		Detail: err.Error(),
 	}})
