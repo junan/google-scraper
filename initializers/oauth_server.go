@@ -2,10 +2,7 @@ package initializers
 
 import (
 	"context"
-	"fmt"
 	"time"
-
-	"google-scraper/services/oauth"
 
 	"github.com/beego/beego/v2/core/logs"
 	"github.com/beego/beego/v2/server/web"
@@ -18,14 +15,14 @@ import (
 )
 
 func init() {
-	dbURL, err := web.AppConfig.String("dburl")
+	dbUrl, err := web.AppConfig.String("dbUrl")
 	if err != nil {
-		logs.Critical(fmt.Sprintf("Database URL not found: %v", err))
+		logs.Critical("Postgres database source is not found: ", err)
 	}
 
-	pgxConn, err := pgx.Connect(context.TODO(), dbURL)
+	pgxConn, err := pgx.Connect(context.TODO(), dbUrl)
 	if err != nil {
-		logs.Critical(fmt.Sprintf("Postgres driver connection failed: %v", err))
+		logs.Critical("Connecting to Postgres failed", err)
 	}
 
 	manager := manage.NewDefaultManager()
@@ -49,22 +46,12 @@ func init() {
 	oauthServer := server.NewDefaultServer(manager)
 	oauthServer.SetAllowGetAccessRequest(true)
 	oauthServer.SetClientInfoHandler(server.ClientFormHandler)
-	oauthServer.SetInternalErrorHandler(internalErrorHandler)
-	oauthServer.SetResponseErrorHandler(responseErrorHandler)
-
-	oauth.ServerOauth = oauthServer
-	oauth.ClientStore = clientStore
-}
-
-func internalErrorHandler(err error) (response *errors.Response) {
-	logs.Critical("Oauth server internal error: %v", err.Error())
-
-	response = errors.NewResponse(errors.ErrInvalidClient, errors.StatusCodes[errors.ErrInvalidClient])
-	response.Description = errors.Descriptions[errors.ErrInvalidClient]
-
-	return response
-}
-
-func responseErrorHandler(response *errors.Response) {
-	logs.Critical("Oauth server response error: %v", response.Error.Error())
+	oauthServer.SetInternalErrorHandler(func(err error) (re *errors.Response) {
+		logs.Critical("Setting internal error handler failed: ", err)
+		return
+	})
+	oauthServer.SetResponseErrorHandler(func(re *errors.Response) {
+		logs.Critical("Setting error response handler failed: ", err)
+		return
+	})
 }
