@@ -1,22 +1,18 @@
 <div class="oauth-client text-center ">
-    <div class="oauth-client__body">
-        {{ template "shared/_alert.html" . }}
-        {{ if .ClientID }}
-            <div class="card-body">
-                <div class="card-text">
-                    <dl class="row">
-                        <dt class="col-sm-3 text-md-right">Client</dt>
-                        <dd class="col-sm-9">{{ .ClientID }}</dd>
-                    </dl>
+    {{ template "shared/_alert.html" . }}
+    {{ if .ClientID }}
+        <div class="oauth-client__body">
+            <dl class="oauth-client__id row">
+                <dt class="oauth-client__label text-md-right">Client</dt>
+                <dd class="oauth-client__value">{{ .ClientID }}</dd>
+            </dl>
 
-                    <dl class="row">
-                        <dt class="col-sm-3 text-md-right">Secret</dt>
-                        <dd class="col-sm-9">{{ .ClientSecret }}</dd>
-                    </dl>
-                </div>
-            </div>
-        {{ else }}
-            {{ template "oauth_client/_form.html" . }}
-        {{ end }}
-    </div>
+            <dl class="oauth-client__secret row">
+                <dt class="oauth-client__label text-md-right">Secret</dt>
+                <dd class="oauth-client__value">{{ .ClientSecret }}</dd>
+            </dl>
+        </div>
+    {{ else }}
+        {{ template "oauth_client/_form.html" . }}
+    {{ end }}
 </div>

@@ -1,5 +1,15 @@
 .oauth-client {
-  &__title {
-    margin-bottom: 50px;
+  &__id,
+  &__secret {
+    @include make-row();
+  }
+
+  &__label {
+    @include make-col(3);
+  }
+
+  &__value {
+    @include make-col(9);
+    color: #e83e8c;
   }
 }
