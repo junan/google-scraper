@@ -1,16 +1,13 @@
 package controllers
 
 import (
-	"fmt"
 	"context"
+	"fmt"
 	"net/http"
 
 	"github.com/beego/beego/v2/server/web"
 
-	"google-scraper/models"
 	"google-scraper/services/oauth"
-
-	"github.com/beego/beego/v2/core/logs"
 )
 
 type OauthClient struct {
@@ -43,7 +40,6 @@ func (c *OauthClient) Create() {
 	oauthClient, err := oauth.GenerateOauthClient(c.CurrentUser.Id, domain)
 	if err != nil {
 		flash.Error(err.Error())
-		logs.Error("Retrieving keyword count failed: ", err, oauthClient)
 	} else {
 		redirectPath = fmt.Sprintf("/oauth-client?client_id=%s", oauthClient.ID)
 		flash.Success("Your oauth client has been created successfully")
@@ -51,10 +47,4 @@ func (c *OauthClient) Create() {
 
 	flash.Store(&c.Controller)
 	c.Ctx.Redirect(http.StatusFound, redirectPath)
-}
-
-func (c *Dashboard) OauthClient(paginatedKeywords []*models.Keyword, keyword string) {
-	c.TplName = "dashboard/new.html"
-	c.Data["Keywords"] = paginatedKeywords
-	c.Data["SearchKeyword"] = keyword
 }
