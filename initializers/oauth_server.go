@@ -4,6 +4,8 @@ import (
 	"context"
 	"time"
 
+	"google-scraper/services/oauth"
+
 	"github.com/beego/beego/v2/core/logs"
 	"github.com/beego/beego/v2/server/web"
 	"github.com/go-oauth2/oauth2/v4/errors"
@@ -12,11 +14,7 @@ import (
 	"github.com/jackc/pgx/v4"
 	pg "github.com/vgarvardt/go-oauth2-pg/v4"
 	"github.com/vgarvardt/go-pg-adapter/pgx4adapter"
-
-	"google-scraper/services/oauth"
 )
-
-var ClientStore *pg.ClientStore
 
 func init() {
 	dbUrl, err := web.AppConfig.String("dbUrl")
@@ -26,7 +24,7 @@ func init() {
 
 	pgxConn, err := pgx.Connect(context.TODO(), dbUrl)
 	if err != nil {
-		logs.Critical("Connecting to Postgres failed", err)
+		logs.Critical("Connecting to Postgres failed: ", err)
 	}
 
 	manager := manage.NewDefaultManager()

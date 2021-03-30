@@ -1,5 +1,5 @@
 <form class="form form-oauth-client" action="/oauth-client" method="post">
-    {{ if .OauthClient }}
+    {{ if .ClientID }}
         <div class="form-group">
             <input
                     type="text"
@@ -10,7 +10,7 @@
         <div class="form-group">
             <input
                     type="=text"
-                    value="{{ .Secret }}"
+                    value="{{ .ClientSecret }}"
                     class="form-control form__input"
             />
         </div>

@@ -49,8 +49,7 @@ func (c *OauthClient) setClient() {
 	if err != nil {
 		logs.Error("Getting oauth client failed: ", err)
 	} else {
-		c.Data["OauthClient"] = oauthClient
 		c.Data["ClientID"] = oauthClient.GetID()
-		c.Data["Secret"] = oauthClient.GetSecret()
+		c.Data["ClientSecret"] = oauthClient.GetSecret()
 	}
 }
