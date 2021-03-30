@@ -2,20 +2,16 @@
     {{ if .OauthClient }}
         <div class="form-group">
             <input
-                    type="email"
+                    type="text"
+                    value="{{ .ClientID }}"
                     class="form-control form__input"
-                    name="email"
-                    placeholder="Email"
-                    required
             />
         </div>
         <div class="form-group">
             <input
-                    type="password"
+                    type="=text"
+                    value="{{ .Secret }}"
                     class="form-control form__input"
-                    name="password"
-                    placeholder="Password"
-                    required
             />
         </div>
 
