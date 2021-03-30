@@ -15,6 +15,7 @@ func init() {
 	web.Router("/logout", &controllers.Session{}, "get:Delete")
 	web.Router("/keyword/:id:int", &controllers.KeywordController{}, "get:Show")
 	web.Router("/keyword/:id:int/render-html", &controllers.KeywordController{}, "get:RenderHtml")
+	web.Router("/oauth-client", &controllers.OauthClient{}, "get:New;post:Create")
 
 	// API
 	// init namespace
