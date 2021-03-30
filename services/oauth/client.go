@@ -7,14 +7,13 @@ import (
 	"github.com/google/uuid"
 )
 
-func GenerateOauthClient(userID int64, domain string) (client *models.Client, err error) {
+func GenerateOauthClient(userID int64) (client *models.Client, err error) {
 	clientId := uuid.New().String()
 	clientSecret := uuid.New().String()
 
 	client = &models.Client{
 		ID:     clientId,
 		Secret: clientSecret,
-		Domain: domain,
 		UserID: IntToString(userID),
 	}
 

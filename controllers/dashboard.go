@@ -1,11 +1,11 @@
 package controllers
 
 import (
+	"google-scraper/models"
+
 	"github.com/beego/beego/v2/core/logs"
 	"github.com/beego/beego/v2/server/web"
 	"github.com/beego/beego/v2/server/web/pagination"
-
-	"google-scraper/models"
 )
 
 var sizePerPage int
