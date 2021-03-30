@@ -24,4 +24,8 @@ var _ = Describe("OauthService", func() {
 			Expect(client.UserID).NotTo(BeNil())
 		})
 	})
+
+	AfterEach(func() {
+		TruncateTables("oauth2_clients")
+	})
 })
