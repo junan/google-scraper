@@ -4,6 +4,7 @@ import (
 	"google-scraper/controllers"
 
 	"github.com/beego/beego/v2/server/web"
+	apiv1 "google-scraper/controllers/api/v1"
 )
 
 func init() {
@@ -14,4 +15,13 @@ func init() {
 	web.Router("/logout", &controllers.Session{}, "get:Delete")
 	web.Router("/keyword/:id:int", &controllers.KeywordController{}, "get:Show")
 	web.Router("/keyword/:id:int/render-html", &controllers.KeywordController{}, "get:RenderHtml")
+
+	// API
+	// init namespace
+	ns := web.NewNamespace("/api/v1",
+		web.NSRouter("/health-check", &apiv1.HealthCheck{}),
+	)
+
+	// register namespace
+	web.AddNamespace(ns)
 }

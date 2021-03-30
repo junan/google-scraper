@@ -8,6 +8,7 @@ require (
 	github.com/beego/beego/v2 v2.0.1
 	github.com/gocraft/work v0.5.1
 	github.com/gomodule/redigo v2.0.0+incompatible
+	github.com/google/jsonapi v0.0.0-20210306203318-b10ff4bf785b
 	github.com/iancoleman/strcase v0.1.3
 	github.com/jarcoal/httpmock v1.0.8
 	github.com/junan/fake-useragent v0.2.1-0.20210225033740-629d4a7a578a
