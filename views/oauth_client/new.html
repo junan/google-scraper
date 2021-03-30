@@ -1,6 +1,22 @@
 <div class="oauth-client text-center ">
-    <h3 class="oauth-client__title">Create Your Oauth Client</h3>
     <div class="oauth-client__body">
-        {{ template "oauth_client/_form.html" . }}
+        {{ template "shared/_alert.html" . }}
+        {{ if .ClientID }}
+            <div class="card-body">
+                <div class="card-text">
+                    <dl class="row">
+                        <dt class="col-sm-3 text-md-right">Client</dt>
+                        <dd class="col-sm-9">{{ .ClientID }}</dd>
+                    </dl>
+
+                    <dl class="row">
+                        <dt class="col-sm-3 text-md-right">Secret</dt>
+                        <dd class="col-sm-9">{{ .ClientSecret }}</dd>
+                    </dl>
+                </div>
+            </div>
+        {{ else }}
+            {{ template "oauth_client/_form.html" . }}
+        {{ end }}
     </div>
 </div>
