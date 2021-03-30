@@ -56,5 +56,8 @@ func init() {
 		logs.Critical("Setting error response handler failed: ", err)
 	})
 
+	oauthServer.SetPasswordAuthorizationHandler(oauth.PasswordAuthorizationHandler)
+
 	oauth.ClientStore = clientStore
+	oauth.OauthServer = oauthServer
 }
