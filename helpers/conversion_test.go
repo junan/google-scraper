@@ -27,4 +27,12 @@ var _ = Describe("Conversion", func() {
 			})
 		})
 	})
+
+	Describe("#IntToString", func() {
+		It("returns the integer as string", func() {
+			result := helpers.IntToString(10)
+
+			Expect(result).To(Equal("10"))
+		})
+	})
 })
