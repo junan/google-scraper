@@ -12,5 +12,7 @@
         <dd class="oauth-client__value">{{ .ClientSecret }}</dd>
       </dl>
     </div>
-  {{ else }} {{ template "oauth_client/_form.html" . }} {{ end }}
+  {{ else }}
+    {{ template "oauth_client/_form.html" . }}
+  {{ end }}
 </div>
