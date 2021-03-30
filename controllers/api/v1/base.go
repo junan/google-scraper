@@ -26,6 +26,7 @@ func (c *baseAPIController) serveJSON(data interface{}) {
 }
 
 func (c *baseAPIController) renderError(err error) {
+	c.Ctx.Output.Header("Content-Type", "application/json; charset=utf-8")
 	err = jsonapi.MarshalErrors(c.Ctx.ResponseWriter, []*jsonapi.ErrorObject{{
 		Detail: err.Error(),
 	}})

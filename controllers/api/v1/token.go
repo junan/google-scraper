@@ -1,13 +1,14 @@
 package apiv1
 
 import (
+	"errors"
 	"net/http"
 	"net/http/httptest"
 
+	"github.com/tidwall/gjson"
+
 	"google-scraper/serializers"
 	. "google-scraper/services/oauth"
-
-	"github.com/tidwall/gjson"
 )
 
 type Token struct {
@@ -22,6 +23,13 @@ func (c *Token) Create() {
 	}
 
 	json := writer.Body.String()
+
+	if writer.Code != 200 {
+		errorMessage := gjson.Get(json, "error_description").String()
+		c.renderError(errors.New(errorMessage))
+		return
+	}
+
 	tokenResponse := c.getTokenResponse(json)
 
 	c.serveJSON(&tokenResponse)
