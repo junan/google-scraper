@@ -59,4 +59,5 @@ func init() {
 
 	oauth.ClientStore = clientStore
 	oauth.OauthServer = oauthServer
+	oauth.TokenStore = tokenStore
 }

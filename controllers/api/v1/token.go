@@ -1,6 +1,7 @@
 package apiv1
 
 import (
+	"context"
 	"errors"
 	"net/http"
 	"net/http/httptest"
@@ -36,9 +37,14 @@ func (c *Token) Create() {
 }
 
 func (c *Token) Revoke() {
-	tokenResponse := c.getTokenResponse(json)
+	token := c.GetString("token")
+	err := TokenStore.RemoveByAccess(context.TODO(), token)
+	if err != nil {
+		c.renderError(err, http.StatusInternalServerError)
+		return
+	}
 
-	c.serveJSON(&tokenResponse)
+	c.Ctx.ResponseWriter.WriteHeader(http.StatusNoContent)
 }
 
 func (c *Token) getTokenResponse(json string) serializers.TokenResponse {

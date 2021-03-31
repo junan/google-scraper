@@ -11,6 +11,7 @@ import (
 
 var ClientStore *pg.ClientStore
 var OauthServer *server.Server
+var TokenStore *pg.TokenStore
 
 func PasswordAuthorizationHandler(email string, password string) (string, error) {
 	sessionForm := forms.SessionForm{
