@@ -4,10 +4,10 @@ import (
 	"errors"
 	"net/http/httptest"
 
-	"github.com/tidwall/gjson"
-
 	"google-scraper/serializers"
 	. "google-scraper/services/oauth"
+
+	"github.com/tidwall/gjson"
 )
 
 type Token struct {

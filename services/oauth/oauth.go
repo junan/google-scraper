@@ -24,4 +24,3 @@ func PasswordAuthorizationHandler(email string, password string) (string, error)
 
 	return IntToString(user.Id), nil
 }
-
