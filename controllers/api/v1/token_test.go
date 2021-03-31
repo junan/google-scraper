@@ -191,4 +191,7 @@ var _ = Describe("TokenController", func() {
 			})
 		})
 	})
+	AfterEach(func() {
+		TruncateTables("users", "oauth2_clients", "oauth2_tokens")
+	})
 })
