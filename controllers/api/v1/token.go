@@ -2,6 +2,7 @@ package apiv1
 
 import (
 	"errors"
+	"net/http"
 	"net/http/httptest"
 
 	"google-scraper/serializers"
@@ -18,7 +19,7 @@ func (c *Token) Create() {
 	writer := httptest.NewRecorder()
 	err := OauthServer.HandleTokenRequest(writer, c.Ctx.Request)
 	if err != nil {
-		c.renderError(err)
+		c.renderError(err, http.StatusUnauthorized)
 		return
 	}
 
@@ -26,7 +27,7 @@ func (c *Token) Create() {
 
 	if writer.Code != 200 {
 		errorMessage := gjson.Get(json, "error_description").String()
-		c.renderError(errors.New(errorMessage))
+		c.renderError(errors.New(errorMessage), writer.Code)
 		return
 	}
 

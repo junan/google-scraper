@@ -14,19 +14,20 @@ type baseAPIController struct {
 func (c *baseAPIController) serveJSON(data interface{}) {
 	response, err := jsonapi.Marshal(data)
 	if err != nil {
-		c.renderError(err)
+		c.renderError(err, http.StatusInternalServerError)
 		return
 	}
 
 	c.Data["json"] = response
 	err = c.ServeJSON()
 	if err != nil {
-		c.renderError(err)
+		c.renderError(err, http.StatusInternalServerError)
 	}
 }
 
-func (c *baseAPIController) renderError(err error) {
+func (c *baseAPIController) renderError(err error, status int) {
 	c.Ctx.Output.Header("Content-Type", "application/json; charset=utf-8")
+	c.Ctx.ResponseWriter.WriteHeader(status)
 	err = jsonapi.MarshalErrors(c.Ctx.ResponseWriter, []*jsonapi.ErrorObject{{
 		Detail: err.Error(),
 	}})
