@@ -2,7 +2,6 @@ package apiv1
 
 import (
 	"errors"
-	"net/http"
 	"net/http/httptest"
 
 	"github.com/tidwall/gjson"
@@ -19,7 +18,8 @@ func (c *Token) Create() {
 	writer := httptest.NewRecorder()
 	err := OauthServer.HandleTokenRequest(writer, c.Ctx.Request)
 	if err != nil {
-		http.Error(c.Ctx.ResponseWriter, err.Error(), http.StatusForbidden)
+		c.renderError(err)
+		return
 	}
 
 	json := writer.Body.String()
