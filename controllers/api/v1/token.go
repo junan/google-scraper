@@ -34,3 +34,21 @@ func (c *Token) Create() {
 
 	c.serveJSON(&tokenResponse)
 }
+
+func (c *Token) Revoke() {
+	tokenResponse := c.getTokenResponse(json)
+
+	c.serveJSON(&tokenResponse)
+}
+
+func (c *Token) getTokenResponse(json string) serializers.TokenResponse {
+	response := serializers.TokenResponse{
+		AccessToken:  gjson.Get(json, "access_token").String(),
+		ExpiresIn:    gjson.Get(json, "expires_in").Int(),
+		RefreshToken: gjson.Get(json, "refresh_token").String(),
+		TokenType:    gjson.Get(json, "token_type").String(),
+	}
+
+	return response
+}
+
