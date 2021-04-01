@@ -24,7 +24,6 @@ func (c *Token) Create() {
 	}
 
 	json := writer.Body.String()
-
 	if writer.Code != 200 {
 		errorMessage := gjson.Get(json, "error_description").String()
 		c.renderError(errors.New(errorMessage), writer.Code)

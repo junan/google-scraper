@@ -40,7 +40,7 @@ var _ = Describe("TokenController", func() {
 				Expect(response.StatusCode).To(Equal(http.StatusOK))
 			})
 
-			It("returns current json response", func() {
+			It("returns correct json response", func() {
 				email := "john@example.com"
 				password := "secret"
 				client := FabricateOAuthClient(uuid.New().String(), uuid.New().String())
@@ -177,6 +177,59 @@ var _ = Describe("TokenController", func() {
 						"grant_type":    {"password"},
 						"username":      {email},
 						"password":      {"invalid"},
+					}
+					body := strings.NewReader(form.Encode())
+
+					response := MakeAuthenticatedRequest("POST", "/api/v1/token", body, &user)
+					responseBody, err := ioutil.ReadAll(response.Body)
+					if err != nil {
+						Fail("Reading response body failed: " + err.Error())
+					}
+
+					Expect(string(responseBody)).To(MatchJSON(expectedResponse))
+				})
+			})
+
+			Context("Given the grant type is INVALID", func() {
+				It("returns 401 unauthorized status code", func() {
+					email := "john@example.com"
+					password := "secret"
+					client := FabricateOAuthClient(uuid.New().String(), uuid.New().String())
+					user := FabricateUser("John", email, password)
+
+					form := url.Values{
+						"client_id":     {client.ID},
+						"client_secret": {client.Secret},
+						"grant_type":    {"invalid"},
+						"username":      {email},
+						"password":      {password},
+					}
+					body := strings.NewReader(form.Encode())
+
+					response := MakeAuthenticatedRequest("POST", "/api/v1/token", body, &user)
+
+					Expect(response.StatusCode).To(Equal(http.StatusUnauthorized))
+				})
+
+				It("returns correct json response", func() {
+					email := "john@example.com"
+					password := "secret"
+					client := FabricateOAuthClient(uuid.New().String(), uuid.New().String())
+					user := FabricateUser("John", email, password)
+					expectedResponse := `{
+						"errors": [
+							{
+								"detail": "The authorization grant type is not supported by the authorization server"
+							}
+						]
+					}`
+
+					form := url.Values{
+						"client_id":     {client.ID},
+						"client_secret": {client.Secret},
+						"grant_type":    {"invalid"},
+						"username":      {email},
+						"password":      {password},
 					}
 					body := strings.NewReader(form.Encode())
 
