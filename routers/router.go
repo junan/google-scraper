@@ -2,7 +2,6 @@ package routers
 
 import (
 	"google-scraper/controllers"
-
 	apiv1 "google-scraper/controllers/api/v1"
 
 	"github.com/beego/beego/v2/server/web"
