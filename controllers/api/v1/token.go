@@ -61,17 +61,6 @@ func (c *Token) Revoke() {
 	c.Ctx.ResponseWriter.WriteHeader(http.StatusNoContent)
 }
 
-func (c *Token) getTokenResponse(json string) serializers.TokenResponse {
-	response := serializers.TokenResponse{
-		AccessToken:  gjson.Get(json, "access_token").String(),
-		ExpiresIn:    gjson.Get(json, "expires_in").Int(),
-		RefreshToken: gjson.Get(json, "refresh_token").String(),
-		TokenType:    gjson.Get(json, "token_type").String(),
-	}
-
-	return response
-}
-
 func (c *Token) authenticateClient() error {
 	clientID := c.GetString("client_id")
 	clientSecret := c.GetString("client_secret")
