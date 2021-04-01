@@ -1,6 +1,8 @@
 package serializers_test
 
 import (
+	"time"
+
 	"google-scraper/serializers"
 
 	. "github.com/onsi/ginkgo"
@@ -20,7 +22,7 @@ var _ = Describe("TokenSerializer", func() {
 			response := serializers.GetTokenResponse(json)
 
 			Expect(response.AccessToken).To(Equal("access-token"))
-			Expect(response.ExpiresIn).To(Equal(int64(7200)))
+			Expect(response.ExpiresIn).To(Equal(time.Duration(7200)))
 			Expect(response.RefreshToken).To(Equal("refresh-token"))
 			Expect(response.TokenType).To(Equal("Bearer"))
 		})
