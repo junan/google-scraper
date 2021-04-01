@@ -45,12 +45,14 @@ func (c *Token) Revoke() {
 		return
 	}
 
+	// Remove the token from database
 	err := TokenStore.RemoveByAccess(context.TODO(), token)
 	if err != nil {
 		c.renderError(err, http.StatusInternalServerError)
 		return
 	}
 
+	// Response with 204 status code and no body
 	c.Ctx.ResponseWriter.WriteHeader(http.StatusNoContent)
 }
 
