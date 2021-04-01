@@ -1,6 +1,7 @@
 package apiv1_test
 
 import (
+	"context"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -9,6 +10,7 @@ import (
 
 	. "google-scraper/helpers"
 	. "google-scraper/serializers"
+	"google-scraper/services/oauth"
 	. "google-scraper/tests"
 
 	"github.com/google/uuid"
@@ -288,6 +290,28 @@ var _ = Describe("TokenController", func() {
 				}
 
 				Expect(string(responseBody)).To(BeEmpty())
+			})
+
+			It("deletes the token from database", func() {
+				email := "john@example.com"
+				password := "secret"
+				client := FabricateOAuthClient(uuid.New().String(), uuid.New().String())
+				token := FabricateOAuthToken(client)
+				user := FabricateUser("John", email, password)
+
+				form := url.Values{
+					"client_id":     {client.ID},
+					"client_secret": {client.Secret},
+					"token":         {token.GetAccess()},
+				}
+				body := strings.NewReader(form.Encode())
+
+				MakeAuthenticatedRequest("POST", "/api/v1/revoke", body, &user)
+
+				previousToken, err := oauth.TokenStore.GetByAccess(context.Background(), token.GetAccess())
+
+				Expect(previousToken).To(BeNil())
+				Expect(err.Error()).To(Equal("sql: no rows in result set"))
 			})
 		})
 
