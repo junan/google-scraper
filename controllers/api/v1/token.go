@@ -45,7 +45,7 @@ func (c *Token) Revoke() {
 
 	token := c.GetString("token")
 	if token == "" {
-		err = errors.New("Token is blank.")
+		err = errors.New("Token is blank")
 		c.renderError(err, http.StatusUnauthorized)
 		return
 	}
@@ -77,11 +77,11 @@ func (c *Token) authenticateClient() error {
 	clientSecret := c.GetString("client_secret")
 	client, err := ClientStore.GetByID(context.TODO(), clientID)
 	if err != nil {
-		return errors.New("Client credential invalid.")
+		return errors.New("Client authentication failed")
 	}
 
 	if client.GetSecret() != clientSecret {
-		return errors.New("Client credential invalid.")
+		return errors.New("Client authentication failed")
 	}
 
 	return nil

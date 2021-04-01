@@ -343,7 +343,7 @@ var _ = Describe("TokenController", func() {
 					expectedResponse := `{
 						"errors": [
 							{
-								"detail": "Token is blank."
+								"detail": "Token is blank"
 							}
 						]
 					}`
@@ -394,7 +394,7 @@ var _ = Describe("TokenController", func() {
 					expectedResponse := `{
 						"errors": [
 							{
-								"detail": "Client credential invalid."
+								"detail": "Client authentication failed"
 							}
 						]
 					}`
