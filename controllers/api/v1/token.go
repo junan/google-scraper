@@ -37,7 +37,14 @@ func (c *Token) Create() {
 }
 
 func (c *Token) Revoke() {
+	c.authenticateClient()
 	token := c.GetString("token")
+	if token == "" {
+		err := errors.New("Token is blank.")
+		c.renderError(err, http.StatusUnauthorized)
+		return
+	}
+
 	err := TokenStore.RemoveByAccess(context.TODO(), token)
 	if err != nil {
 		c.renderError(err, http.StatusInternalServerError)
@@ -58,3 +65,19 @@ func (c *Token) getTokenResponse(json string) serializers.TokenResponse {
 	return response
 }
 
+func (c *Token) authenticateClient()  {
+	clientID := c.GetString("client_id")
+	clientSecret := c.GetString("client_secret")
+	client, err := ClientStore.GetByID(context.TODO(), clientID)
+	if err != nil {
+		err = errors.New("Client credential invalid.")
+		c.renderError(err, http.StatusUnauthorized)
+		return
+	}
+
+	if client.GetSecret() != clientSecret {
+		err = errors.New("Client credential invalid.")
+		c.renderError(err, http.StatusUnauthorized)
+		return
+	}
+}
