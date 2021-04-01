@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
+	"time"
 
 	. "google-scraper/helpers"
 	. "google-scraper/serializers"
@@ -67,7 +68,7 @@ var _ = Describe("TokenController", func() {
 				tokenResponse := TokenResponse{
 					Id:           id,
 					AccessToken:  gjson.Get(string(responseBody), "data.attributes.access_token").String(),
-					ExpiresIn:    gjson.Get(string(responseBody), "data.attributes.expires_in").Int(),
+					ExpiresIn:    time.Duration(gjson.Get(string(responseBody), "data.attributes.expires_in").Int()),
 					RefreshToken: gjson.Get(string(responseBody), "data.attributes.refresh_token").String(),
 					TokenType:    gjson.Get(string(responseBody), "data.attributes.token_type").String(),
 				}
