@@ -17,10 +17,15 @@ type Keyword struct {
 
 func (c *Keyword) Upload() {
 	tokenInfo, err := oauth.OauthServer.ValidationBearerToken(c.Ctx.Request)
+	if err != nil {
+		c.renderError(err, http.StatusInternalServerError)
+		return
+	}
 
 	userID, err := StringToInt(tokenInfo.GetUserID())
 	if err != nil {
 		c.renderError(err, http.StatusInternalServerError)
+		return
 	}
 
 	user, err := models.FindUserById(userID)
