@@ -10,6 +10,7 @@ import (
 	"google-scraper/services/oauth"
 
 	"github.com/beego/beego/v2/server/web"
+	"github.com/go-oauth2/oauth2/v4"
 	"github.com/google/jsonapi"
 )
 
@@ -19,7 +20,7 @@ type baseAPIController struct {
 	CurrentUser *models.User
 	authPolicy  AuthPolicy
 	actionName  string
-	UserID      string
+	TokenInfo   oauth2.TokenInfo
 }
 
 type AuthPolicy struct {
@@ -70,11 +71,7 @@ func (c *baseAPIController) validateAuthorization() {
 }
 
 func (c *baseAPIController) setCurrentUser() {
-	if c.UserID == "" {
-		return
-	}
-
-	userID, err := StringToInt(c.UserID)
+	userID, err := StringToInt(c.TokenInfo.GetUserID())
 	if err != nil {
 		c.renderError(err, http.StatusInternalServerError)
 		return
@@ -83,6 +80,7 @@ func (c *baseAPIController) setCurrentUser() {
 	user, err := models.FindUserById(userID)
 	if err != nil {
 		c.renderError(err, http.StatusNotFound)
+		return
 	}
 
 	c.CurrentUser = user
@@ -116,8 +114,7 @@ func (c *baseAPIController) validToken() bool {
 	if err != nil {
 		return false
 	}
-
-	c.UserID = tokenInfo.GetUserID()
+	c.TokenInfo = tokenInfo
 
 	return true
 }
