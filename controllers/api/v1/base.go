@@ -85,9 +85,13 @@ func (c *baseAPIController) setActionName() {
 }
 
 func (c *baseAPIController) validateClientCredential() {
+	clientErr := errors.New("Client authentication failed")
 	clientID := c.GetString("client_id")
 	clientSecret := c.GetString("client_secret")
-	clientErr := errors.New("Client authentication failed")
+	if clientID == "" {
+		c.renderError(clientErr, http.StatusUnauthorized)
+		return
+	}
 	client, err := oauth.ClientStore.GetByID(context.TODO(), clientID)
 	if err != nil {
 		c.renderError(clientErr, http.StatusUnauthorized)
