@@ -18,6 +18,7 @@ type baseAPIController struct {
 
 	CurrentUser *models.User
 	authPolicy  AuthPolicy
+	actionName  string
 	UserID      string
 }
 
@@ -32,6 +33,13 @@ type NestPreparer interface {
 
 func (c *baseAPIController) Prepare() {
 	c.setDefaultAuthPolicy()
+	c.setActionName()
+
+	app, ok := c.AppController.(NestPreparer)
+	if ok {
+		app.NestPrepare()
+	}
+
 	c.validateAuthorization()
 	c.setCurrentUser()
 }
@@ -45,12 +53,10 @@ func (c *baseAPIController) setDefaultAuthPolicy() {
 func (c *baseAPIController) validateAuthorization() {
 	if c.authPolicy.requireClientCredentialValidation {
 		c.validateClientCredential()
-		return
 	}
 
 	if c.authPolicy.requireTokenValidation {
 		c.validateToken()
-		return
 	}
 }
 
@@ -71,6 +77,11 @@ func (c *baseAPIController) setCurrentUser() {
 	}
 
 	c.CurrentUser = user
+}
+
+func (c *baseAPIController) setActionName() {
+	_, actionName := c.GetControllerAndAction()
+	c.actionName = actionName
 }
 
 func (c *baseAPIController) validateClientCredential() {
