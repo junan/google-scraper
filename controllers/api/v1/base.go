@@ -51,12 +51,21 @@ func (c *baseAPIController) setDefaultAuthPolicy() {
 }
 
 func (c *baseAPIController) validateAuthorization() {
+	err := errors.New("Client authentication failed")
 	if c.authPolicy.requireClientCredentialValidation {
-		c.validateClientCredential()
+		result := c.validClientCredential()
+		if !result {
+			c.renderError(err, http.StatusUnauthorized)
+			return
+		}
 	}
 
 	if c.authPolicy.requireTokenValidation {
-		c.validateToken()
+		result := c.validToken()
+		if !result {
+			c.renderError(err, http.StatusUnauthorized)
+			return
+		}
 	}
 }
 
@@ -84,34 +93,33 @@ func (c *baseAPIController) setActionName() {
 	c.actionName = actionName
 }
 
-func (c *baseAPIController) validateClientCredential() {
-	clientErr := errors.New("Client authentication failed")
+func (c *baseAPIController) validClientCredential() bool {
 	clientID := c.GetString("client_id")
 	clientSecret := c.GetString("client_secret")
 	if clientID == "" {
-		c.renderError(clientErr, http.StatusUnauthorized)
-		return
+		return false
 	}
 	client, err := oauth.ClientStore.GetByID(context.TODO(), clientID)
 	if err != nil {
-		c.renderError(clientErr, http.StatusUnauthorized)
-		return
+		return false
 	}
 
 	if client.GetSecret() != clientSecret {
-		c.renderError(clientErr, http.StatusUnauthorized)
-		return
+		return false
 	}
+
+	return true
 }
 
-func (c *baseAPIController) validateToken() {
+func (c *baseAPIController) validToken() bool {
 	tokenInfo, err := oauth.OauthServer.ValidationBearerToken(c.Ctx.Request)
 	if err != nil {
-		c.renderError(err, http.StatusUnauthorized)
-		return
+		return false
 	}
 
 	c.UserID = tokenInfo.GetUserID()
+
+	return true
 }
 
 func (c *baseAPIController) serveJSON(data interface{}) {
