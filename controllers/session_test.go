@@ -5,9 +5,9 @@ import (
 	"net/url"
 	"strings"
 
-	"google-scraper/controllers"
 	_ "google-scraper/initializers"
 	. "google-scraper/tests"
+	"google-scraper/controllers"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"

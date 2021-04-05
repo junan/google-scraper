@@ -81,8 +81,8 @@ var _ = Describe("KeywordController", func() {
 						oauthToken := FabricateOAuthToken(client, user.Id)
 						expectedResponse := `{
 												"errors": [
-											     	{
-												 		 "detail": "File can't be blank."
+													{
+														"detail": "File can't be blank."
 											   		}
 												]
 									     	 }`
@@ -126,12 +126,11 @@ var _ = Describe("KeywordController", func() {
 						oauthToken := FabricateOAuthToken(client, user.Id)
 						expectedResponse := `{
 												"errors": [
-											     	{
-												 		 "detail": "CSV contents are not in correct format."
-											   		}
+													{
+														"detail": "CSV contents are not in correct format."
+													}
 												]
-									     	 }`
-
+											}`
 						header := http.Header{
 							"Authorization": {fmt.Sprintf("Bearer %v", oauthToken.GetAccess())},
 							"Content-Type":  {"multipart/form-data; boundary=multipart-boundary"}}
@@ -171,11 +170,11 @@ var _ = Describe("KeywordController", func() {
 						oauthToken := FabricateOAuthToken(client, user.Id)
 						expectedResponse := `{
 												"errors": [
-											     	{
-												 		 "detail": "Please upload the file in CSV format."
-											   		}
+													{
+														"detail": "Please upload the file in CSV format."
+													}
 												]
-									     	 }`
+											}`
 
 						header := http.Header{
 							"Authorization": {fmt.Sprintf("Bearer %v", oauthToken.GetAccess())},
@@ -216,11 +215,11 @@ var _ = Describe("KeywordController", func() {
 						oauthToken := FabricateOAuthToken(client, user.Id)
 						expectedResponse := `{
 												"errors": [
-											     	{
-												 		 "detail": "File size can't be more than 5 MB."
-											   		}
+													{
+														"detail": "File size can't be more than 5 MB."
+													}
 												]
-									     	 }`
+											}`
 
 						header := http.Header{
 							"Authorization": {fmt.Sprintf("Bearer %v", oauthToken.GetAccess())},
@@ -260,11 +259,11 @@ var _ = Describe("KeywordController", func() {
 						oauthToken := FabricateOAuthToken(client, user.Id)
 						expectedResponse := `{
 												"errors": [
-											     	{
-												 		 "detail": "Keywords count can't be more than 1000 or less than 1."
-											   		}
+													{
+														"detail": "Keywords count can't be more than 1000 or less than 1."
+													}
 												]
-									     	 }`
+											}`
 
 						header := http.Header{
 							"Authorization": {fmt.Sprintf("Bearer %v", oauthToken.GetAccess())},
