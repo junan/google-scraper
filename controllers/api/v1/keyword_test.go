@@ -80,12 +80,12 @@ var _ = Describe("KeywordController", func() {
 						client := FabricateOAuthClient(uuid.New().String(), uuid.New().String())
 						oauthToken := FabricateOAuthToken(client, user.Id)
 						expectedResponse := `{
-												"errors": [
-													{
-														"detail": "File can't be blank."
-											   		}
-												]
-									     	 }`
+							"errors": [
+								{
+									"detail": "File can't be blank."
+								}
+							]
+						}`
 
 						header := http.Header{
 							"Authorization": {fmt.Sprintf("Bearer %v", oauthToken.GetAccess())},
@@ -125,12 +125,13 @@ var _ = Describe("KeywordController", func() {
 						client := FabricateOAuthClient(uuid.New().String(), uuid.New().String())
 						oauthToken := FabricateOAuthToken(client, user.Id)
 						expectedResponse := `{
-												"errors": [
-													{
-														"detail": "CSV contents are not in correct format."
-													}
-												]
-											}`
+							"errors": [
+								{
+									"detail": "CSV contents are not in correct format."
+								}
+							]
+						}`
+
 						header := http.Header{
 							"Authorization": {fmt.Sprintf("Bearer %v", oauthToken.GetAccess())},
 							"Content-Type":  {"multipart/form-data; boundary=multipart-boundary"}}
@@ -169,12 +170,12 @@ var _ = Describe("KeywordController", func() {
 						client := FabricateOAuthClient(uuid.New().String(), uuid.New().String())
 						oauthToken := FabricateOAuthToken(client, user.Id)
 						expectedResponse := `{
-												"errors": [
-													{
-														"detail": "Please upload the file in CSV format."
-													}
-												]
-											}`
+							"errors": [
+								{
+									"detail": "Please upload the file in CSV format."
+								}
+							]
+						}`
 
 						header := http.Header{
 							"Authorization": {fmt.Sprintf("Bearer %v", oauthToken.GetAccess())},
@@ -214,12 +215,12 @@ var _ = Describe("KeywordController", func() {
 						client := FabricateOAuthClient(uuid.New().String(), uuid.New().String())
 						oauthToken := FabricateOAuthToken(client, user.Id)
 						expectedResponse := `{
-												"errors": [
-													{
-														"detail": "File size can't be more than 5 MB."
-													}
-												]
-											}`
+							"errors": [
+								{
+									"detail": "File size can't be more than 5 MB."
+								}
+							]
+						}`
 
 						header := http.Header{
 							"Authorization": {fmt.Sprintf("Bearer %v", oauthToken.GetAccess())},
@@ -258,12 +259,12 @@ var _ = Describe("KeywordController", func() {
 						client := FabricateOAuthClient(uuid.New().String(), uuid.New().String())
 						oauthToken := FabricateOAuthToken(client, user.Id)
 						expectedResponse := `{
-												"errors": [
-													{
-														"detail": "Keywords count can't be more than 1000 or less than 1."
-													}
-												]
-											}`
+							"errors": [
+								{
+									"detail": "Keywords count can't be more than 1000 or less than 1."
+								}
+							]
+						}`
 
 						header := http.Header{
 							"Authorization": {fmt.Sprintf("Bearer %v", oauthToken.GetAccess())},
@@ -294,12 +295,12 @@ var _ = Describe("KeywordController", func() {
 		It("returns correct JSON response", func() {
 			header := http.Header{"Authorization": {fmt.Sprintf("Bearer %v", "invalid")}}
 			expectedResponse := `{
-				"errors": [
+				errors": [
 					{
-				    	"detail": "Client authentication failed"
-			 	    }
-	        	]
-		    }`
+						"detail": "Client authentication failed"
+					}
+				]
+			}`
 
 			response := MakeAuthenticatedRequest("POST", "/api/v1/keyword", header, nil, nil)
 
