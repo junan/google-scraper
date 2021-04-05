@@ -14,8 +14,8 @@ import (
 	. "github.com/onsi/gomega"
 )
 
-var _ = Describe("KeywordController", func() {
-	Describe("POST /api/v1/keyword", func() {
+var _ = Describe("SearchController", func() {
+	Describe("POST /api/v1/search", func() {
 		Context("Given the valid credential", func() {
 			Context("given the params are valid", func() {
 				It("returns 201 status code", func() {
@@ -31,7 +31,7 @@ var _ = Describe("KeywordController", func() {
 						"Authorization": {fmt.Sprintf("Bearer %v", oauthToken.GetAccess())},
 						"Content-Type":  {"multipart/form-data; boundary=multipart-boundary"}}
 
-					response := MakeAuthenticatedRequest("POST", "/api/v1/keyword", header, body, nil)
+					response := MakeAuthenticatedRequest("POST", "/api/v1/search", header, body, nil)
 
 					Expect(response.StatusCode).To(Equal(http.StatusCreated))
 				})
@@ -47,7 +47,7 @@ var _ = Describe("KeywordController", func() {
 						"Authorization": {fmt.Sprintf("Bearer %v", oauthToken.GetAccess())},
 						"Content-Type":  {"multipart/form-data; boundary=multipart-boundary"}}
 
-					response := MakeAuthenticatedRequest("POST", "/api/v1/keyword", header, body, nil)
+					response := MakeAuthenticatedRequest("POST", "/api/v1/search", header, body, nil)
 					responseBody, err := ioutil.ReadAll(response.Body)
 					if err != nil {
 						Fail("Reading response body failed: " + err.Error())
@@ -69,7 +69,7 @@ var _ = Describe("KeywordController", func() {
 							"Authorization": {fmt.Sprintf("Bearer %v", oauthToken.GetAccess())},
 							"Content-Type":  {"multipart/form-data; boundary=multipart-boundary"}}
 
-						response := MakeAuthenticatedRequest("POST", "/api/v1/keyword", header, body, nil)
+						response := MakeAuthenticatedRequest("POST", "/api/v1/search", header, body, nil)
 
 						Expect(response.StatusCode).To(Equal(http.StatusUnprocessableEntity))
 					})
@@ -91,7 +91,7 @@ var _ = Describe("KeywordController", func() {
 							"Authorization": {fmt.Sprintf("Bearer %v", oauthToken.GetAccess())},
 							"Content-Type":  {"multipart/form-data; boundary=multipart-boundary"}}
 
-						response := MakeAuthenticatedRequest("POST", "/api/v1/keyword", header, body, nil)
+						response := MakeAuthenticatedRequest("POST", "/api/v1/search", header, body, nil)
 						responseBody, err := ioutil.ReadAll(response.Body)
 						if err != nil {
 							Fail("Reading response body failed: " + err.Error())
@@ -113,7 +113,7 @@ var _ = Describe("KeywordController", func() {
 							"Authorization": {fmt.Sprintf("Bearer %v", oauthToken.GetAccess())},
 							"Content-Type":  {"multipart/form-data; boundary=multipart-boundary"}}
 
-						response := MakeAuthenticatedRequest("POST", "/api/v1/keyword", header, body, nil)
+						response := MakeAuthenticatedRequest("POST", "/api/v1/search", header, body, nil)
 
 						Expect(response.StatusCode).To(Equal(http.StatusUnprocessableEntity))
 					})
@@ -136,7 +136,7 @@ var _ = Describe("KeywordController", func() {
 							"Authorization": {fmt.Sprintf("Bearer %v", oauthToken.GetAccess())},
 							"Content-Type":  {"multipart/form-data; boundary=multipart-boundary"}}
 
-						response := MakeAuthenticatedRequest("POST", "/api/v1/keyword", header, body, nil)
+						response := MakeAuthenticatedRequest("POST", "/api/v1/search", header, body, nil)
 						responseBody, err := ioutil.ReadAll(response.Body)
 						if err != nil {
 							Fail("Reading response body failed: " + err.Error())
@@ -158,7 +158,7 @@ var _ = Describe("KeywordController", func() {
 							"Authorization": {fmt.Sprintf("Bearer %v", oauthToken.GetAccess())},
 							"Content-Type":  {"multipart/form-data; boundary=multipart-boundary"}}
 
-						response := MakeAuthenticatedRequest("POST", "/api/v1/keyword", header, body, nil)
+						response := MakeAuthenticatedRequest("POST", "/api/v1/search", header, body, nil)
 
 						Expect(response.StatusCode).To(Equal(http.StatusUnprocessableEntity))
 					})
@@ -181,7 +181,7 @@ var _ = Describe("KeywordController", func() {
 							"Authorization": {fmt.Sprintf("Bearer %v", oauthToken.GetAccess())},
 							"Content-Type":  {"multipart/form-data; boundary=multipart-boundary"}}
 
-						response := MakeAuthenticatedRequest("POST", "/api/v1/keyword", header, body, nil)
+						response := MakeAuthenticatedRequest("POST", "/api/v1/search", header, body, nil)
 						responseBody, err := ioutil.ReadAll(response.Body)
 						if err != nil {
 							Fail("Reading response body failed: " + err.Error())
@@ -203,7 +203,7 @@ var _ = Describe("KeywordController", func() {
 							"Authorization": {fmt.Sprintf("Bearer %v", oauthToken.GetAccess())},
 							"Content-Type":  {"multipart/form-data; boundary=multipart-boundary"}}
 
-						response := MakeAuthenticatedRequest("POST", "/api/v1/keyword", header, body, nil)
+						response := MakeAuthenticatedRequest("POST", "/api/v1/search", header, body, nil)
 
 						Expect(response.StatusCode).To(Equal(http.StatusUnprocessableEntity))
 					})
@@ -226,7 +226,7 @@ var _ = Describe("KeywordController", func() {
 							"Authorization": {fmt.Sprintf("Bearer %v", oauthToken.GetAccess())},
 							"Content-Type":  {"multipart/form-data; boundary=multipart-boundary"}}
 
-						response := MakeAuthenticatedRequest("POST", "/api/v1/keyword", header, body, nil)
+						response := MakeAuthenticatedRequest("POST", "/api/v1/search", header, body, nil)
 						responseBody, err := ioutil.ReadAll(response.Body)
 						if err != nil {
 							Fail("Reading response body failed: " + err.Error())
@@ -247,7 +247,7 @@ var _ = Describe("KeywordController", func() {
 							"Authorization": {fmt.Sprintf("Bearer %v", oauthToken.GetAccess())},
 							"Content-Type":  {"multipart/form-data; boundary=multipart-boundary"}}
 
-						response := MakeAuthenticatedRequest("POST", "/api/v1/keyword", header, body, nil)
+						response := MakeAuthenticatedRequest("POST", "/api/v1/search", header, body, nil)
 
 						Expect(response.StatusCode).To(Equal(http.StatusUnprocessableEntity))
 					})
@@ -270,7 +270,7 @@ var _ = Describe("KeywordController", func() {
 							"Authorization": {fmt.Sprintf("Bearer %v", oauthToken.GetAccess())},
 							"Content-Type":  {"multipart/form-data; boundary=multipart-boundary"}}
 
-						response := MakeAuthenticatedRequest("POST", "/api/v1/keyword", header, body, nil)
+						response := MakeAuthenticatedRequest("POST", "/api/v1/search", header, body, nil)
 						responseBody, err := ioutil.ReadAll(response.Body)
 						if err != nil {
 							Fail("Reading response body failed: " + err.Error())
@@ -287,7 +287,7 @@ var _ = Describe("KeywordController", func() {
 		It("returns 401 status code", func() {
 			header := http.Header{"Authorization": {fmt.Sprintf("Bearer %v", "invalid")}}
 
-			response := MakeAuthenticatedRequest("POST", "/api/v1/keyword", header, nil, nil)
+			response := MakeAuthenticatedRequest("POST", "/api/v1/search", header, nil, nil)
 
 			Expect(response.StatusCode).To(Equal(http.StatusUnauthorized))
 		})
@@ -295,14 +295,14 @@ var _ = Describe("KeywordController", func() {
 		It("returns correct JSON response", func() {
 			header := http.Header{"Authorization": {fmt.Sprintf("Bearer %v", "invalid")}}
 			expectedResponse := `{
-				errors": [
+				"errors": [
 					{
 						"detail": "Client authentication failed"
 					}
 				]
 			}`
 
-			response := MakeAuthenticatedRequest("POST", "/api/v1/keyword", header, nil, nil)
+			response := MakeAuthenticatedRequest("POST", "/api/v1/search", header, nil, nil)
 
 			responseBody, err := ioutil.ReadAll(response.Body)
 			if err != nil {

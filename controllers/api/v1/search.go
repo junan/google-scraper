@@ -8,11 +8,11 @@ import (
 	"github.com/beego/beego/v2/core/logs"
 )
 
-type Keyword struct {
+type Search struct {
 	baseAPIController
 }
 
-func (c *Keyword) Upload() {
+func (c *Search) Create() {
 	file, header, err := c.GetFile("file")
 	if err != nil {
 		logs.Error("Getting file failed: ", err)
