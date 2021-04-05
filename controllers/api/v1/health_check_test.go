@@ -37,14 +37,14 @@ var _ = Describe("HealthCheckController", func() {
 				oauthToken := FabricateOAuthToken(client, user.Id)
 				header := http.Header{"Authorization": {fmt.Sprintf("Bearer %v", oauthToken.GetAccess())}}
 				expectedResponse := `{
-                  "data": {
-                    "type": "health_check",
-                      "id": "0",
-                      "attributes": {
-                        "success": true
-                      }
-                    }
-                }`
+							  "data": {
+								"type": "health_check",
+								  "id": "0",
+								  "attributes": {
+									"success": true
+								  }
+								}
+							}`
 
 				response := MakeAuthenticatedRequest("GET", "/api/v1/health-check", header, nil, nil)
 
