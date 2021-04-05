@@ -3,9 +3,9 @@ package apiv1
 import (
 	"net/http"
 
-	"github.com/beego/beego/v2/core/logs"
-
 	"google-scraper/forms"
+
+	"github.com/beego/beego/v2/core/logs"
 )
 
 type Keyword struct {
@@ -19,7 +19,7 @@ func (c *Keyword) Upload() {
 	}
 	err = forms.PerformSearch(file, header, c.CurrentUser)
 	if err != nil {
-		c.renderError(err, http.StatusInternalServerError)
+		c.renderError(err, http.StatusUnprocessableEntity)
 	}
 
 	c.Ctx.ResponseWriter.WriteHeader(http.StatusCreated)
