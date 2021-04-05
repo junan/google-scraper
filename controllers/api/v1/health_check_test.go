@@ -69,12 +69,12 @@ var _ = Describe("HealthCheckController", func() {
 			It("returns correct JSON response", func() {
 				header := http.Header{"Authorization": {fmt.Sprintf("Bearer %v", "invalid")}}
 				expectedResponse := `{
-					"errors": [ 
+					"errors": [
 						{
-					    	"detail": "Client authentication failed"
-				 	    }
-                 	]
-			    }`
+							"detail": "Client authentication failed"
+                        }
+					]
+				}`
 
 				response := MakeAuthenticatedRequest("GET", "/api/v1/health-check", header, nil, nil)
 
