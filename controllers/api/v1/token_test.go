@@ -257,7 +257,7 @@ var _ = Describe("TokenController", func() {
 				form := url.Values{
 					"client_id":     {client.ID},
 					"client_secret": {client.Secret},
-					"token":         {token.GetAccess()},
+					"access_token":         {token.GetAccess()},
 				}
 				body := strings.NewReader(form.Encode())
 
@@ -273,7 +273,7 @@ var _ = Describe("TokenController", func() {
 				form := url.Values{
 					"client_id":     {client.ID},
 					"client_secret": {client.Secret},
-					"token":         {token.GetAccess()},
+					"access_token":         {token.GetAccess()},
 				}
 				body := strings.NewReader(form.Encode())
 
@@ -293,7 +293,7 @@ var _ = Describe("TokenController", func() {
 				form := url.Values{
 					"client_id":     {client.ID},
 					"client_secret": {client.Secret},
-					"token":         {token.GetAccess()},
+					"access_token":         {token.GetAccess()},
 				}
 				body := strings.NewReader(form.Encode())
 
@@ -314,7 +314,7 @@ var _ = Describe("TokenController", func() {
 					form := url.Values{
 						"client_id":     {client.ID},
 						"client_secret": {client.Secret},
-						"token":         {},
+						"access_token":         {},
 					}
 					body := strings.NewReader(form.Encode())
 
@@ -328,7 +328,7 @@ var _ = Describe("TokenController", func() {
 					expectedResponse := `{
 						"errors": [
 							{
-								"detail": "Token is blank"
+								"detail": "Access token is blank"
 							}
 						]
 					}`
@@ -336,7 +336,7 @@ var _ = Describe("TokenController", func() {
 					form := url.Values{
 						"client_id":     {client.ID},
 						"client_secret": {client.Secret},
-						"token":         {},
+						"access_token":         {},
 					}
 					body := strings.NewReader(form.Encode())
 
@@ -358,7 +358,7 @@ var _ = Describe("TokenController", func() {
 					form := url.Values{
 						"client_id":     {client.ID},
 						"client_secret": {"invalid"},
-						"token":         {token.GetAccess()},
+						"access_token":         {token.GetAccess()},
 					}
 					body := strings.NewReader(form.Encode())
 
@@ -380,7 +380,7 @@ var _ = Describe("TokenController", func() {
 					form := url.Values{
 						"client_id":     {client.ID},
 						"client_secret": {"invalid"},
-						"token":         {token.GetAccess()},
+						"access_token":         {token.GetAccess()},
 					}
 					body := strings.NewReader(form.Encode())
 

@@ -21,14 +21,12 @@ func (c *Token) Create() {
 	err := OauthServer.HandleTokenRequest(writer, c.Ctx.Request)
 	if err != nil {
 		c.renderError(err, http.StatusUnauthorized)
-		return
 	}
 
 	json := writer.Body.String()
 	if writer.Code != 200 {
 		errorMessage := gjson.Get(json, "error_description").String()
 		c.renderError(errors.New(errorMessage), writer.Code)
-		return
 	}
 
 	tokenResponse := serializers.GetTokenResponse(json)
@@ -40,21 +38,18 @@ func (c *Token) Revoke() {
 	err := c.authenticateClient()
 	if err != nil {
 		c.renderError(err, http.StatusUnauthorized)
-		return
 	}
 
-	token := c.GetString("token")
+	token := c.GetString("access_token")
 	if token == "" {
-		err = errors.New("Token is blank")
+		err = errors.New("Access token is blank")
 		c.renderError(err, http.StatusUnauthorized)
-		return
 	}
 
 	// Remove the token from database
 	err = TokenStore.RemoveByAccess(context.TODO(), token)
 	if err != nil {
 		c.renderError(err, http.StatusInternalServerError)
-		return
 	}
 
 	// Response with 204 status code and no body
