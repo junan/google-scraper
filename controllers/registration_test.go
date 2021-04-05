@@ -24,7 +24,7 @@ var _ = Describe("RegistrationController", func() {
 		Context("given the user is an authenticated user", func() {
 			It("redirects to the root path", func() {
 				user := FabricateUser("John", "john@example.com", "secret")
-				response := MakeAuthenticatedRequest("GET", "/register", nil, &user)
+				response := MakeAuthenticatedRequest("GET", "/register", nil, nil, &user)
 				currentPath := GetUrlPath(response)
 
 				Expect(currentPath).To(Equal("/"))
@@ -163,7 +163,7 @@ var _ = Describe("RegistrationController", func() {
 					"password": {password},
 				}
 				body := strings.NewReader(registrationForm.Encode())
-				response := MakeAuthenticatedRequest("POST", "/register", body, &user)
+				response := MakeAuthenticatedRequest("POST", "/register", nil, body, &user)
 				flash := GetFlash(response.Cookies())
 
 				Expect(flash).To(BeNil())
@@ -179,7 +179,7 @@ var _ = Describe("RegistrationController", func() {
 					"password": {password},
 				}
 				body := strings.NewReader(registrationForm.Encode())
-				response := MakeAuthenticatedRequest("POST", "/register", body, &user)
+				response := MakeAuthenticatedRequest("POST", "/register", nil, body, &user)
 				path := GetUrlPath(response)
 
 				Expect(path).To(Equal("/"))

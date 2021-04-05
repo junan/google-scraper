@@ -71,6 +71,10 @@ func (c *baseAPIController) validateAuthorization() {
 }
 
 func (c *baseAPIController) setCurrentUser() {
+	if c.TokenInfo == nil {
+		return
+	}
+
 	userID, err := StringToInt(c.TokenInfo.GetUserID())
 	if err != nil {
 		c.renderError(err, http.StatusInternalServerError)

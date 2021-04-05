@@ -1,6 +1,8 @@
 package controllers_test
 
 import (
+	"net/http"
+
 	. "google-scraper/tests"
 
 	. "github.com/onsi/ginkgo"
@@ -15,11 +17,12 @@ var _ = Describe("SearchController", func() {
 					It("sets flash success message", func() {
 						user := FabricateUser("John", "john@example.com", "secret")
 						filePath := AppRootDir() + "/tests/fixtures/shared/valid_keywords.csv"
+						header := http.Header{"Content-Type": {"multipart/form-data; boundary=multipart-boundary"}}
 						_, body := CreateMultipartFormData(filePath)
 						mockResponseFilePath := AppRootDir() + "/tests/fixtures/services/crawler/valid_get_response.html"
 						MockCrawling(mockResponseFilePath)
 
-						response := MakeAuthenticatedRequest("POST", "/search", body, &user)
+						response := MakeAuthenticatedRequest("POST", "/search", header, body, &user)
 
 						flash := GetFlash(response.Cookies())
 
@@ -29,11 +32,12 @@ var _ = Describe("SearchController", func() {
 					It("redirects to the root path", func() {
 						user := FabricateUser("John", "john@example.com", "secret")
 						filePath := AppRootDir() + "/tests/fixtures/shared/valid_keywords.csv"
+						header := http.Header{"Content-Type": {"multipart/form-data; boundary=multipart-boundary"}}
 						_, body := CreateMultipartFormData(filePath)
 						mockResponseFilePath := AppRootDir() + "/tests/fixtures/services/crawler/valid_get_response.html"
 						MockCrawling(mockResponseFilePath)
 
-						response := MakeAuthenticatedRequest("POST", "/search", body, &user)
+						response := MakeAuthenticatedRequest("POST", "/search", header, body, &user)
 
 						path := GetUrlPath(response)
 
@@ -46,9 +50,10 @@ var _ = Describe("SearchController", func() {
 				Context("given the uploaded file is nil", func() {
 					It("sets flash error message", func() {
 						user := FabricateUser("John", "john@example.com", "secret")
+						header := http.Header{"Content-Type": {"multipart/form-data; boundary=multipart-boundary"}}
 						body := CreateEmptyMultipartBody()
 
-						response := MakeAuthenticatedRequest("POST", "/search", body, &user)
+						response := MakeAuthenticatedRequest("POST", "/search", header, body, &user)
 
 						flash := GetFlash(response.Cookies())
 
@@ -60,9 +65,10 @@ var _ = Describe("SearchController", func() {
 					It("sets flash error message", func() {
 						user := FabricateUser("John", "john@example.com", "secret")
 						filePath := AppRootDir() + "/tests/fixtures/shared/empty_keyword.csv"
+						header := http.Header{"Content-Type": {"multipart/form-data; boundary=multipart-boundary"}}
 						_, body := CreateMultipartFormData(filePath)
 
-						response := MakeAuthenticatedRequest("POST", "/search", body, &user)
+						response := MakeAuthenticatedRequest("POST", "/search", header, body, &user)
 
 						flash := GetFlash(response.Cookies())
 
@@ -74,9 +80,10 @@ var _ = Describe("SearchController", func() {
 					It("sets flash error message", func() {
 						user := FabricateUser("John", "john@example.com", "secret")
 						filePath := AppRootDir() + "/tests/fixtures/shared/invalid_keyword.csv"
+						header := http.Header{"Content-Type": {"multipart/form-data; boundary=multipart-boundary"}}
 						_, body := CreateMultipartFormData(filePath)
 
-						response := MakeAuthenticatedRequest("POST", "/search", body, &user)
+						response := MakeAuthenticatedRequest("POST", "/search", header, body, &user)
 
 						flash := GetFlash(response.Cookies())
 
@@ -88,9 +95,10 @@ var _ = Describe("SearchController", func() {
 					It("sets flash error message", func() {
 						user := FabricateUser("John", "john@example.com", "secret")
 						filePath := AppRootDir() + "/tests/fixtures/shared/test.jpeg"
+						header := http.Header{"Content-Type": {"multipart/form-data; boundary=multipart-boundary"}}
 						_, body := CreateMultipartFormData(filePath)
 
-						response := MakeAuthenticatedRequest("POST", "/search", body, &user)
+						response := MakeAuthenticatedRequest("POST", "/search", header, body, &user)
 
 						flash := GetFlash(response.Cookies())
 
@@ -102,9 +110,10 @@ var _ = Describe("SearchController", func() {
 					It("sets flash error message", func() {
 						user := FabricateUser("John", "john@example.com", "secret")
 						filePath := AppRootDir() + "/tests/fixtures/shared/big_file.pdf"
+						header := http.Header{"Content-Type": {"multipart/form-data; boundary=multipart-boundary"}}
 						_, body := CreateMultipartFormData(filePath)
 
-						response := MakeAuthenticatedRequest("POST", "/search", body, &user)
+						response := MakeAuthenticatedRequest("POST", "/search", header, body, &user)
 
 						flash := GetFlash(response.Cookies())
 

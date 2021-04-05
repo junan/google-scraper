@@ -5,9 +5,9 @@ import (
 	"net/url"
 	"strings"
 
+	"google-scraper/controllers"
 	_ "google-scraper/initializers"
 	. "google-scraper/tests"
-	"google-scraper/controllers"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
@@ -26,7 +26,7 @@ var _ = Describe("SessionController", func() {
 		Context("given the user is an authenticated user", func() {
 			It("redirects to the root path", func() {
 				user := FabricateUser("John", "john@example.com", "secret")
-				response := MakeAuthenticatedRequest("GET", "/login", nil, &user)
+				response := MakeAuthenticatedRequest("GET", "/login", nil, nil, &user)
 				currentPath := GetUrlPath(response)
 
 				Expect(currentPath).To(Equal("/"))
@@ -117,7 +117,7 @@ var _ = Describe("SessionController", func() {
 					"password": {password},
 				}
 				body := strings.NewReader(params.Encode())
-				response := MakeAuthenticatedRequest("POST", "/login", body, &user)
+				response := MakeAuthenticatedRequest("POST", "/login", nil, body, &user)
 				flash := GetFlash(response.Cookies())
 
 				Expect(flash).To(BeNil())
@@ -132,7 +132,7 @@ var _ = Describe("SessionController", func() {
 					"password": {password},
 				}
 				body := strings.NewReader(params.Encode())
-				response := MakeAuthenticatedRequest("POST", "/login", body, &user)
+				response := MakeAuthenticatedRequest("POST", "/login", nil, body, &user)
 				path := GetUrlPath(response)
 
 				Expect(path).To(Equal("/"))
@@ -144,7 +144,7 @@ var _ = Describe("SessionController", func() {
 		Context("given the user is an authenticated user", func() {
 			It("redirects to the login page", func() {
 				user := FabricateUser("John", "john@example.com", "secret")
-				response := MakeAuthenticatedRequest("GET", "/logout", nil, &user)
+				response := MakeAuthenticatedRequest("GET", "/logout", nil, nil, &user)
 				path := GetUrlPath(response)
 
 				Expect(path).To(Equal("/login"))
@@ -152,7 +152,7 @@ var _ = Describe("SessionController", func() {
 
 			It("sets successful logout message", func() {
 				user := FabricateUser("John", "john@example.com", "secret")
-				response := MakeAuthenticatedRequest("GET", "/logout", nil, &user)
+				response := MakeAuthenticatedRequest("GET", "/logout", nil, nil, &user)
 				flash := GetFlash(response.Cookies())
 
 				Expect(flash.Data["success"]).To(Equal("Signed out successfully."))
@@ -160,7 +160,7 @@ var _ = Describe("SessionController", func() {
 
 			It("destroys the user session", func() {
 				user := FabricateUser("John", "john@example.com", "secret")
-				response := MakeAuthenticatedRequest("GET", "/logout", nil, &user)
+				response := MakeAuthenticatedRequest("GET", "/logout", nil, nil, &user)
 				session := GetSession(response.Cookies(), controllers.CurrentUserSession)
 
 				Expect(session).To(BeNil())

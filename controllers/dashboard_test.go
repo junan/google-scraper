@@ -25,7 +25,7 @@ var _ = Describe("DashboardController", func() {
 		Context("given the user is an authenticated user", func() {
 			It("returns 200 status code", func() {
 				user := FabricateUser("John", "john@example.com", "secret")
-				response := MakeAuthenticatedRequest("GET", "/", nil, &user)
+				response := MakeAuthenticatedRequest("GET", "/", nil, nil, &user)
 
 				Expect(response.StatusCode).To(Equal(http.StatusOK))
 			})

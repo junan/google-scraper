@@ -17,7 +17,7 @@ var _ = Describe("OauthClientController", func() {
 			It("returns 200 status code", func() {
 				user := FabricateUser("John", "john@example.com", "secret")
 
-				response := MakeAuthenticatedRequest("GET", "/oauth-client", nil, &user)
+				response := MakeAuthenticatedRequest("GET", "/oauth-client", nil, nil, &user)
 
 				Expect(response.StatusCode).To(Equal(http.StatusOK))
 			})
@@ -40,7 +40,7 @@ var _ = Describe("OauthClientController", func() {
 				user := FabricateUser("John", "john@example.com", "secret")
 
 				body := strings.NewReader("")
-				response := MakeAuthenticatedRequest("POST", "/oauth-client", body, &user)
+				response := MakeAuthenticatedRequest("POST", "/oauth-client", nil, body, &user)
 				flash := GetFlash(response.Cookies())
 
 				Expect(flash.Data["success"]).To(Equal("Your oauth client has been created successfully"))
@@ -50,7 +50,7 @@ var _ = Describe("OauthClientController", func() {
 				user := FabricateUser("John", "john@example.com", "secret")
 				body := strings.NewReader("")
 
-				response := MakeAuthenticatedRequest("POST", "/oauth-client", body, &user)
+				response := MakeAuthenticatedRequest("POST", "/oauth-client", nil, body, &user)
 				path := GetUrlPath(response)
 
 				Expect(response.StatusCode).To(Equal(http.StatusFound))
