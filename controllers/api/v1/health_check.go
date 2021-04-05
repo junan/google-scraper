@@ -1,6 +1,8 @@
 package apiv1
 
-import "google-scraper/serializers"
+import (
+	"google-scraper/serializers"
+)
 
 
 type HealthCheck struct {

@@ -52,9 +52,11 @@ func MakeAuthenticatedRequest(method string, url string, header http.Header, bod
 		Fail("Failed to start session" + err.Error())
 	}
 
-	err = store.Set(context.Background(), controllers.CurrentUserSession, user.Id)
-	if err != nil {
-		Fail("Failed to set current user" + err.Error())
+	if user != nil {
+		err = store.Set(context.Background(), controllers.CurrentUserSession, user.Id)
+		if err != nil {
+			Fail("Failed to set current user" + err.Error())
+		}
 	}
 
 	web.BeeApp.Handlers.ServeHTTP(responseRecorder, request)

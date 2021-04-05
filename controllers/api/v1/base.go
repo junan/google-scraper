@@ -102,7 +102,7 @@ func (c *baseAPIController) validClientCredential() bool {
 	if clientID == "" {
 		return false
 	}
-	
+
 	client, err := oauth.ClientStore.GetByID(context.TODO(), clientID)
 	if err != nil {
 		return false
