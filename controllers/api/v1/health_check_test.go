@@ -44,7 +44,7 @@ var _ = Describe("HealthCheckController", func() {
 						"success": true
 					}
 				}
-			}`
+				}`
 
 				response := MakeAuthenticatedRequest("GET", "/api/v1/health-check", header, nil, nil)
 
