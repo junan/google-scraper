@@ -46,8 +46,8 @@ func (c *baseAPIController) Prepare() {
 }
 
 func (c *baseAPIController) setDefaultAuthPolicy() {
-	// By default it will validate API token  and will not validate client credential for all routes.
-	// Override this default policy in the `NestPrepare()` function when necessary(ex: generating api token)
+	// By default it will validate API token and will not validate client credential for all routes.
+	// Override this default policy in the `NestPrepare()` function when necessary
 	c.authPolicy = AuthPolicy{requireTokenValidation: true, requireClientCredentialValidation: false}
 }
 
@@ -98,9 +98,11 @@ func (c *baseAPIController) setActionName() {
 func (c *baseAPIController) validClientCredential() bool {
 	clientID := c.GetString("client_id")
 	clientSecret := c.GetString("client_secret")
+
 	if clientID == "" {
 		return false
 	}
+	
 	client, err := oauth.ClientStore.GetByID(context.TODO(), clientID)
 	if err != nil {
 		return false
