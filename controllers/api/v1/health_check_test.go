@@ -72,7 +72,7 @@ var _ = Describe("HealthCheckController", func() {
 					"errors": [
 						{
 							"detail": "Client authentication failed"
-                        }
+						}
 					]
 				}`
 
