@@ -2,7 +2,6 @@ package apiv1
 
 import (
 	"context"
-	"encoding/json"
 	"errors"
 	"net/http"
 
@@ -135,21 +134,25 @@ func (c *baseAPIController) serveJSON(data interface{}) {
 	}
 }
 
-func (c *baseAPIController) serveListJSON(data interface{}, meta *jsonapi.Meta, links *jsonapi.Links) error {
+func (c *baseAPIController) serveListJSON(data interface{}, meta *jsonapi.Meta, links *jsonapi.Links) {
 	response, err := jsonapi.Marshal(data)
 	if err != nil {
-		return err
+		c.renderError(err, http.StatusInternalServerError)
 	}
 
 	payload, ok := response.(*jsonapi.ManyPayload)
 	if !ok {
-		return err
+		c.renderError(err, http.StatusInternalServerError)
 	}
 
 	payload.Meta = meta
 	payload.Links = links
 
-	return json.NewEncoder(c.Ctx.ResponseWriter).Encode(payload)
+	c.Data["json"] = payload
+	err = c.ServeJSON()
+	if err != nil {
+		c.renderError(err, http.StatusInternalServerError)
+	}
 }
 
 

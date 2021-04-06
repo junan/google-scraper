@@ -1,8 +1,6 @@
 package apiv1
 
 import (
-	"net/http"
-
 	"google-scraper/models"
 	"google-scraper/serializers"
 
@@ -45,8 +43,5 @@ func (c *Keyword) Index() {
 		Paginator: paginator,
 	}
 
-	err = c.serveListJSON(keywordsSerializer.Data(), keywordsSerializer.Meta(), keywordsSerializer.Links())
-	if err != nil {
-		c.renderError(err, http.StatusInternalServerError)
-	}
+	c.serveListJSON(keywordsSerializer.Data(), keywordsSerializer.Meta(), keywordsSerializer.Links())
 }
