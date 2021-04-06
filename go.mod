@@ -20,6 +20,7 @@ require (
 	github.com/onsi/ginkgo v1.15.0
 	github.com/onsi/gomega v1.10.5
 	github.com/robfig/cron v1.2.0 // indirect
+	github.com/tidwall/gjson v1.7.4
 	github.com/vgarvardt/go-oauth2-pg/v4 v4.1.0
 	github.com/vgarvardt/go-pg-adapter v1.0.0
 	golang.org/x/crypto v0.0.0-20210322153248-0c34fe9e7dc2

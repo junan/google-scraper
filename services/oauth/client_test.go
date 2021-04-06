@@ -26,6 +26,6 @@ var _ = Describe("OauthService", func() {
 	})
 
 	AfterEach(func() {
-		TruncateTables("oauth2_clients")
+		TruncateTables("users", "oauth2_clients")
 	})
 })

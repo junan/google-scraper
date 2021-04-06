@@ -48,6 +48,7 @@ func init() {
 	oauthServer := server.NewDefaultServer(manager)
 	oauthServer.SetAllowGetAccessRequest(true)
 	oauthServer.SetClientInfoHandler(server.ClientFormHandler)
+	oauthServer.SetPasswordAuthorizationHandler(oauth.PasswordAuthorizationHandler)
 	oauthServer.SetInternalErrorHandler(func(err error) (re *errors.Response) {
 		logs.Critical("Setting internal error handler failed: ", err)
 		return
@@ -57,4 +58,5 @@ func init() {
 	})
 
 	oauth.ClientStore = clientStore
+	oauth.OauthServer = oauthServer
 }
