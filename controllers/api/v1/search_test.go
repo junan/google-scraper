@@ -16,7 +16,7 @@ import (
 
 var _ = Describe("SearchController", func() {
 	Describe("POST /api/v1/search", func() {
-		Context("Given the valid credential", func() {
+		Context("Given valid credentials", func() {
 			Context("given the params are valid", func() {
 				It("returns 201 status code", func() {
 					user := FabricateUser("John", "john@example.com", "secret")
@@ -59,7 +59,7 @@ var _ = Describe("SearchController", func() {
 
 			Context("given the params are INVALID", func() {
 				Context("given the uploaded file is nil", func() {
-					It("returns 401 status code", func() {
+					It("returns 422 status code", func() {
 						user := FabricateUser("John", "john@example.com", "secret")
 						body := CreateEmptyMultipartBody()
 						client := FabricateOAuthClient(uuid.New().String(), uuid.New().String())
@@ -101,8 +101,8 @@ var _ = Describe("SearchController", func() {
 					})
 				})
 
-				Context("given the CSV file is wrong formatted", func() {
-					It("returns 401 status code", func() {
+				Context("given the CSV file is wrongly formatted", func() {
+					It("returns 422 status code", func() {
 						user := FabricateUser("John", "john@example.com", "secret")
 						filePath := AppRootDir() + "/tests/fixtures/shared/invalid_keyword.csv"
 						_, body := CreateMultipartFormData(filePath)
@@ -146,8 +146,8 @@ var _ = Describe("SearchController", func() {
 					})
 				})
 
-				Context("given the file is an image", func() {
-					It("returns 401 status code", func() {
+				Context("given an invalid file type", func() {
+					It("returns 422 status code", func() {
 						user := FabricateUser("John", "john@example.com", "secret")
 						filePath := AppRootDir() + "/tests/fixtures/shared/test.jpeg"
 						_, body := CreateMultipartFormData(filePath)
@@ -192,7 +192,7 @@ var _ = Describe("SearchController", func() {
 				})
 
 				Context("given the file size is more than 5 megabytes", func() {
-					It("returns 401 status code", func() {
+					It("returns 422 status code", func() {
 						user := FabricateUser("John", "john@example.com", "secret")
 						filePath := AppRootDir() + "/tests/fixtures/shared/big_file.pdf"
 						_, body := CreateMultipartFormData(filePath)
@@ -235,8 +235,8 @@ var _ = Describe("SearchController", func() {
 						Expect(string(responseBody)).To(MatchJSON(expectedResponse))
 					})
 				})
-				Context("given the file keywords are empty", func() {
-					It("returns 401 status code", func() {
+				Context("given the upload file has NO keywords", func() {
+					It("returns 422 status code", func() {
 						user := FabricateUser("John", "john@example.com", "secret")
 						filePath := AppRootDir() + "/tests/fixtures/shared/empty_keyword.csv"
 						_, body := CreateMultipartFormData(filePath)
