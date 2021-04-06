@@ -31,7 +31,7 @@ func (serializer *KeywordList) Data() []*KeywordListResponse {
 	return data
 }
 
-func (serializer *KeywordList) Meta() (meta *jsonapi.Meta) {
+func (serializer *KeywordList) Meta() *jsonapi.Meta {
 	return &jsonapi.Meta{
 		"page":    serializer.Paginator.Page(),
 		"pages":   serializer.Paginator.PageNums(),
@@ -39,7 +39,7 @@ func (serializer *KeywordList) Meta() (meta *jsonapi.Meta) {
 	}
 }
 
-func (serializer *KeywordList) Links() (links *jsonapi.Links) {
+func (serializer *KeywordList) Links() *jsonapi.Links {
 	return &jsonapi.Links{
 		"self":  serializer.Paginator.PageLink(serializer.Paginator.Page()),
 		"first": serializer.Paginator.PageLinkFirst(),
@@ -51,9 +51,9 @@ func (serializer *KeywordList) Links() (links *jsonapi.Links) {
 
 func createKeywordResponse(keyword *models.Keyword) *KeywordListResponse {
 	return &KeywordListResponse{
-		Id:        keyword.Id,
-		Name:   keyword.Name,
+		Id:              keyword.Id,
+		Name:            keyword.Name,
 		SearchCompleted: keyword.SearchCompleted,
-		CreatedAt: DisplayFormattedCreatedDate(*keyword),
+		CreatedAt:       DisplayFormattedCreatedDate(*keyword),
 	}
 }
