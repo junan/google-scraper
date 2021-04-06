@@ -7,9 +7,9 @@ import (
 	"google-scraper/serializers"
 
 	"github.com/beego/beego/v2/adapter/context"
-	"github.com/beego/beego/v2/adapter/utils/pagination"
 	"github.com/beego/beego/v2/core/logs"
 	"github.com/beego/beego/v2/server/web"
+	"github.com/beego/beego/v2/server/web/pagination"
 )
 
 var sizePerPage int
@@ -47,5 +47,8 @@ func (c *Keyword) Index() {
 		Paginator: paginator,
 	}
 
-	c.serveListJSON(keywordsSerializer.Data(), keywordsSerializer.Meta(), keywordsSerializer.Links())
+	err = c.serveListJSON(keywordsSerializer.Data(), keywordsSerializer.Meta(), keywordsSerializer.Links())
+	if err != nil {
+		c.renderError(err, http.StatusInternalServerError)
+	}
 }
