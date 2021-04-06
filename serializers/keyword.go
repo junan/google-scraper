@@ -1,12 +1,11 @@
 package serializers
 
 import (
-	"time"
+	. "google-scraper/helpers"
+	"google-scraper/models"
 
 	"github.com/beego/beego/v2/adapter/utils/pagination"
 	"github.com/google/jsonapi"
-
-	"google-scraper/models"
 )
 
 type KeywordList struct {
@@ -25,8 +24,8 @@ type KeywordListResponse struct {
 func (serializer *KeywordList) Data() []*KeywordListResponse {
 	var data []*KeywordListResponse
 
-	for _, keyword := range serializer.Keywords {
-		data = append(data, createKeywordResponse(keyword))
+	for _, k := range serializer.Keywords {
+		data = append(data, createKeywordResponse(k))
 	}
 
 	return data
@@ -41,10 +40,8 @@ func (serializer *KeywordList) Meta() (meta *jsonapi.Meta) {
 }
 
 func (serializer *KeywordList) Links() (links *jsonapi.Links) {
-	currentPage := serializer.Paginator.Page()
-
 	return &jsonapi.Links{
-		"self":  serializer.Paginator.PageLink(currentPage),
+		"self":  serializer.Paginator.PageLink(serializer.Paginator.Page()),
 		"first": serializer.Paginator.PageLinkFirst(),
 		"prev":  serializer.Paginator.PageLinkPrev(),
 		"next":  serializer.Paginator.PageLinkNext(),
@@ -52,12 +49,11 @@ func (serializer *KeywordList) Links() (links *jsonapi.Links) {
 	}
 }
 
-
 func createKeywordResponse(keyword *models.Keyword) *KeywordListResponse {
 	return &KeywordListResponse{
 		Id:        keyword.Id,
 		Name:   keyword.Name,
-		SearchCompleted:    keyword.SearchCompleted,
-		CreatedAt: keyword.CreatedAt.Format(time.RFC3339),
+		SearchCompleted: keyword.SearchCompleted,
+		CreatedAt: DisplayFormattedCreatedDate(*keyword),
 	}
 }
