@@ -15,7 +15,7 @@ import (
 
 var _ = Describe("HealthCheckController", func() {
 	Describe("GET /api/v1/health-check", func() {
-		Context("Given the valid credential", func() {
+		Context("Given valid credentials", func() {
 			It("returns 200 status code", func() {
 				email := "john@example.com"
 				password := "secret"
@@ -57,7 +57,7 @@ var _ = Describe("HealthCheckController", func() {
 			})
 		})
 
-		Context("Given the INVALID credential", func() {
+		Context("Given INVALID credentials", func() {
 			It("returns 401 status code", func() {
 				header := http.Header{"Authorization": {fmt.Sprintf("Bearer %v", "invalid")}}
 

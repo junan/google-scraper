@@ -22,5 +22,5 @@ func (c *Search) Create() {
 		c.renderError(err, http.StatusUnprocessableEntity)
 	}
 
-	c.Ctx.ResponseWriter.WriteHeader(http.StatusCreated)
+	c.Ctx.ResponseWriter.WriteHeader(http.StatusNoContent)
 }

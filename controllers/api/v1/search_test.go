@@ -18,7 +18,7 @@ var _ = Describe("SearchController", func() {
 	Describe("POST /api/v1/search", func() {
 		Context("Given valid credentials", func() {
 			Context("given the params are valid", func() {
-				It("returns 201 status code", func() {
+				It("returns 204 status code", func() {
 					user := FabricateUser("John", "john@example.com", "secret")
 					client := FabricateOAuthClient(uuid.New().String(), uuid.New().String())
 					oauthToken := FabricateOAuthToken(client, user.Id)
@@ -33,7 +33,7 @@ var _ = Describe("SearchController", func() {
 
 					response := MakeAuthenticatedRequest("POST", "/api/v1/search", header, body, nil)
 
-					Expect(response.StatusCode).To(Equal(http.StatusCreated))
+					Expect(response.StatusCode).To(Equal(http.StatusNoContent))
 				})
 
 				It("returns empty response", func() {
