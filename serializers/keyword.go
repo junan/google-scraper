@@ -3,7 +3,7 @@ package serializers
 import (
 	"time"
 
-	"github.com/beego/beego/v2/core/utils/pagination"
+	"github.com/beego/beego/v2/adapter/utils/pagination"
 	"github.com/google/jsonapi"
 
 	"google-scraper/models"

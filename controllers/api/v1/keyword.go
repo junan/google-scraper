@@ -6,7 +6,8 @@ import (
 
 	"github.com/beego/beego/v2/core/logs"
 	"github.com/beego/beego/v2/server/web"
-	"github.com/beego/beego/v2/server/web/pagination"
+	"github.com/beego/beego/v2/adapter/context"
+	"github.com/beego/beego/v2/adapter/utils/pagination"
 )
 
 var sizePerPage int
@@ -32,8 +33,9 @@ func (c *Keyword) Index() {
 		logs.Error("Retrieving keyword count failed: ", err)
 	}
 
-	paginator := pagination.SetPaginator(c.Ctx, sizePerPage, keywordsCount)
+	paginator := pagination.SetPaginator((*context.Context)(c.Ctx), sizePerPage, keywordsCount)
 	paginatedKeywords, err := models.GetPaginatedKeywords(keywords, paginator.Offset(), sizePerPage)
+
 	if err != nil {
 		logs.Error("Retrieving keywords failed: ", err)
 	}
