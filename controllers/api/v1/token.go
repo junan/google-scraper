@@ -1,6 +1,7 @@
 package apiv1
 
 import (
+	"context"
 	"errors"
 	"net/http"
 	"net/http/httptest"
@@ -20,17 +21,52 @@ func (c *Token) Create() {
 	err := OauthServer.HandleTokenRequest(writer, c.Ctx.Request)
 	if err != nil {
 		c.renderError(err, http.StatusUnauthorized)
-		return
 	}
 
 	json := writer.Body.String()
 	if writer.Code != 200 {
 		errorMessage := gjson.Get(json, "error_description").String()
 		c.renderError(errors.New(errorMessage), writer.Code)
-		return
 	}
 
 	tokenResponse := serializers.GetTokenResponse(json)
 
 	c.serveJSON(&tokenResponse)
+}
+
+func (c *Token) Revoke() {
+	err := c.authenticateClient()
+	if err != nil {
+		c.renderError(err, http.StatusUnauthorized)
+	}
+
+	token := c.GetString("access_token")
+	if token == "" {
+		err = errors.New("Access token is blank")
+		c.renderError(err, http.StatusUnauthorized)
+	}
+
+	// Remove the token from database
+	err = TokenStore.RemoveByAccess(context.TODO(), token)
+	if err != nil {
+		c.renderError(err, http.StatusInternalServerError)
+	}
+
+	// Response with 204 status code and no body
+	c.Ctx.ResponseWriter.WriteHeader(http.StatusNoContent)
+}
+
+func (c *Token) authenticateClient() error {
+	clientID := c.GetString("client_id")
+	clientSecret := c.GetString("client_secret")
+	client, err := ClientStore.GetByID(context.TODO(), clientID)
+	if err != nil {
+		return errors.New("Client authentication failed")
+	}
+
+	if client.GetSecret() != clientSecret {
+		return errors.New("Client authentication failed")
+	}
+
+	return nil
 }

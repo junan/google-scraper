@@ -2,9 +2,9 @@ package routers
 
 import (
 	"google-scraper/controllers"
+	apiv1 "google-scraper/controllers/api/v1"
 
 	"github.com/beego/beego/v2/server/web"
-	apiv1 "google-scraper/controllers/api/v1"
 )
 
 func init() {
@@ -22,6 +22,7 @@ func init() {
 	ns := web.NewNamespace("/api/v1",
 		web.NSRouter("/health-check", &apiv1.HealthCheck{}),
 		web.NSRouter("/token", &apiv1.Token{}, "post:Create"),
+		web.NSRouter("/revoke", &apiv1.Token{}, "post:Revoke"),
 	)
 
 	// register namespace

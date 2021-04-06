@@ -1,6 +1,7 @@
 package apiv1_test
 
 import (
+	"context"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -9,6 +10,7 @@ import (
 
 	. "google-scraper/helpers"
 	. "google-scraper/serializers"
+	"google-scraper/services/oauth"
 	. "google-scraper/tests"
 
 	"github.com/google/uuid"
@@ -235,6 +237,154 @@ var _ = Describe("TokenController", func() {
 					body := strings.NewReader(form.Encode())
 
 					response := MakeAuthenticatedRequest("POST", "/api/v1/token", body, &user)
+					responseBody, err := ioutil.ReadAll(response.Body)
+					if err != nil {
+						Fail("Reading response body failed: " + err.Error())
+					}
+
+					Expect(string(responseBody)).To(MatchJSON(expectedResponse))
+				})
+			})
+		})
+	})
+
+	Describe("POST /api/v1/revoke", func() {
+		Context("Given the valid credential", func() {
+			It("returns 204 no content status code", func() {
+				client := FabricateOAuthClient(uuid.New().String(), uuid.New().String())
+				token := FabricateOAuthToken(client)
+
+				form := url.Values{
+					"client_id":     {client.ID},
+					"client_secret": {client.Secret},
+					"access_token":         {token.GetAccess()},
+				}
+				body := strings.NewReader(form.Encode())
+
+				response := MakeRequest("POST", "/api/v1/revoke", body)
+
+				Expect(response.StatusCode).To(Equal(http.StatusNoContent))
+			})
+
+			It("returns empty response", func() {
+				client := FabricateOAuthClient(uuid.New().String(), uuid.New().String())
+				token := FabricateOAuthToken(client)
+
+				form := url.Values{
+					"client_id":     {client.ID},
+					"client_secret": {client.Secret},
+					"access_token":         {token.GetAccess()},
+				}
+				body := strings.NewReader(form.Encode())
+
+				response := MakeRequest("POST", "/api/v1/revoke", body)
+				responseBody, err := ioutil.ReadAll(response.Body)
+				if err != nil {
+					Fail("Reading response body failed: " + err.Error())
+				}
+
+				Expect(string(responseBody)).To(BeEmpty())
+			})
+
+			It("deletes the token from database", func() {
+				client := FabricateOAuthClient(uuid.New().String(), uuid.New().String())
+				token := FabricateOAuthToken(client)
+
+				form := url.Values{
+					"client_id":     {client.ID},
+					"client_secret": {client.Secret},
+					"access_token":         {token.GetAccess()},
+				}
+				body := strings.NewReader(form.Encode())
+
+				MakeRequest("POST", "/api/v1/revoke", body)
+
+				previousToken, err := oauth.TokenStore.GetByAccess(context.Background(), token.GetAccess())
+
+				Expect(previousToken).To(BeNil())
+				Expect(err.Error()).To(Equal("sql: no rows in result set"))
+			})
+		})
+
+		Context("Given the INVALID credential", func() {
+			Context("Given the user token is empty", func() {
+				It("returns 401 unauthorized status code", func() {
+					client := FabricateOAuthClient(uuid.New().String(), uuid.New().String())
+
+					form := url.Values{
+						"client_id":     {client.ID},
+						"client_secret": {client.Secret},
+						"access_token":         {},
+					}
+					body := strings.NewReader(form.Encode())
+
+					response := MakeRequest("POST", "/api/v1/revoke", body)
+
+					Expect(response.StatusCode).To(Equal(http.StatusUnauthorized))
+				})
+
+				It("returns correct json response", func() {
+					client := FabricateOAuthClient(uuid.New().String(), uuid.New().String())
+					expectedResponse := `{
+						"errors": [
+							{
+								"detail": "Access token is blank"
+							}
+						]
+					}`
+
+					form := url.Values{
+						"client_id":     {client.ID},
+						"client_secret": {client.Secret},
+						"access_token":         {},
+					}
+					body := strings.NewReader(form.Encode())
+
+					response := MakeRequest("POST", "/api/v1/revoke", body)
+					responseBody, err := ioutil.ReadAll(response.Body)
+					if err != nil {
+						Fail("Reading response body failed: " + err.Error())
+					}
+
+					Expect(string(responseBody)).To(MatchJSON(expectedResponse))
+				})
+			})
+
+			Context("Given the oauth client credential is INVALID", func() {
+				It("returns 401 unauthorized status code", func() {
+					client := FabricateOAuthClient(uuid.New().String(), uuid.New().String())
+					token := FabricateOAuthToken(client)
+
+					form := url.Values{
+						"client_id":     {client.ID},
+						"client_secret": {"invalid"},
+						"access_token":         {token.GetAccess()},
+					}
+					body := strings.NewReader(form.Encode())
+
+					response := MakeRequest("POST", "/api/v1/token", body)
+
+					Expect(response.StatusCode).To(Equal(http.StatusUnauthorized))
+				})
+
+				It("returns correct json response", func() {
+					client := FabricateOAuthClient(uuid.New().String(), uuid.New().String())
+					token := FabricateOAuthToken(client)
+					expectedResponse := `{
+						"errors": [
+							{
+								"detail": "Client authentication failed"
+							}
+						]
+					}`
+					form := url.Values{
+						"client_id":     {client.ID},
+						"client_secret": {"invalid"},
+						"access_token":         {token.GetAccess()},
+					}
+					body := strings.NewReader(form.Encode())
+
+					response := MakeRequest("POST", "/api/v1/revoke", body)
 					responseBody, err := ioutil.ReadAll(response.Body)
 					if err != nil {
 						Fail("Reading response body failed: " + err.Error())

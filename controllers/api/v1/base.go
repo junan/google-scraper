@@ -15,7 +15,6 @@ func (c *baseAPIController) serveJSON(data interface{}) {
 	response, err := jsonapi.Marshal(data)
 	if err != nil {
 		c.renderError(err, http.StatusInternalServerError)
-		return
 	}
 
 	c.Data["json"] = response
@@ -34,4 +33,6 @@ func (c *baseAPIController) renderError(err error, status int) {
 	if err != nil {
 		http.Error(c.Ctx.ResponseWriter, err.Error(), http.StatusInternalServerError)
 	}
+
+	c.StopRun()
 }
