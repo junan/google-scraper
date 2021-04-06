@@ -5,15 +5,14 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	"github.com/onsi/gomega/gstruct"
-	"github.com/tidwall/gjson"
+	_ "google-scraper/initializers"
+	. "google-scraper/tests"
 
 	"github.com/google/uuid"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
-
-	_ "google-scraper/initializers"
-	. "google-scraper/tests"
+	"github.com/onsi/gomega/gstruct"
+	"github.com/tidwall/gjson"
 )
 
 type KeywordListResponse struct {
@@ -78,7 +77,7 @@ var _ = Describe("KeywordController", func() {
 				}))
 			})
 
-			Context("given with pagination query string param", func() {
+			Context("given pagination query string param", func() {
 				It("returns only records of the page number 2", func() {
 					email := "john@example.com"
 					password := "secret"
@@ -103,7 +102,7 @@ var _ = Describe("KeywordController", func() {
 				})
 			})
 
-			Context("given with keyword query string param", func() {
+			Context("given keyword query string param", func() {
 				It("returns only matched keywords", func() {
 					keyword := "Buy_domain"
 					user := FabricateUser("John", "john@example.com", "secret")
