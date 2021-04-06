@@ -39,19 +39,9 @@ func (c *Token) Create() {
 }
 
 func (c *Token) Revoke() {
-	err := c.authenticateClient()
-	if err != nil {
-		c.renderError(err, http.StatusUnauthorized)
-	}
-
 	token := c.GetString("access_token")
-	if token == "" {
-		err = errors.New("Access token is blank")
-		c.renderError(err, http.StatusUnauthorized)
-	}
-
 	// Remove the token from database
-	err = TokenStore.RemoveByAccess(context.TODO(), token)
+	err := TokenStore.RemoveByAccess(context.TODO(), token)
 	if err != nil {
 		c.renderError(err, http.StatusInternalServerError)
 	}
