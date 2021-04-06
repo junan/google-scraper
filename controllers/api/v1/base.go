@@ -57,7 +57,6 @@ func (c *baseAPIController) validateAuthorization() {
 		result := c.validClientCredential()
 		if !result {
 			c.renderError(err, http.StatusUnauthorized)
-			return
 		}
 	}
 
@@ -65,7 +64,6 @@ func (c *baseAPIController) validateAuthorization() {
 		result := c.validToken()
 		if !result {
 			c.renderError(err, http.StatusUnauthorized)
-			return
 		}
 	}
 }
@@ -78,13 +76,11 @@ func (c *baseAPIController) setCurrentUser() {
 	userID, err := StringToInt(c.TokenInfo.GetUserID())
 	if err != nil {
 		c.renderError(err, http.StatusInternalServerError)
-		return
 	}
 
 	user, err := models.FindUserById(userID)
 	if err != nil {
 		c.renderError(err, http.StatusNotFound)
-		return
 	}
 
 	c.CurrentUser = user
