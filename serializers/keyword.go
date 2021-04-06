@@ -3,9 +3,8 @@ package serializers
 import (
 	"time"
 
-	"github.com/tidwall/gjson"
-
 	"github.com/beego/beego/v2/core/utils/pagination"
+	"github.com/google/jsonapi"
 
 	"google-scraper/models"
 )
@@ -33,11 +32,32 @@ func (serializer *KeywordList) Data() []*KeywordListResponse {
 	return data
 }
 
+func (serializer *KeywordList) Meta() (meta *jsonapi.Meta) {
+	return &jsonapi.Meta{
+		"page":    serializer.Paginator.Page(),
+		"pages":   serializer.Paginator.PageNums(),
+		"records": serializer.Paginator.Nums(),
+	}
+}
+
+func (serializer *KeywordList) Links() (links *jsonapi.Links) {
+	currentPage := serializer.Paginator.Page()
+
+	return &jsonapi.Links{
+		"self":  serializer.Paginator.PageLink(currentPage),
+		"first": serializer.Paginator.PageLinkFirst(),
+		"prev":  serializer.Paginator.PageLinkPrev(),
+		"next":  serializer.Paginator.PageLinkNext(),
+		"last":  serializer.Paginator.PageLinkLast(),
+	}
+}
+
+
 func createKeywordResponse(keyword *models.Keyword) *KeywordListResponse {
 	return &KeywordListResponse{
 		Id:        keyword.Id,
-		Keyword:   keyword.Keyword,
-		Status:    string(keyword.Status),
+		Name:   keyword.Name,
+		SearchCompleted:    keyword.SearchCompleted,
 		CreatedAt: keyword.CreatedAt.Format(time.RFC3339),
 	}
 }

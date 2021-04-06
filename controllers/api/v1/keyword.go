@@ -1,12 +1,13 @@
 package apiv1
 
 import (
-	"github.com/beego/beego/v2/server/web"
+	"net/http"
 
 	"google-scraper/models"
 	"google-scraper/serializers"
 
 	"github.com/beego/beego/v2/core/logs"
+	"github.com/beego/beego/v2/server/web"
 	"github.com/beego/beego/v2/server/web/pagination"
 )
 
@@ -24,7 +25,7 @@ func init() {
 	}
 }
 
-func (c *Search) Index() {
+func (c *Keyword) Index() {
 	keyword := c.GetString("keyword")
 	keywords := models.GetQuerySeterKeywords(c.CurrentUser, keyword)
 
@@ -46,6 +47,6 @@ func (c *Search) Index() {
 
 	err = c.serveListJSON(keywordsSerializer.Data(), keywordsSerializer.Meta(), keywordsSerializer.Links())
 	if err != nil {
-		c.renderGenericError(err)
+		c.renderError(err, http.StatusInternalServerError)
 	}
 }
