@@ -4,6 +4,7 @@ import (
 	"github.com/beego/beego/v2/server/web"
 
 	"google-scraper/models"
+	"google-scraper/serializers"
 
 	"github.com/beego/beego/v2/core/logs"
 	"github.com/beego/beego/v2/server/web/pagination"
@@ -36,5 +37,15 @@ func (c *Search) Index() {
 	paginatedKeywords, err := models.GetPaginatedKeywords(keywords, paginator.Offset(), sizePerPage)
 	if err != nil {
 		logs.Error("Retrieving keywords failed: ", err)
+	}
+
+	keywordsSerializer := serializers.KeywordList{
+		Keywords:  paginatedKeywords,
+		Paginator: paginator,
+	}
+
+	err = c.serveListJSON(keywordsSerializer.Data(), keywordsSerializer.Meta(), keywordsSerializer.Links())
+	if err != nil {
+		c.renderGenericError(err)
 	}
 }
