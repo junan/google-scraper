@@ -5,11 +5,10 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	"github.com/google/uuid"
-
 	_ "google-scraper/initializers"
 	. "google-scraper/tests"
 
+	"github.com/google/uuid"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 )
