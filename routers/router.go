@@ -23,6 +23,7 @@ func init() {
 		web.NSRouter("/health-check", &apiv1.HealthCheck{}),
 		web.NSRouter("/token", &apiv1.Token{}, "post:Create"),
 		web.NSRouter("/revoke", &apiv1.Token{}, "post:Revoke"),
+		web.NSRouter("/search", &apiv1.Search{}, "post:Create"),
 	)
 
 	// register namespace

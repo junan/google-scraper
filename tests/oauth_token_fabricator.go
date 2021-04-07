@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"google-scraper/services/oauth"
+	. "google-scraper/helpers"
 
 	"github.com/go-oauth2/oauth2/v4"
 	"github.com/go-oauth2/oauth2/v4/models"
@@ -12,9 +13,10 @@ import (
 	. "github.com/onsi/ginkgo"
 )
 
-func FabricateOAuthToken(client *models.Client) oauth2.TokenInfo {
+func FabricateOAuthToken(client *models.Client, userID int64) oauth2.TokenInfo {
 	info := &models.Token{
 		ClientID:        client.GetID(),
+		UserID:         IntToString(userID),
 		Access:          uuid.New().String(),
 		AccessCreateAt:  time.Now().Local(),
 		AccessExpiresIn: time.Second * 3600,

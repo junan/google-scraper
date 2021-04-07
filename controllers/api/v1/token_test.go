@@ -26,8 +26,8 @@ var _ = Describe("TokenController", func() {
 			It("returns 200 status code", func() {
 				email := "john@example.com"
 				password := "secret"
+				FabricateUser("John", email, password)
 				client := FabricateOAuthClient(uuid.New().String(), uuid.New().String())
-				user := FabricateUser("John", email, password)
 
 				form := url.Values{
 					"client_id":     {client.ID},
@@ -38,7 +38,7 @@ var _ = Describe("TokenController", func() {
 				}
 				body := strings.NewReader(form.Encode())
 
-				response := MakeAuthenticatedRequest("POST", "/api/v1/token", body, &user)
+				response := MakeRequest("POST", "/api/v1/token", body)
 
 				Expect(response.StatusCode).To(Equal(http.StatusOK))
 			})
@@ -46,8 +46,8 @@ var _ = Describe("TokenController", func() {
 			It("returns correct json response", func() {
 				email := "john@example.com"
 				password := "secret"
+				FabricateUser("John", email, password)
 				client := FabricateOAuthClient(uuid.New().String(), uuid.New().String())
-				user := FabricateUser("John", email, password)
 				form := url.Values{
 					"client_id":     {client.ID},
 					"client_secret": {client.Secret},
@@ -56,7 +56,7 @@ var _ = Describe("TokenController", func() {
 					"password":      {password},
 				}
 				body := strings.NewReader(form.Encode())
-				response := MakeAuthenticatedRequest("POST", "/api/v1/token", body, &user)
+				response := MakeRequest("POST", "/api/v1/token", body)
 				responseBody, err := ioutil.ReadAll(response.Body)
 				if err != nil {
 					Fail("Reading response body failed: " + err.Error())
@@ -91,8 +91,8 @@ var _ = Describe("TokenController", func() {
 				It("returns 401 unauthorized status code", func() {
 					email := "john@example.com"
 					password := "secret"
+					FabricateUser("John", email, password)
 					client := FabricateOAuthClient(uuid.New().String(), uuid.New().String())
-					user := FabricateUser("John", email, password)
 
 					form := url.Values{
 						"client_id":     {client.ID},
@@ -103,16 +103,15 @@ var _ = Describe("TokenController", func() {
 					}
 					body := strings.NewReader(form.Encode())
 
-					response := MakeAuthenticatedRequest("POST", "/api/v1/token", body, &user)
+					response := MakeRequest("POST", "/api/v1/token", body)
 
 					Expect(response.StatusCode).To(Equal(http.StatusUnauthorized))
 				})
 
 				It("returns correct json response", func() {
 					email := "john@example.com"
-					password := "secret"
+					FabricateUser("John", email, "secret")
 					client := FabricateOAuthClient(uuid.New().String(), uuid.New().String())
-					user := FabricateUser("John", email, password)
 					expectedResponse := `{
 						"errors": [
 							{
@@ -130,7 +129,7 @@ var _ = Describe("TokenController", func() {
 					}
 					body := strings.NewReader(form.Encode())
 
-					response := MakeAuthenticatedRequest("POST", "/api/v1/token", body, &user)
+					response := MakeRequest("POST", "/api/v1/token", body)
 					responseBody, err := ioutil.ReadAll(response.Body)
 					if err != nil {
 						Fail("Reading response body failed: " + err.Error())
@@ -145,7 +144,7 @@ var _ = Describe("TokenController", func() {
 					email := "john@example.com"
 					password := "secret"
 					client := FabricateOAuthClient(uuid.New().String(), uuid.New().String())
-					user := FabricateUser("John", email, password)
+					FabricateUser("John", email, password)
 
 					form := url.Values{
 						"client_id":     {client.ID},
@@ -156,7 +155,7 @@ var _ = Describe("TokenController", func() {
 					}
 					body := strings.NewReader(form.Encode())
 
-					response := MakeAuthenticatedRequest("POST", "/api/v1/token", body, &user)
+					response := MakeRequest("POST", "/api/v1/token", body)
 
 					Expect(response.StatusCode).To(Equal(http.StatusUnauthorized))
 				})
@@ -165,7 +164,7 @@ var _ = Describe("TokenController", func() {
 					email := "john@example.com"
 					password := "secret"
 					client := FabricateOAuthClient(uuid.New().String(), uuid.New().String())
-					user := FabricateUser("John", email, password)
+					FabricateUser("John", email, password)
 					expectedResponse := `{
 						"errors": [
 							{
@@ -183,7 +182,7 @@ var _ = Describe("TokenController", func() {
 					}
 					body := strings.NewReader(form.Encode())
 
-					response := MakeAuthenticatedRequest("POST", "/api/v1/token", body, &user)
+					response := MakeRequest("POST", "/api/v1/token", body)
 					responseBody, err := ioutil.ReadAll(response.Body)
 					if err != nil {
 						Fail("Reading response body failed: " + err.Error())
@@ -198,7 +197,7 @@ var _ = Describe("TokenController", func() {
 					email := "john@example.com"
 					password := "secret"
 					client := FabricateOAuthClient(uuid.New().String(), uuid.New().String())
-					user := FabricateUser("John", email, password)
+					FabricateUser("John", email, password)
 
 					form := url.Values{
 						"client_id":     {client.ID},
@@ -209,7 +208,7 @@ var _ = Describe("TokenController", func() {
 					}
 					body := strings.NewReader(form.Encode())
 
-					response := MakeAuthenticatedRequest("POST", "/api/v1/token", body, &user)
+					response := MakeRequest("POST", "/api/v1/token", body)
 
 					Expect(response.StatusCode).To(Equal(http.StatusUnauthorized))
 				})
@@ -218,7 +217,6 @@ var _ = Describe("TokenController", func() {
 					email := "john@example.com"
 					password := "secret"
 					client := FabricateOAuthClient(uuid.New().String(), uuid.New().String())
-					user := FabricateUser("John", email, password)
 					expectedResponse := `{
 						"errors": [
 							{
@@ -236,7 +234,7 @@ var _ = Describe("TokenController", func() {
 					}
 					body := strings.NewReader(form.Encode())
 
-					response := MakeAuthenticatedRequest("POST", "/api/v1/token", body, &user)
+					response := MakeRequest("POST", "/api/v1/token", body)
 					responseBody, err := ioutil.ReadAll(response.Body)
 					if err != nil {
 						Fail("Reading response body failed: " + err.Error())
@@ -252,12 +250,12 @@ var _ = Describe("TokenController", func() {
 		Context("Given the valid credential", func() {
 			It("returns 204 no content status code", func() {
 				client := FabricateOAuthClient(uuid.New().String(), uuid.New().String())
-				token := FabricateOAuthToken(client)
-
+				user := FabricateUser("John", "john@example.com", "secret")
+				token := FabricateOAuthToken(client, user.Id)
 				form := url.Values{
 					"client_id":     {client.ID},
 					"client_secret": {client.Secret},
-					"access_token":         {token.GetAccess()},
+					"access_token":  {token.GetAccess()},
 				}
 				body := strings.NewReader(form.Encode())
 
@@ -268,12 +266,12 @@ var _ = Describe("TokenController", func() {
 
 			It("returns empty response", func() {
 				client := FabricateOAuthClient(uuid.New().String(), uuid.New().String())
-				token := FabricateOAuthToken(client)
-
+				user := FabricateUser("John", "john@example.com", "secret")
+				token := FabricateOAuthToken(client, user.Id)
 				form := url.Values{
 					"client_id":     {client.ID},
 					"client_secret": {client.Secret},
-					"access_token":         {token.GetAccess()},
+					"access_token":  {token.GetAccess()},
 				}
 				body := strings.NewReader(form.Encode())
 
@@ -288,18 +286,18 @@ var _ = Describe("TokenController", func() {
 
 			It("deletes the token from database", func() {
 				client := FabricateOAuthClient(uuid.New().String(), uuid.New().String())
-				token := FabricateOAuthToken(client)
-
+				user := FabricateUser("John", "john@example.com", "secret")
+				token := FabricateOAuthToken(client, user.Id)
+				accessToken := token.GetAccess()
 				form := url.Values{
 					"client_id":     {client.ID},
 					"client_secret": {client.Secret},
-					"access_token":         {token.GetAccess()},
+					"access_token":  {accessToken},
 				}
 				body := strings.NewReader(form.Encode())
 
 				MakeRequest("POST", "/api/v1/revoke", body)
-
-				previousToken, err := oauth.TokenStore.GetByAccess(context.Background(), token.GetAccess())
+				previousToken, err := oauth.TokenStore.GetByAccess(context.Background(), accessToken)
 
 				Expect(previousToken).To(BeNil())
 				Expect(err.Error()).To(Equal("sql: no rows in result set"))
@@ -310,11 +308,10 @@ var _ = Describe("TokenController", func() {
 			Context("Given the user token is empty", func() {
 				It("returns 401 unauthorized status code", func() {
 					client := FabricateOAuthClient(uuid.New().String(), uuid.New().String())
-
 					form := url.Values{
 						"client_id":     {client.ID},
 						"client_secret": {client.Secret},
-						"access_token":         {},
+						"token":         {},
 					}
 					body := strings.NewReader(form.Encode())
 
@@ -328,15 +325,14 @@ var _ = Describe("TokenController", func() {
 					expectedResponse := `{
 						"errors": [
 							{
-								"detail": "Access token is blank"
+								"detail": "Client authentication failed"
 							}
 						]
 					}`
-
 					form := url.Values{
 						"client_id":     {client.ID},
 						"client_secret": {client.Secret},
-						"access_token":         {},
+						"token":         {},
 					}
 					body := strings.NewReader(form.Encode())
 
@@ -353,12 +349,12 @@ var _ = Describe("TokenController", func() {
 			Context("Given the oauth client credential is INVALID", func() {
 				It("returns 401 unauthorized status code", func() {
 					client := FabricateOAuthClient(uuid.New().String(), uuid.New().String())
-					token := FabricateOAuthToken(client)
-
+					user := FabricateUser("John", "john@example.com", "secret")
+					token := FabricateOAuthToken(client, user.Id)
 					form := url.Values{
 						"client_id":     {client.ID},
 						"client_secret": {"invalid"},
-						"access_token":         {token.GetAccess()},
+						"token":         {token.GetAccess()},
 					}
 					body := strings.NewReader(form.Encode())
 
@@ -369,7 +365,8 @@ var _ = Describe("TokenController", func() {
 
 				It("returns correct json response", func() {
 					client := FabricateOAuthClient(uuid.New().String(), uuid.New().String())
-					token := FabricateOAuthToken(client)
+					user := FabricateUser("John", "john@example.com", "secret")
+					token := FabricateOAuthToken(client, user.Id)
 					expectedResponse := `{
 						"errors": [
 							{
@@ -380,7 +377,7 @@ var _ = Describe("TokenController", func() {
 					form := url.Values{
 						"client_id":     {client.ID},
 						"client_secret": {"invalid"},
-						"access_token":         {token.GetAccess()},
+						"token":         {token.GetAccess()},
 					}
 					body := strings.NewReader(form.Encode())
 

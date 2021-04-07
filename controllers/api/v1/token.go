@@ -16,6 +16,10 @@ type Token struct {
 	baseAPIController
 }
 
+func (c *Token) NestPrepare() {
+	c.setTokenPolicy()
+}
+
 func (c *Token) Create() {
 	writer := httptest.NewRecorder()
 	err := OauthServer.HandleTokenRequest(writer, c.Ctx.Request)
@@ -35,19 +39,9 @@ func (c *Token) Create() {
 }
 
 func (c *Token) Revoke() {
-	err := c.authenticateClient()
-	if err != nil {
-		c.renderError(err, http.StatusUnauthorized)
-	}
-
 	token := c.GetString("access_token")
-	if token == "" {
-		err = errors.New("Access token is blank")
-		c.renderError(err, http.StatusUnauthorized)
-	}
-
 	// Remove the token from database
-	err = TokenStore.RemoveByAccess(context.TODO(), token)
+	err := TokenStore.RemoveByAccess(context.TODO(), token)
 	if err != nil {
 		c.renderError(err, http.StatusInternalServerError)
 	}
@@ -56,17 +50,10 @@ func (c *Token) Revoke() {
 	c.Ctx.ResponseWriter.WriteHeader(http.StatusNoContent)
 }
 
-func (c *Token) authenticateClient() error {
-	clientID := c.GetString("client_id")
-	clientSecret := c.GetString("client_secret")
-	client, err := ClientStore.GetByID(context.TODO(), clientID)
-	if err != nil {
-		return errors.New("Client authentication failed")
+func (c *Token) setTokenPolicy() {
+	if c.actionName == "Create" {
+		c.authPolicy.requireTokenValidation = false
+	} else if c.actionName == "Revoke" {
+		c.authPolicy.requireClientCredentialValidation = true
 	}
-
-	if client.GetSecret() != clientSecret {
-		return errors.New("Client authentication failed")
-	}
-
-	return nil
 }

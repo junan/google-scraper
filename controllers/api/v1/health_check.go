@@ -1,10 +1,15 @@
 package apiv1
 
-import "google-scraper/serializers"
-
+import (
+	"google-scraper/serializers"
+)
 
 type HealthCheck struct {
 	baseAPIController
+}
+
+func (c *HealthCheck) NestPrepare() {
+	c.setHealthCheckPolicy()
 }
 
 func (c *HealthCheck) Get() {
@@ -13,4 +18,8 @@ func (c *HealthCheck) Get() {
 	}
 
 	c.serveJSON(healthCheckSerializer.Data())
+}
+
+func (c *HealthCheck) setHealthCheckPolicy() {
+	c.authPolicy.requireTokenValidation = false
 }

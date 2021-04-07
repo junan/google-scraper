@@ -33,17 +33,15 @@ func MakeRequest(method string, url string, body io.Reader) *http.Response {
 	return response.Result()
 }
 
-func MakeAuthenticatedRequest(method string, url string, body io.Reader, user *models.User) *http.Response {
+func MakeAuthenticatedRequest(method string, url string, header http.Header, body io.Reader, user *models.User) *http.Response {
 	var contentType string
 	request, err := http.NewRequest(method, url, body)
 	if err != nil {
 		Fail("Failed to create request: " + err.Error())
 	}
 
-	if url == "/search" {
-		contentType = "multipart/form-data; boundary=multipart-boundary"
-	} else {
-		contentType = "application/x-www-form-urlencoded"
+	if header != nil {
+		request.Header = header
 	}
 
 	request.Header.Add("Content-Type", contentType)
@@ -54,9 +52,11 @@ func MakeAuthenticatedRequest(method string, url string, body io.Reader, user *m
 		Fail("Failed to start session" + err.Error())
 	}
 
-	err = store.Set(context.Background(), controllers.CurrentUserSession, user.Id)
-	if err != nil {
-		Fail("Failed to set current user" + err.Error())
+	if user != nil {
+		err = store.Set(context.Background(), controllers.CurrentUserSession, user.Id)
+		if err != nil {
+			Fail("Failed to set current user" + err.Error())
+		}
 	}
 
 	web.BeeApp.Handlers.ServeHTTP(responseRecorder, request)

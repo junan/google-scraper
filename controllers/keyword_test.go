@@ -20,7 +20,7 @@ var _ = Describe("KeywordController", func() {
 					keyword := FabricateKeyword("Buy domain", false, &user)
 					url := fmt.Sprintf("/keyword/%d", keyword.Id)
 
-					response := MakeAuthenticatedRequest("GET", url, nil, &user)
+					response := MakeAuthenticatedRequest("GET", url, nil, nil, &user)
 
 					Expect(response.StatusCode).To(Equal(http.StatusOK))
 				})
@@ -34,7 +34,7 @@ var _ = Describe("KeywordController", func() {
 					keyword2 := FabricateKeyword("Buy bike", false, &user2)
 					url := fmt.Sprintf("/keyword/%d", keyword2.Id)
 
-					response := MakeAuthenticatedRequest("GET", url, nil, &user1)
+					response := MakeAuthenticatedRequest("GET", url, nil, nil, &user1)
 					currentPath := GetUrlPath(response)
 
 					Expect(response.StatusCode).To(Equal(http.StatusFound))
@@ -48,7 +48,7 @@ var _ = Describe("KeywordController", func() {
 					keyword2 := FabricateKeyword("Buy bike", false, &user2)
 					url := fmt.Sprintf("/keyword/%d", keyword2.Id)
 
-					response := MakeAuthenticatedRequest("GET", url, nil, &user1)
+					response := MakeAuthenticatedRequest("GET", url, nil, nil, &user1)
 					flash := GetFlash(response.Cookies())
 
 					Expect(flash.Data["error"]).To(Equal("Keyword not found."))
@@ -61,7 +61,7 @@ var _ = Describe("KeywordController", func() {
 					FabricateKeyword("Buy domain", false, &user)
 					url := fmt.Sprintf("/keyword/%d", 1000)
 
-					response := MakeAuthenticatedRequest("GET", url, nil, &user)
+					response := MakeAuthenticatedRequest("GET", url, nil, nil, &user)
 					currentPath := GetUrlPath(response)
 
 					Expect(response.StatusCode).To(Equal(http.StatusFound))
@@ -73,7 +73,7 @@ var _ = Describe("KeywordController", func() {
 					FabricateKeyword("Buy domain", false, &user)
 					url := fmt.Sprintf("/keyword/%d", 1000)
 
-					response := MakeAuthenticatedRequest("GET", url, nil, &user)
+					response := MakeAuthenticatedRequest("GET", url, nil, nil, &user)
 
 					flash := GetFlash(response.Cookies())
 
@@ -103,7 +103,7 @@ var _ = Describe("KeywordController", func() {
 					keyword := FabricateKeyword("Buy domain", false, &user)
 					url := fmt.Sprintf("/keyword/%d/render-html", keyword.Id)
 
-					response := MakeAuthenticatedRequest("GET", url, nil, &user)
+					response := MakeAuthenticatedRequest("GET", url, nil, nil, &user)
 
 					Expect(response.StatusCode).To(Equal(http.StatusOK))
 				})
@@ -117,7 +117,7 @@ var _ = Describe("KeywordController", func() {
 					keyword2 := FabricateKeyword("Buy bike", false, &user2)
 					url := fmt.Sprintf("/keyword/%d/render-html", keyword2.Id)
 
-					response := MakeAuthenticatedRequest("GET", url, nil, &user1)
+					response := MakeAuthenticatedRequest("GET", url, nil, nil, &user1)
 					currentPath := GetUrlPath(response)
 
 					Expect(response.StatusCode).To(Equal(http.StatusFound))
@@ -131,7 +131,7 @@ var _ = Describe("KeywordController", func() {
 					keyword2 := FabricateKeyword("Buy bike", false, &user2)
 					url := fmt.Sprintf("/keyword/%d/render-html", keyword2.Id)
 
-					response := MakeAuthenticatedRequest("GET", url, nil, &user1)
+					response := MakeAuthenticatedRequest("GET", url, nil, nil, &user1)
 					flash := GetFlash(response.Cookies())
 
 					Expect(flash.Data["error"]).To(Equal("Keyword not found."))
@@ -144,7 +144,7 @@ var _ = Describe("KeywordController", func() {
 					FabricateKeyword("Buy domain", false, &user)
 					url := fmt.Sprintf("/keyword/%d/render-html", 1000)
 
-					response := MakeAuthenticatedRequest("GET", url, nil, &user)
+					response := MakeAuthenticatedRequest("GET", url, nil, nil, &user)
 					currentPath := GetUrlPath(response)
 
 					Expect(response.StatusCode).To(Equal(http.StatusFound))
@@ -156,7 +156,7 @@ var _ = Describe("KeywordController", func() {
 					FabricateKeyword("Buy domain", false, &user)
 					url := fmt.Sprintf("/keyword/%d/render-html", 1000)
 
-					response := MakeAuthenticatedRequest("GET", url, nil, &user)
+					response := MakeAuthenticatedRequest("GET", url, nil, nil, &user)
 
 					flash := GetFlash(response.Cookies())
 
