@@ -29,7 +29,7 @@ func GetRedisUrl() (redis.Conn, error) {
 		logs.Critical("Redis url not found: ", err)
 	}
 
-	return redis.Dial("tcp", redisUrl)
+	return redis.DialURL(redisUrl)
 }
 
 func GetRedisPool() *redis.Pool {

@@ -1,0 +1,18 @@
+FROM golang:1.15-alpine as go-builder
+
+ENV GO111MOD=on \
+  CGO_ENABLED=0 \
+  GOOS=linux \
+  GOARCH=amd64
+
+WORKDIR /app
+
+COPY . .
+
+RUN go mod download
+
+WORKDIR /app/worker
+
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build
+
+ENTRYPOINT ["/app/worker/worker"]
