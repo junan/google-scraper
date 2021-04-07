@@ -58,7 +58,7 @@ var _ = Describe("KeywordController", func() {
 
 				links := gjson.Get(string(responseBody), "links")
 				meta := gjson.Get(string(responseBody), "meta")
-				tokenResponse := KeywordListResponse{
+				keywordListResponse := KeywordListResponse{
 					Id:              gjson.Get(string(responseBody), "data.0.id").Int(),
 					Name:            gjson.Get(string(responseBody), "data.0.attributes.name").String(),
 					SearchCompleted: gjson.Get(string(responseBody), "data.0.attributes.search_completed").Bool(),
@@ -67,7 +67,7 @@ var _ = Describe("KeywordController", func() {
 					Meta:            meta,
 				}
 
-				Expect(tokenResponse).To(gstruct.MatchAllFields(gstruct.Fields{
+				Expect(keywordListResponse).To(gstruct.MatchAllFields(gstruct.Fields{
 					"Id":              BeNumerically("==", keyword.Id),
 					"Name":            Equal(keyword.Name),
 					"SearchCompleted": BeTrue(),
@@ -78,7 +78,7 @@ var _ = Describe("KeywordController", func() {
 			})
 
 			Context("given pagination query string param", func() {
-				It("returns only records of the page number 2", func() {
+				It("returns only records of the requested page", func() {
 					email := "john@example.com"
 					password := "secret"
 					user := FabricateUser("John", email, password)
