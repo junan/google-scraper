@@ -4,12 +4,14 @@ import (
 	"encoding/json"
 	"errors"
 
+	. "google-scraper/helpers"
 	"google-scraper/models"
 )
 
 type KeywordSearchResult struct {
 	KeywordId                   int64
 	Keyword                     string
+	CreatedAt                   string
 	TopAdWordAdvertisersCount   int
 	TotalAdWordAdvertisersCount int
 	TotalLinksCount             int
@@ -42,6 +44,7 @@ func InitializeKeywordPresenter(k *models.Keyword) (*KeywordSearchResult, error)
 	keywordSearchResult := KeywordSearchResult{
 		KeywordId:                   k.Id,
 		Keyword:                     k.Name,
+		CreatedAt:                   DisplayFormattedCreatedDate(*k),
 		TopAdWordAdvertisersCount:   searchResult.TopAdWordAdvertisersCount,
 		TotalAdWordAdvertisersCount: searchResult.TotalAdWordAdvertisersCount,
 		TotalLinksCount:             searchResult.TotalLinksCount,

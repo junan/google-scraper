@@ -57,26 +57,23 @@ func (c *Keyword) Index() {
 }
 
 func (c *Keyword) Show() {
-	web.ReadFromRequest(&c.Controller)
 	keyword, err := c.findKeyword()
 	if err != nil {
-		flash := web.NewFlash()
-		flash.Error(err.Error())
-		flash.Store(&c.Controller)
-		c.Ctx.Redirect(http.StatusFound, "/")
-		return
+		c.renderError(err, http.StatusNotFound)
 	}
 
-	keywordPresenter, err := presenters.InitializeKeywordPresenter(keyword)
+	keywordResult, err := presenters.InitializeKeywordPresenter(keyword)
 	if err != nil {
-		logs.Error("Initializing presenter failed: ", err)
+		c.renderError(err, http.StatusInternalServerError)
 	}
 
-	c.TplName = "keyword/show.html"
-	c.Data["KeywordPresenter"] = keywordPresenter
+	keywordSerializer := serializers.KeywordResponse{
+	}
+
+	c.ServeJSON()
 }
 
-func (c *Keyword) findKeyword() (*Keyword, error) {
+func (c *Keyword) findKeyword() (*models.Keyword, error) {
 	keywordId := c.Ctx.Input.Param(":id")
 	Id, err := StringToInt(keywordId)
 	if err != nil {
@@ -86,5 +83,5 @@ func (c *Keyword) findKeyword() (*Keyword, error) {
 		return nil, errors.New("Something went wrong. Please try again.")
 	}
 
-	return FindKeywordBy(Id, c.CurrentUser)
+	return models.FindKeywordBy(Id, c.CurrentUser)
 }
