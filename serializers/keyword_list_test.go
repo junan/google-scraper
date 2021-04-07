@@ -10,7 +10,7 @@ import (
 	. "github.com/onsi/gomega"
 )
 
-var _ = Describe("KeywordSerializer", func() {
+var _ = Describe("KeywordListSerializer", func() {
 	Describe("#Data", func() {
 		It("returns correct data", func() {
 			user := FabricateUser("John", "john@example.com", "secret")
