@@ -122,16 +122,12 @@ func (c *baseAPIController) validToken() bool {
 }
 
 func (c *baseAPIController) serveJSON(data interface{}) {
-	response, err := jsonapi.Marshal(data)
+	payload, err := jsonapi.Marshal(data)
 	if err != nil {
 		c.renderError(err, http.StatusInternalServerError)
 	}
 
-	c.Data["json"] = response
-	err = c.ServeJSON()
-	if err != nil {
-		c.renderError(err, http.StatusInternalServerError)
-	}
+	c.renderPayload(payload)
 }
 
 func (c *baseAPIController) serveListJSON(data interface{}, meta *jsonapi.Meta, links *jsonapi.Links) {
@@ -148,13 +144,8 @@ func (c *baseAPIController) serveListJSON(data interface{}, meta *jsonapi.Meta, 
 	payload.Meta = meta
 	payload.Links = links
 
-	c.Data["json"] = payload
-	err = c.ServeJSON()
-	if err != nil {
-		c.renderError(err, http.StatusInternalServerError)
-	}
+	c.renderPayload(payload)
 }
-
 
 func (c *baseAPIController) renderError(err error, status int) {
 	c.Ctx.Output.Header("Content-Type", "application/json; charset=utf-8")
@@ -167,4 +158,12 @@ func (c *baseAPIController) renderError(err error, status int) {
 	}
 
 	c.StopRun()
+}
+
+func (c *baseAPIController) renderPayload(payload interface{}) {
+	c.Data["json"] = payload
+	err := c.ServeJSON()
+	if err != nil {
+		c.renderError(err, http.StatusInternalServerError)
+	}
 }
