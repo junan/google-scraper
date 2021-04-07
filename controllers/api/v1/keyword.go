@@ -1,13 +1,15 @@
 package apiv1
 
 import (
+	"net/http"
+
 	"google-scraper/models"
 	"google-scraper/serializers"
 
-	"github.com/beego/beego/v2/core/logs"
-	"github.com/beego/beego/v2/server/web"
 	"github.com/beego/beego/v2/adapter/context"
 	"github.com/beego/beego/v2/adapter/utils/pagination"
+	"github.com/beego/beego/v2/core/logs"
+	"github.com/beego/beego/v2/server/web"
 )
 
 var sizePerPage int
@@ -30,7 +32,7 @@ func (c *Keyword) Index() {
 
 	keywordsCount, err := keywords.Count()
 	if err != nil {
-		logs.Error("Retrieving keyword count failed: ", err)
+		c.renderError(err, http.StatusInternalServerError)
 	}
 
 	paginator := pagination.SetPaginator((*context.Context)(c.Ctx), sizePerPage, keywordsCount)
