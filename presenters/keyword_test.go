@@ -38,6 +38,7 @@ var _ = Describe("Keyword", func() {
 
 				Expect(presenter).NotTo(BeNil())
 				Expect(presenter.Keyword).To(Equal(keyword.Name))
+				Expect(presenter.CreatedAt).NotTo(BeEmpty())
 				Expect(presenter.TopAdWordAdvertisersCount).To(Equal(searchResult.TopAdWordAdvertisersCount))
 				Expect(presenter.TotalAdWordAdvertisersCount).To(Equal(searchResult.TotalAdWordAdvertisersCount))
 				Expect(presenter.ResultsCount).To(Equal(searchResult.ResultsCount))
