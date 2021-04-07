@@ -39,7 +39,7 @@ func (c *Keyword) Index() {
 	paginatedKeywords, err := models.GetPaginatedKeywords(keywords, paginator.Offset(), sizePerPage)
 
 	if err != nil {
-		logs.Error("Retrieving keywords failed: ", err)
+		c.renderError(err, http.StatusInternalServerError)
 	}
 
 	keywordsSerializer := serializers.KeywordList{
