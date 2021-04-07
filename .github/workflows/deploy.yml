@@ -1,15 +1,6 @@
 name: Deploy
 
-on:
-  workflow_run:
-    workflows:
-      - Test
-    branches:
-      - main
-      - develop
-    types:
-      - completed
-  workflow_dispatch:
+on: push
 
 jobs:
   deploy:
@@ -27,7 +18,7 @@ jobs:
 
       - name: Set HEROKU_APP_NAME
         run: |
-          if [[ $BRANCH_TAG = "latest" ]]
+          if [[ $BRANCH_TAG = "bug/fix-heroku-deployment" ]]
           then
             echo "HEROKU_APP_NAME=${{ secrets.HEROKU_APP_NAME }}" >> $GITHUB_ENV
           else
