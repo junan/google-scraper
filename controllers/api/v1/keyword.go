@@ -67,10 +67,8 @@ func (c *Keyword) Show() {
 		c.renderError(err, http.StatusInternalServerError)
 	}
 
-	keywordSerializer := serializers.KeywordResponse{
-	}
-
-	c.ServeJSON()
+	response := serializers.GetKeywordResponse(*keywordResult)
+	c.serveJSON(response)
 }
 
 func (c *Keyword) findKeyword() (*models.Keyword, error) {
