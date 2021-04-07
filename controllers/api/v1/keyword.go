@@ -1,7 +1,6 @@
 package apiv1
 
 import (
-	"errors"
 	"net/http"
 
 	. "google-scraper/helpers"
@@ -75,10 +74,7 @@ func (c *Keyword) findKeyword() (*models.Keyword, error) {
 	keywordId := c.Ctx.Input.Param(":id")
 	Id, err := StringToInt(keywordId)
 	if err != nil {
-		logs.Error("Converting String to Int failed: ", err)
-
-		// The error message will show to the users
-		return nil, errors.New("Something went wrong. Please try again.")
+		c.renderError(err, http.StatusInternalServerError)
 	}
 
 	return models.FindKeywordBy(Id, c.CurrentUser)
