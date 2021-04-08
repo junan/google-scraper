@@ -26,7 +26,7 @@ type KeywordListResponse struct {
 
 var _ = Describe("KeywordController", func() {
 	Describe("GET /api/v1/keywords", func() {
-		Context("Given valid credentials", func() {
+		Context("given valid credentials", func() {
 			It("returns 200 status code", func() {
 				email := "john@example.com"
 				password := "secret"
@@ -131,7 +131,7 @@ var _ = Describe("KeywordController", func() {
 			})
 		})
 
-		Context("Given the INVALID credential", func() {
+		Context("given the INVALID credential", func() {
 			It("returns 401 status code", func() {
 				header := http.Header{"Authorization": {fmt.Sprintf("Bearer %v", "invalid")}}
 

@@ -22,7 +22,7 @@ import (
 
 var _ = Describe("TokenController", func() {
 	Describe("POST /api/v1/token", func() {
-		Context("Given the valid credential", func() {
+		Context("given the valid credential", func() {
 			It("returns 200 status code", func() {
 				email := "john@example.com"
 				password := "secret"
@@ -86,8 +86,8 @@ var _ = Describe("TokenController", func() {
 			})
 		})
 
-		Context("Given the INVALID credential", func() {
-			Context("Given the user credential is INVALID", func() {
+		Context("given the INVALID credential", func() {
+			Context("given the user credential is INVALID", func() {
 				It("returns 401 unauthorized status code", func() {
 					email := "john@example.com"
 					password := "secret"
@@ -139,7 +139,7 @@ var _ = Describe("TokenController", func() {
 				})
 			})
 
-			Context("Given the oauth client credential is INVALID", func() {
+			Context("given the oauth client credential is INVALID", func() {
 				It("returns 401 unauthorized status code", func() {
 					email := "john@example.com"
 					password := "secret"
@@ -192,7 +192,7 @@ var _ = Describe("TokenController", func() {
 				})
 			})
 
-			Context("Given the grant type is INVALID", func() {
+			Context("given the grant type is INVALID", func() {
 				It("returns 401 unauthorized status code", func() {
 					email := "john@example.com"
 					password := "secret"
@@ -247,7 +247,7 @@ var _ = Describe("TokenController", func() {
 	})
 
 	Describe("POST /api/v1/revoke", func() {
-		Context("Given the valid credential", func() {
+		Context("given the valid credential", func() {
 			It("returns 204 no content status code", func() {
 				client := FabricateOAuthClient(uuid.New().String(), uuid.New().String())
 				user := FabricateUser("John", "john@example.com", "secret")
@@ -304,8 +304,8 @@ var _ = Describe("TokenController", func() {
 			})
 		})
 
-		Context("Given the INVALID credential", func() {
-			Context("Given the user token is empty", func() {
+		Context("given the INVALID credential", func() {
+			Context("given the user token is empty", func() {
 				It("returns 401 unauthorized status code", func() {
 					client := FabricateOAuthClient(uuid.New().String(), uuid.New().String())
 					form := url.Values{
@@ -346,7 +346,7 @@ var _ = Describe("TokenController", func() {
 				})
 			})
 
-			Context("Given the oauth client credential is INVALID", func() {
+			Context("given the oauth client credential is INVALID", func() {
 				It("returns 401 unauthorized status code", func() {
 					client := FabricateOAuthClient(uuid.New().String(), uuid.New().String())
 					user := FabricateUser("John", "john@example.com", "secret")
