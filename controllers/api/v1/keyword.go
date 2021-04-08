@@ -3,7 +3,9 @@ package apiv1
 import (
 	"net/http"
 
+	. "google-scraper/helpers"
 	"google-scraper/models"
+	"google-scraper/presenters"
 	"google-scraper/serializers"
 
 	"github.com/beego/beego/v2/adapter/context"
@@ -48,4 +50,29 @@ func (c *Keyword) Index() {
 	}
 
 	c.serveListJSON(keywordsSerializer.Data(), keywordsSerializer.Meta(), keywordsSerializer.Links())
+}
+
+func (c *Keyword) Show() {
+	keyword, err := c.findKeyword()
+	if err != nil {
+		c.renderError(err, http.StatusNotFound)
+	}
+
+	keywordResult, err := presenters.InitializeKeywordPresenter(keyword)
+	if err != nil {
+		c.renderError(err, http.StatusInternalServerError)
+	}
+
+	response := serializers.GetKeywordResponse(*keywordResult)
+	c.serveJSON(response)
+}
+
+func (c *Keyword) findKeyword() (*models.Keyword, error) {
+	keywordId := c.Ctx.Input.Param(":id")
+	Id, err := StringToInt(keywordId)
+	if err != nil {
+		c.renderError(err, http.StatusInternalServerError)
+	}
+
+	return models.FindKeywordBy(Id, c.CurrentUser)
 }

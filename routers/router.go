@@ -25,6 +25,7 @@ func init() {
 		web.NSRouter("/revoke", &apiv1.Token{}, "post:Revoke"),
 		web.NSRouter("/search", &apiv1.Search{}, "post:Create"),
 		web.NSRouter("/keywords", &apiv1.Keyword{}, "get:Index"),
+		web.NSRouter("/keywords/:id:int", &apiv1.Keyword{}, "get:Show"),
 	)
 
 	// register namespace
