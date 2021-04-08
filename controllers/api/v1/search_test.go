@@ -15,7 +15,7 @@ import (
 
 var _ = Describe("SearchController", func() {
 	Describe("POST /api/v1/search", func() {
-		Context("Given valid credentials", func() {
+		Context("given valid credentials", func() {
 			Context("given the params are valid", func() {
 				It("returns 204 status code", func() {
 					user := FabricateUser("John", "john@example.com", "secret")
@@ -282,7 +282,7 @@ var _ = Describe("SearchController", func() {
 		})
 	})
 
-	Context("Given the INVALID credential", func() {
+	Context("given the INVALID credential", func() {
 		It("returns 401 status code", func() {
 			header := http.Header{"Authorization": {fmt.Sprintf("Bearer %v", "invalid")}}
 
