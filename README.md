@@ -12,6 +12,9 @@ Clone the repository
 
 `git clone git@github.com:junan/google-scraper.git`
 
+### Create the `.env` file
+
+Create a `.env` file and copy the contents of `.env.example` file into the `.env` file
 
 #### Build development dependencies
 
@@ -31,7 +34,7 @@ Clone the repository
   make start-worker
   ```
 
-#### Run the application in your local machine
+#### Run the migration, and the application in your local machine
 
   ```sh
   make dev

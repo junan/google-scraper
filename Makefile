@@ -27,6 +27,7 @@ db-rollback:
 
 dev:
 	docker-compose -f docker-compose.dev.yml up -d
+	make db-migrate
 	bee run
 
 test:
