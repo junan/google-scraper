@@ -6,3 +6,4 @@ google-scraper
 debug
 lastupdate.tmp
 static/css/application.css
+.env

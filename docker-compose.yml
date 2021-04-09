@@ -1,0 +1,14 @@
+version: "3.8"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.web
+    container_name: google_scraper_web
+    ports:
+      - '8080:8080'
+    environment:
+      - BEEGO_ENV=prod
+    stdin_open: true
+    tty: true
