@@ -21,7 +21,7 @@ jobs:
 
       - name: Set HEROKU_APP_NAME
         run: |
-          if [[ $BRANCH_TAG != "latest" ]]
+          if [[ $BRANCH_TAG == "latest" ]]
           then
             echo "HEROKU_APP_NAME=${{ secrets.HEROKU_APP_NAME }}" >> $GITHUB_ENV
           else
@@ -29,14 +29,14 @@ jobs:
           fi
 
       - name: Set staging database url
-        if: ${{ env.BRANCH_TAG == 'latest' }}
+        if: ${{ env.BRANCH_TAG != 'latest' }}
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL_STAGING }}
         run: |
           echo "DATABASE_URL=$DATABASE_URL" >> $GITHUB_ENV
 
       - name: Set production database url
-        if: ${{ env.BRANCH_TAG != 'latest' }}
+        if: ${{ env.BRANCH_TAG = 'latest' }}
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL_PRODUCTION }}
         run: |
@@ -59,5 +59,5 @@ jobs:
 
       - name: Publish application
         run: |
-          heroku container:push --recursive -a $HEROKU_APP_NAME
+          heroku container:push --arg DATABASE_URL=$DATABASE_URL --recursive -a $HEROKU_APP_NAME
           heroku container:release web worker -a $HEROKU_APP_NAME

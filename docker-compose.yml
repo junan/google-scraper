@@ -4,6 +4,7 @@ services:
   app:
     build:
       context: .
+      dockerfile: Dockerfile.web
     container_name: google_scraper_web
     ports:
       - '8080:8080'
