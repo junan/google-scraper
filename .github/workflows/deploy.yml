@@ -36,7 +36,7 @@ jobs:
           echo "DATABASE_URL=$DATABASE_URL" >> $GITHUB_ENV
 
       - name: Set production database url
-        if: ${{ env.BRANCH_TAG = 'latest' }}
+        if: ${{ env.BRANCH_TAG == 'latest' }}
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL_PRODUCTION }}
         run: |
