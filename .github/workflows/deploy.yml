@@ -28,7 +28,7 @@ jobs:
             echo "HEROKU_APP_NAME=${{ secrets.HEROKU_APP_NAME }}-staging" >> $GITHUB_ENV
           fi
 
-      - name: Set staging database
+      - name: Set staging database url
         if: ${{ env.BRANCH_TAG != 'latest' }}
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL_STAGING }}
