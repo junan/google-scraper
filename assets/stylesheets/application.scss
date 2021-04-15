@@ -1,0 +1,21 @@
+//Dependencies
+@import 'vendor/bootstrap/scss/bootstrap';
+
+// Base
+@import 'base/form';
+@import 'base/pagination';
+@import 'base/iframe';
+
+// Layouts
+@import 'layouts/default';
+@import 'layouts/authentication';
+
+// Components
+@import 'components/user-auth';
+@import 'components/user-search';
+@import 'components/form-user-search';
+@import 'components/app-header';
+@import 'components/keyword-detail';
+@import 'components/search-url';
+@import 'components/form-keyword-search';
+@import 'components/oauth-client';

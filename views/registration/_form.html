@@ -1,0 +1,35 @@
+<form class="form form-registration" action="/register" method="post">
+  <div class="form-group">
+    <input
+      type="text"
+      value="{{ .Form.Name }}"
+      class="form-control form__input"
+      name="name"
+      placeholder="Name"
+      required
+    />
+  </div>
+  <div class="form-group">
+    <input
+      type="email"
+      value="{{ .Form.Email }}"
+      class="form-control form__input"
+      name="email"
+      placeholder="Email"
+      required
+    />
+  </div>
+  <div class="form-group">
+    <input
+      type="password"
+      class="form-control form__input"
+      name="password"
+      placeholder="Password"
+      required
+    />
+  </div>
+
+  <button type="submit" class="btn btn-primary btn-block">
+    Create Account
+  </button>
+</form>

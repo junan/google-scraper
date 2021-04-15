@@ -1,0 +1,7 @@
+<header class="app-header">
+  {{ if .CurrentUser }}
+    {{ template "shared/_authenticated_user_navbar.html" . }}
+  {{ else }}
+    {{ template "shared/_guest_user_navbar.html" . }}
+  {{ end }}
+</header>

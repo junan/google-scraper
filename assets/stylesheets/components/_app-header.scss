@@ -1,0 +1,13 @@
+.app-header {
+  .navbar-text {
+    color: burlywood;
+
+    &::after {
+      @include media-breakpoint-up(lg) {
+        content: '|';
+        padding-left: 8px;
+        color: lightcoral;
+      }
+    }
+  }
+}

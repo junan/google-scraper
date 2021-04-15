@@ -1,0 +1,10 @@
+.layout-default {
+  body {
+    @include make-container();
+    @include make-container-max-widths;
+  }
+
+  .app-main {
+    margin-top: 80px;
+  }
+}

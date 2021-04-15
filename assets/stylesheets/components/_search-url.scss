@@ -1,0 +1,19 @@
+.search-url {
+  &__panel-container {
+    @include make-row();
+  }
+
+  &__panel {
+    padding: 25px;
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    @include make-col(12);
+
+    @include media-breakpoint-up('lg') {
+      @include make-col(6);
+    }
+  }
+
+  &__item {
+    max-width: 400px;
+  }
+}

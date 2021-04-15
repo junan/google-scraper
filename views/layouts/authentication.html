@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html class="layout-authentication">
+<head>
+  <title>Google Scraper App</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <link rel="shortcut icon" href="/static/icons/favicon.ico" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  {{ assets_css "/static/css/application.css" }}
+</head>
+
+<body class="{{.ControllerName}} {{.ActionName}}">
+{{ template "shared/_header.html" . }}
+
+<main class="app-main">{{ .LayoutContent }}</main>
+
+<footer class="app-footer">{{ template "shared/_footer.html" . }}</footer>
+</body>
+</html>
