@@ -5,7 +5,7 @@ A web application to google search with multiple keywords
 
 - [Staging](https://nimble-google-scraper-staging.herokuapp.com/)
 - [Production](https://nimble-google-scraper.herokuapp.com/)
-- [Postman collection](https://documenter.getpostman.com/view/11835486/TzJsfy75})
+- [Postman collection](https://documenter.getpostman.com/view/11835486/TzJsfy75)
 
 ## Prerequisite
 * [Go - 1.15](https://golang.org/doc/go1.15)
